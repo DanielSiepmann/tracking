@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file source-language="en" datatype="plaintext">
+        <header/>
+        <body>
+            <trans-unit id="table.pageview">
+                <source>Pageview</source>
+            </trans-unit>
+            <trans-unit id="table.pageview.pid">
+                <source>Page</source>
+            </trans-unit>
+            <trans-unit id="table.pageview.url">
+                <source>URL</source>
+            </trans-unit>
+            <trans-unit id="table.pageview.sys_language">
+                <source>System language</source>
+            </trans-unit>
+            <trans-unit id="table.pageview.sys_language.0">
+                <source>Default system language</source>
+            </trans-unit>
+            <trans-unit id="table.pageview.crdate">
+                <source>Date + Time</source>
+            </trans-unit>
+            <trans-unit id="table.pageview.type">
+                <source>Pagetype</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

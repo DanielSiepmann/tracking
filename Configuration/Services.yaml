@@ -1,0 +1,20 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  DanielSiepmann\Tracking\:
+    resource: '../Classes/*'
+
+  DanielSiepmann\DI\DatabaseConnection\Pageview:
+      factory:
+        - '@TYPO3\CMS\Core\Database\ConnectionPool'
+        - 'getConnectionForTable'
+      arguments:
+          - 'tx_tracking_pageview'
+
+  DanielSiepmann\Tracking\Domain\Repository\Pageview:
+    public: true
+    arguments:
+        - '@DanielSiepmann\DI\DatabaseConnection\Pageview'

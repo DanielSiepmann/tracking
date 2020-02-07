@@ -1,0 +1,26 @@
+{
+    "name": "danielsiepmann/tracking",
+    "description": "Tracking for TYPO3",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Daniel Siepmann",
+            "email": "coding@daniel-siepmann.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DanielSiepmann\\Tracking\\": "Classes/"
+        }
+    },
+    "require": {
+        "php": "^7.3.0",
+        "typo3/cms-core": "10.x-dev"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "tracking"
+        }
+    }
+}
