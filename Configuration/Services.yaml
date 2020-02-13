@@ -8,13 +8,21 @@ services:
     resource: '../Classes/*'
 
   DanielSiepmann\DI\DatabaseConnection\Pageview:
-      factory:
-        - '@TYPO3\CMS\Core\Database\ConnectionPool'
-        - 'getConnectionForTable'
-      arguments:
-          - 'tx_tracking_pageview'
+    factory:
+      - '@TYPO3\CMS\Core\Database\ConnectionPool'
+      - 'getConnectionForTable'
+    arguments:
+      - 'tx_tracking_pageview'
 
   DanielSiepmann\Tracking\Domain\Repository\Pageview:
     public: true
     arguments:
-        - '@DanielSiepmann\DI\DatabaseConnection\Pageview'
+      - '@DanielSiepmann\DI\DatabaseConnection\Pageview'
+
+  DanielSiepmann\Tracking\Middleware\Pageview:
+    public: true
+    arguments:
+      $rule: >
+          not (context.getAspect("backend.user").isLoggedIn())
+          and not (request.getHeader("User-Agent")[0] matches "/^Wget/")
+          and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot/")
