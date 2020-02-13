@@ -35,7 +35,8 @@ class Factory implements FromRequest
             $request->getAttribute('language'),
             new \DateTimeImmutable(),
             static::getRouting($request)->getPageType(),
-            (string) $request->getUri()
+            (string) $request->getUri(),
+            $request->getHeader('User-Agent')[0] ?? ''
         );
     }
 

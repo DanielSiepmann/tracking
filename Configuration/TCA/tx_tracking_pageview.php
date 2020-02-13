@@ -14,11 +14,11 @@ return [
     ],
     'interface' => [
         'always_description' => 0,
-        'showRecordFieldList' => 'url, type, sys_language_uid, crdate, tstamp, crdate, cruser_id'
+        'showRecordFieldList' => 'url, user_agent, type, sys_language_uid, crdate, tstamp, crdate, cruser_id'
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid, pid, url, type, crdate',
+            'showitem' => 'sys_language_uid, pid, url, user_agent, type, crdate',
         ],
     ],
     'columns' => [
@@ -49,6 +49,13 @@ return [
                 ],
                 'readOnly' => true,
             ]
+        ],
+        'user_agent' => [
+            'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.user_agent',
+            'config' => [
+                'type' => 'input',
+                'readOnly' => true,
+            ],
         ],
         'type' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.type',

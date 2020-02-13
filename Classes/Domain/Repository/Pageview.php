@@ -47,6 +47,7 @@ class Pageview
                 'type' => $pageview->getPageType(),
                 'sys_language_uid' => $pageview->getLanguage()->getLanguageId(),
                 'url' => $pageview->getUrl(),
+                'user_agent' => $pageview->getUserAgent(),
             ]
         );
     }

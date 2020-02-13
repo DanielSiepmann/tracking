@@ -50,18 +50,25 @@ class Pageview
      */
     private $url;
 
+    /**
+     * @var string
+     */
+    private $userAgent;
+
     public function __construct(
         int $pageUid,
         SiteLanguage $language,
         \DateTimeImmutable $crdate,
         int $pageType,
-        string $url
+        string $url,
+        string $userAgent
     ) {
         $this->pageUid = $pageUid;
         $this->language = $language;
         $this->crdate = $crdate;
         $this->pageType = $pageType;
         $this->url = $url;
+        $this->userAgent = $userAgent;
     }
 
     public function getPageUid(): int
@@ -87,5 +94,10 @@ class Pageview
     public function getUrl(): string
     {
         return $this->url;
+    }
+
+    public function getUserAgent(): string
+    {
+        return $this->userAgent;
     }
 }

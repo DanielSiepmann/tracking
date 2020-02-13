@@ -24,6 +24,9 @@
             <trans-unit id="table.pageview.type">
                 <source>Pagetype</source>
             </trans-unit>
+            <trans-unit id="table.pageview.user_agent">
+                <source>User agent</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
