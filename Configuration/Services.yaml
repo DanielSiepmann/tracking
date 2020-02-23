@@ -26,3 +26,21 @@ services:
           not (context.getAspect("backend.user").isLoggedIn())
           and not (request.getHeader("User-Agent")[0] matches "/^Wget|TYPO3|TYPO3 linkvalidator/")
           and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|NextCloud-News|Feedly|XING FeedReader|CCBot/")
+
+  # Dashboard Widgets
+
+  DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsBar:
+    class: DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsBar
+    arguments: [pageViewsBar]
+    tags:
+      - name: dashboard.widget
+        identifier: pageViewsBar
+        widgetGroups: tracking
+
+  DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsPerPageDoughnut:
+    class: DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsPerPageDoughnut
+    arguments: [pageViewsPerPageDoughnut]
+    tags:
+      - name: dashboard.widget
+        identifier: pageViewsPerPageDoughnut
+        widgetGroups: tracking
