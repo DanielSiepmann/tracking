@@ -86,7 +86,7 @@ class PageViewsBar extends AbstractBarChartWidget
 
         $format = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'Y-m-d';
 
-        for ($daysBefore = $days; $daysBefore > 0; $daysBefore--) {
+        for ($daysBefore = $days; $daysBefore >= 0; $daysBefore--) {
             $labels[] = date($format, strtotime('-' . $daysBefore . ' day'));
             $startPeriod = strtotime('-' . $daysBefore . ' day 0:00:00');
             $endPeriod =  strtotime('-' . $daysBefore . ' day 23:59:59');
