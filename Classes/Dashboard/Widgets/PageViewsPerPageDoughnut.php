@@ -23,9 +23,7 @@ namespace DanielSiepmann\Tracking\Dashboard\Widgets;
 
 use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Dashboard\Widgets\AbstractDoughnutChartWidget;
 
 class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
@@ -33,6 +31,17 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
     protected $title = 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsPerPageDoughnut.title';
 
     protected $description = 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsPerPageDoughnut.description';
+
+    /**
+     * @var QueryBuilder
+     */
+    protected $queryBuilder;
+
+    public function __construct(string $identifier, QueryBuilder $queryBuilder)
+    {
+        parent::__construct($identifier);
+        $this->queryBuilder = $queryBuilder;
+    }
 
     protected function prepareChartData(): void
     {
@@ -53,9 +62,8 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
     {
         $labels = [];
         $data = [];
-        $queryBuilder = $this->getQueryBuilder();
 
-        $result = $queryBuilder
+        $result = $this->queryBuilder
             ->selectLiteral('count(tx_tracking_pageview.pid) as total')
             ->addSelect('pages.title', 'pages.uid')
             ->from('tx_tracking_pageview')
@@ -63,12 +71,15 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
                 'tx_tracking_pageview',
                 'pages',
                 'pages',
-                $queryBuilder->expr()->eq('tx_tracking_pageview.pid', $queryBuilder->quoteIdentifier('pages.uid'))
+                $this->queryBuilder->expr()->eq(
+                    'tx_tracking_pageview.pid',
+                    $this->queryBuilder->quoteIdentifier('pages.uid')
+                )
             )
             ->where(
-                $queryBuilder->expr()->notIn(
+                $this->queryBuilder->expr()->notIn(
                     'tx_tracking_pageview.pid',
-                    $queryBuilder->createNamedParameter([
+                    $this->queryBuilder->createNamedParameter([
                         1,
                         11,
                         38,
@@ -90,10 +101,5 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
             $labels,
             $data,
         ];
-    }
-
-    private function getQueryBuilder(): QueryBuilder
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview');
     }
 }

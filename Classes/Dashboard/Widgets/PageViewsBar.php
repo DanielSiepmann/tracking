@@ -22,8 +22,7 @@ namespace DanielSiepmann\Tracking\Dashboard\Widgets;
  */
 
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Dashboard\Widgets\AbstractBarChartWidget;
 
 class PageViewsBar extends AbstractBarChartWidget
@@ -35,6 +34,18 @@ class PageViewsBar extends AbstractBarChartWidget
     protected $width = 2;
 
     protected $height = 4;
+
+    /**
+     * @var QueryBuilder
+     */
+    protected $queryBuilder;
+
+    public function __construct(string $identifier, QueryBuilder $queryBuilder)
+    {
+        parent::__construct($identifier);
+        $this->queryBuilder = $queryBuilder;
+        $this->identifier = $identifier;
+    }
 
     protected function prepareChartData(): void
     {
@@ -57,18 +68,15 @@ class PageViewsBar extends AbstractBarChartWidget
 
     protected function getPageViewsInPeriod(int $start, int $end): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_tracking_pageview');
-
-        return (int)$queryBuilder
+        return (int)$this->queryBuilder
             ->count('*')
             ->from('tx_tracking_pageview')
             ->where(
-                $queryBuilder->expr()->gte('tstamp', $start),
-                $queryBuilder->expr()->lte('tstamp', $end),
-                $queryBuilder->expr()->notIn(
+                $this->queryBuilder->expr()->gte('tstamp', $start),
+                $this->queryBuilder->expr()->lte('tstamp', $end),
+                $this->queryBuilder->expr()->notIn(
                     'tx_tracking_pageview.pid',
-                    $queryBuilder->createNamedParameter([
+                    $this->queryBuilder->createNamedParameter([
                         1,
                         11,
                         38,
