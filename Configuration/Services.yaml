@@ -25,7 +25,7 @@ services:
       $rule: >
           not (context.getAspect("backend.user").isLoggedIn())
           and not (request.getHeader("User-Agent")[0] matches "/^Wget|TYPO3|TYPO3 linkvalidator/")
-          and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|NextCloud-News|Feedly|XING FeedReader|CCBot/")
+          and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|NextCloud-News|Feedly|XING FeedReader|CCBot|SemrushBot|SEOkicks|Twitterbot|Seekport Crawler|SemanticScholarBot|curl/")
 
   # Dashboard Widgets
 
