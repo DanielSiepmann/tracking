@@ -16,7 +16,7 @@
     },
     "require": {
         "php": "^7.3.0",
-        "typo3/cms-core": "10.x-dev"
+        "typo3/cms-core": "^10.3.0"
     },
     "extra": {
         "typo3/cms": {
