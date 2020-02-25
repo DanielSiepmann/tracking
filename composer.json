@@ -15,12 +15,35 @@
         }
     },
     "require": {
+        "doctrine/dbal": "^2.10",
         "php": "^7.3.0",
+        "psr/http-message": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-server-middleware": "^1.0",
+        "symfony/expression-language": "^5.0",
         "typo3/cms-core": "^10.3.0"
+    },
+    "suggest": {
+        "typo3/cms-dashboard": "To make use of provided TYPO3 widgets"
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin"
     },
     "extra": {
         "typo3/cms": {
-            "extension-key": "tracking"
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "extension-key": "tracking",
+            "web-dir": ".Build/web"
+        },
+        "branch-alias": {
+            "dev-develop": "1.0.x-dev"
         }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "mkdir -p .Build/web/typo3conf/ext/",
+            "[ -L .Build/web/typo3conf/ext/tracking ] || ln -snvf ../../../../. .Build/web/typo3conf/ext/tracking"
+        ]
     }
 }
