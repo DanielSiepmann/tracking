@@ -57,3 +57,14 @@ Todos
 #. Add operating System
 
    #. Another Symfony Expression which returns the OS ("Ubuntu", "Macintosh", "Android", "iPhone", "Windows")
+
+Example
+=======
+
+The following widgets are added and could look like:
+
+.. image:: Documentation/Images/Widgets.png
+
+A new record is added which looks like:
+
+.. image:: Documentation/Images/ListView.png
