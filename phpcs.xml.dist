@@ -3,6 +3,7 @@
     <description>This project coding standard</description>
 
     <file>Classes/</file>
+    <file>Tests/</file>
 
     <!-- Set default settings -->
     <arg value="sp"/>

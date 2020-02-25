@@ -14,3 +14,6 @@ jobs:
 
       - name: Test CGL
         run: ./vendor/bin/phpcs
+
+      - name: Execute PHPUnit Tests
+        run: ./vendor/bin/phpunit
