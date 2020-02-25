@@ -21,15 +21,16 @@ namespace DanielSiepmann\Tracking\Dashboard\Widgets;
  * 02110-1301, USA.
  */
 
+use DanielSiepmann\Tracking\Extension;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Dashboard\Widgets\AbstractBarChartWidget;
 
 class PageViewsBar extends AbstractBarChartWidget
 {
-    protected $title = 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsBar.title';
+    protected $title = Extension::LANGUAGE_PATH . ':dashboard.widgets.pageViewsBar.title';
 
-    protected $description = 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsBar.description';
+    protected $description = Extension::LANGUAGE_PATH . ':trackingdashboard.widgets.pageViewsBar.description';
 
     protected $width = 2;
 

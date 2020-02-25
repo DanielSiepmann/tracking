@@ -26,10 +26,6 @@
     "suggest": {
         "typo3/cms-dashboard": "To make use of provided TYPO3 widgets"
     },
-    "config": {
-        "vendor-dir": ".Build/vendor",
-        "bin-dir": ".Build/bin"
-    },
     "extra": {
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
@@ -45,5 +41,8 @@
             "mkdir -p .Build/web/typo3conf/ext/",
             "[ -L .Build/web/typo3conf/ext/tracking ] || ln -snvf ../../../../. .Build/web/typo3conf/ext/tracking"
         ]
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5"
     }
 }

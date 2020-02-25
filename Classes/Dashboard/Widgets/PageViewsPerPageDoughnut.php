@@ -21,6 +21,7 @@ namespace DanielSiepmann\Tracking\Dashboard\Widgets;
  * 02110-1301, USA.
  */
 
+use DanielSiepmann\Tracking\Extension;
 use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -28,9 +29,9 @@ use TYPO3\CMS\Dashboard\Widgets\AbstractDoughnutChartWidget;
 
 class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
 {
-    protected $title = 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsPerPageDoughnut.title';
+    protected $title = Extension::LANGUAGE_PATH . ':dashboard.widgets.pageViewsPerPageDoughnut.title';
 
-    protected $description = 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsPerPageDoughnut.description';
+    protected $description = Extension::LANGUAGE_PATH . ':dashboard.widgets.pageViewsPerPageDoughnut.description';
 
     /**
      * @var QueryBuilder
