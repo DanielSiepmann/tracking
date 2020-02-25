@@ -9,6 +9,21 @@ services:
 
   # Virtual services
 
+  DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsBar:
+    factory:
+      - '@DanielSiepmann\Tracking\Dashboard\Widgets\SettingsFactory'
+      - 'fromArray'
+    arguments:
+      $widgetIdentifier: 'pageViewsBar'
+      $settings: []
+  DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsPerPageDoughnut:
+    factory:
+      - '@DanielSiepmann\Tracking\Dashboard\Widgets\SettingsFactory'
+      - 'fromArray'
+    arguments:
+      $widgetIdentifier: 'pageViewsPerPageDoughnut'
+      $settings: []
+
   DanielSiepmann\Tracking\DI\DatabaseConnection\Pageview:
     factory:
       - '@TYPO3\CMS\Core\Database\ConnectionPool'
@@ -42,8 +57,9 @@ services:
   DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsBar:
     class: 'DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsBar'
     arguments:
-      - 'pageViewsBar'
-      - '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
+      $identifier: 'pageViewsBar'
+      $queryBuilder: '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
+      $settings: '@DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsBar'
     tags:
       - name: 'dashboard.widget'
         identifier: 'pageViewsBar'
@@ -52,8 +68,9 @@ services:
   DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsPerPageDoughnut:
     class: 'DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsPerPageDoughnut'
     arguments:
-      - 'pageViewsPerPageDoughnut'
-      - '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
+      $identifier: 'pageViewsPerPageDoughnut'
+      $queryBuilder: '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
+      $settings: '@DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsPerPageDoughnut'
     tags:
       - name: 'dashboard.widget'
         identifier: 'pageViewsPerPageDoughnut'

@@ -38,15 +38,25 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
      */
     protected $queryBuilder;
 
-    public function __construct(string $identifier, QueryBuilder $queryBuilder)
-    {
+    /**
+     * @var \ArrayObject
+     */
+    private $settings;
+
+    public function __construct(
+        string $identifier,
+        QueryBuilder $queryBuilder,
+        \ArrayObject $settings
+    ) {
         parent::__construct($identifier);
+
         $this->queryBuilder = $queryBuilder;
+        $this->settings = $settings;
     }
 
     protected function prepareChartData(): void
     {
-        list($labels, $data) = $this->getPageViewsPerPage(31);
+        list($labels, $data) = $this->getPageViewsPerPage((int) $this->settings['periodInDays']);
 
         $this->chartData = [
             'labels' => $labels,
@@ -59,10 +69,24 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
         ];
     }
 
-    private function getPageViewsPerPage(int $period): array
+    private function getPageViewsPerPage(int $days): array
     {
         $labels = [];
         $data = [];
+
+        $constraints = [
+            $this->queryBuilder->expr()->gte('tx_tracking_pageview.crdate', strtotime('-' . $days . ' day 0:00:00')),
+            $this->queryBuilder->expr()->lte('tx_tracking_pageview.crdate', time()),
+        ];
+        if (count($this->settings['blackListedPages'])) {
+            $constraints[] = $this->queryBuilder->expr()->notIn(
+                'tx_tracking_pageview.pid',
+                $this->queryBuilder->createNamedParameter(
+                    $this->settings['blackListedPages'],
+                    Connection::PARAM_INT_ARRAY
+                )
+            );
+        }
 
         $result = $this->queryBuilder
             ->selectLiteral('count(tx_tracking_pageview.pid) as total')
@@ -77,16 +101,7 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
                     $this->queryBuilder->quoteIdentifier('pages.uid')
                 )
             )
-            ->where(
-                $this->queryBuilder->expr()->notIn(
-                    'tx_tracking_pageview.pid',
-                    $this->queryBuilder->createNamedParameter([
-                        1,
-                        11,
-                        38,
-                    ], Connection::PARAM_INT_ARRAY)
-                )
-            )
+            ->where(... $constraints)
             ->groupBy('tx_tracking_pageview.pid')
             ->orderBy('total', 'desc')
             ->setMaxResults(6) // Because 6 colors are defined

@@ -1,6 +1,8 @@
 <?php
 
-namespace DanielSiepmann\Tracking;
+namespace DanielSiepmann\Tracking\Dashboard\Widgets;
+
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,9 +23,26 @@ namespace DanielSiepmann\Tracking;
  * 02110-1301, USA.
  */
 
-final class Extension
+class SettingsFactory
 {
-    public const EXT_KEY = 'tracking';
+    private $defaults = [
+        'pageViewsBar' => [
+            'periodInDays' => 31,
+            'blackListedPages' => [],
+        ],
+        'pageViewsPerPageDoughnut' => [
+            'periodInDays' => 31,
+            'blackListedPages' => [],
+            'maxResults' => 6,
+        ],
+    ];
 
-    public const LANGUAGE_PATH = 'LLL:EXT:' . self::EXT_KEY . '/Resources/Private/Language/locallang.xlf';
+    public function fromArray(string $widgetIdentifier, array $settings): \ArrayObject
+    {
+        $settingsToUse = $this->defaults[$widgetIdentifier] ?? [];
+
+        ArrayUtility::mergeRecursiveWithOverrule($settingsToUse, $settings);
+
+        return new \ArrayObject($settingsToUse);
+    }
 }

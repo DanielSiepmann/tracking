@@ -24,6 +24,7 @@ namespace DanielSiepmann\Tracking\Dashboard\Widgets;
 use DanielSiepmann\Tracking\Extension;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Dashboard\Widgets\AbstractBarChartWidget;
 
 class PageViewsBar extends AbstractBarChartWidget
@@ -41,16 +42,25 @@ class PageViewsBar extends AbstractBarChartWidget
      */
     protected $queryBuilder;
 
-    public function __construct(string $identifier, QueryBuilder $queryBuilder)
-    {
+    /**
+     * @var \ArrayObject
+     */
+    private $settings;
+
+    public function __construct(
+        string $identifier,
+        QueryBuilder $queryBuilder,
+        \ArrayObject $settings
+    ) {
         parent::__construct($identifier);
+
         $this->queryBuilder = $queryBuilder;
-        $this->identifier = $identifier;
+        $this->settings = $settings;
     }
 
     protected function prepareChartData(): void
     {
-        list($labels, $data) = $this->calculateDataForLastDays(31);
+        list($labels, $data) = $this->calculateDataForLastDays((int) $this->settings['periodInDays']);
 
         $this->chartData = [
             'labels' => $labels,
@@ -69,21 +79,25 @@ class PageViewsBar extends AbstractBarChartWidget
 
     protected function getPageViewsInPeriod(int $start, int $end): int
     {
+        $constraints = [
+            $this->queryBuilder->expr()->gte('crdate', $start),
+            $this->queryBuilder->expr()->lte('crdate', $end),
+        ];
+
+        if (count($this->settings['blackListedPages'])) {
+            $constraints[] = $this->queryBuilder->expr()->notIn(
+                'tx_tracking_pageview.pid',
+                $this->queryBuilder->createNamedParameter(
+                    $this->settings['blackListedPages'],
+                    Connection::PARAM_INT_ARRAY
+                )
+            );
+        }
+
         return (int)$this->queryBuilder
             ->count('*')
             ->from('tx_tracking_pageview')
-            ->where(
-                $this->queryBuilder->expr()->gte('tstamp', $start),
-                $this->queryBuilder->expr()->lte('tstamp', $end),
-                $this->queryBuilder->expr()->notIn(
-                    'tx_tracking_pageview.pid',
-                    $this->queryBuilder->createNamedParameter([
-                        1,
-                        11,
-                        38,
-                    ], Connection::PARAM_INT_ARRAY)
-                )
-            )
+            ->where(... $constraints)
             ->execute()
             ->fetchColumn();
     }
