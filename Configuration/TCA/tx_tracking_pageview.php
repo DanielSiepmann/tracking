@@ -4,7 +4,7 @@ return [
         'label' => 'url',
         'label_alt' => 'crdate',
         'label_alt_force' => true,
-        'sortby' => 'crdate',
+        'sortby' => 'crdate DESC',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
