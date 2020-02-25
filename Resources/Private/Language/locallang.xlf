@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+    <file source-language="en" datatype="plaintext">
+        <header/>
+        <body>
+            <trans-unit id="dashboard.widget.group.tracking">
+                <source>Tracking</source>
+            </trans-unit>
+            <trans-unit id="dashboard.widgets.pageViewsBar.title">
+                <source>Page Views / Day</source>
+            </trans-unit>
+            <trans-unit id="dashboard.widgets.pageViewsBar.description">
+                <source>Displays total page views per day.</source>
+            </trans-unit>
+            <trans-unit id="dashboard.widgets.pageViewsBar.chart.dataSet.0">
+                <source>Total Page Views</source>
+            </trans-unit>
+            <trans-unit id="dashboard.widgets.pageViewsPerPageDoughnut.title">
+                <source>Page Views / Page</source>
+            </trans-unit>
+            <trans-unit id="dashboard.widgets.pageViewsPerPageDoughnut.description">
+                <source>Displays total page views per page.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

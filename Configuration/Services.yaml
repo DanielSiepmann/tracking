@@ -1,0 +1,77 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  DanielSiepmann\Tracking\:
+    resource: '../Classes/*'
+
+  # Virtual services
+
+  DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsBar:
+    factory:
+      - '@DanielSiepmann\Tracking\Dashboard\Widgets\SettingsFactory'
+      - 'fromArray'
+    arguments:
+      $widgetIdentifier: 'pageViewsBar'
+      $settings: []
+  DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsPerPageDoughnut:
+    factory:
+      - '@DanielSiepmann\Tracking\Dashboard\Widgets\SettingsFactory'
+      - 'fromArray'
+    arguments:
+      $widgetIdentifier: 'pageViewsPerPageDoughnut'
+      $settings: []
+
+  DanielSiepmann\Tracking\DI\DatabaseConnection\Pageview:
+    factory:
+      - '@TYPO3\CMS\Core\Database\ConnectionPool'
+      - 'getConnectionForTable'
+    arguments:
+      - 'tx_tracking_pageview'
+  DanielSiepmann\Tracking\DI\QueryBuilder\PageView:
+    factory:
+      - '@TYPO3\CMS\Core\Database\ConnectionPool'
+      - 'getQueryBuilderForTable'
+    arguments:
+      - 'tx_tracking_pageview'
+
+  # Existing classes
+
+  DanielSiepmann\Tracking\Domain\Repository\Pageview:
+    public: true
+    arguments:
+      - '@DanielSiepmann\Tracking\DI\DatabaseConnection\Pageview'
+
+  DanielSiepmann\Tracking\Middleware\Pageview:
+    public: true
+    arguments:
+      $rule: >
+          not (context.getAspect("backend.user").isLoggedIn())
+          and not (request.getHeader("User-Agent")[0] matches "/^Wget|TYPO3|TYPO3 linkvalidator/")
+          and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|NextCloud-News|Feedly|XING FeedReader|CCBot|SemrushBot|SEOkicks|Twitterbot|Seekport Crawler|SemanticScholarBot|curl/")
+
+  # Dashboard Widgets
+
+  DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsBar:
+    class: 'DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsBar'
+    arguments:
+      $identifier: 'pageViewsBar'
+      $queryBuilder: '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
+      $settings: '@DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsBar'
+    tags:
+      - name: 'dashboard.widget'
+        identifier: 'pageViewsBar'
+        widgetGroups: 'tracking'
+
+  DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsPerPageDoughnut:
+    class: 'DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsPerPageDoughnut'
+    arguments:
+      $identifier: 'pageViewsPerPageDoughnut'
+      $queryBuilder: '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
+      $settings: '@DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsPerPageDoughnut'
+    tags:
+      - name: 'dashboard.widget'
+        identifier: 'pageViewsPerPageDoughnut'
+        widgetGroups: 'tracking'
