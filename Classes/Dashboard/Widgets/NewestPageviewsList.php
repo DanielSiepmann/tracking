@@ -80,7 +80,7 @@ class NewestPageviewsList extends AbstractListWidget
         $this->queryBuilder
             ->select('*')
             ->from('tx_tracking_pageview')
-            ->orderBy('crdate desc')
+            ->orderBy('crdate', 'desc')
             ->setMaxResults($this->settings['maxResults']);
 
         if ($constraints !== []) {
