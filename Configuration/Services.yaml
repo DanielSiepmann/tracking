@@ -23,6 +23,13 @@ services:
     arguments:
       $widgetIdentifier: 'pageViewsPerPageDoughnut'
       $settings: []
+  DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\NewestPageviewsList:
+    factory:
+      - '@DanielSiepmann\Tracking\Dashboard\Widgets\SettingsFactory'
+      - 'fromArray'
+    arguments:
+      $widgetIdentifier: 'newestPageviewsList'
+      $settings: []
 
   DanielSiepmann\Tracking\DI\DatabaseConnection\Pageview:
     factory:
@@ -74,4 +81,15 @@ services:
     tags:
       - name: 'dashboard.widget'
         identifier: 'pageViewsPerPageDoughnut'
+        widgetGroups: 'tracking'
+
+  DanielSiepmann\Tracking\Dashboard\Widgets\NewestPageviewsList:
+    class: 'DanielSiepmann\Tracking\Dashboard\Widgets\NewestPageviewsList'
+    arguments:
+      $identifier: 'newestPageviewsList'
+      $queryBuilder: '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
+      $settings: '@DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\NewestPageviewsList'
+    tags:
+      - name: 'dashboard.widget'
+        identifier: 'newestPageviewsList'
         widgetGroups: 'tracking'

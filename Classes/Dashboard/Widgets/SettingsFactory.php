@@ -36,6 +36,10 @@ class SettingsFactory
             'blackListedPages' => [],
             'maxResults' => 6,
         ],
+        'newestPageviewsList' => [
+            'blackListedPages' => [],
+            'maxResults' => 6,
+        ],
     ];
 
     public function fromArray(string $widgetIdentifier, array $settings): \ArrayObject
