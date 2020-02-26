@@ -3,6 +3,12 @@
     "description": "Tracking for TYPO3",
     "type": "typo3-cms-extension",
     "license": "GPL-2.0-or-later",
+    "homepage": "https://daniel-siepmann.de/projects/typo3-extension-tracking.html",
+    "support": {
+        "email": "coding@daniel-siepmann.de",
+        "source": "https://github.com/DanielSiepmann/tracking/",
+        "issues": "https://github.com/DanielSiepmann/tracking/issues"
+    },
     "authors": [
         {
             "name": "Daniel Siepmann",
@@ -38,7 +44,7 @@
             "web-dir": ".Build/web"
         },
         "branch-alias": {
-            "dev-develop": "1.0.x-dev"
+            "dev-master": "1.0.x-dev"
         }
     },
     "scripts": {
