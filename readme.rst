@@ -37,14 +37,11 @@ EXT:dashboard
 Todos
 =====
 
-#. Add command that will iterate over all DB entries and remove ones matching the black list rule.
-   E.g. if rule is adjusted in meanwhile.
-
 #. Add further widgets.
 
-   #. Top 404 requests (Collect them to show them).
+   #. Grouped by user agents (bar).
 
-   #. Grouped by user agents.
+   #. Top 404 requests (Collect them to show them, doughnut).
 
 #. Move bot detection to another rule.
 
@@ -57,6 +54,11 @@ Todos
 #. Add operating System
 
    #. Another Symfony Expression which returns the OS ("Ubuntu", "Macintosh", "Android", "iPhone", "Windows")
+
+#. Add command that will iterate over all DB entries and remove ones matching the black list rule.
+   E.g. if rule is adjusted in meanwhile.
+
+#. Add 100% code coverage (Widgets are missing)
 
 Example
 =======
