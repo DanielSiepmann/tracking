@@ -29,6 +29,7 @@ class SettingsFactory
         'pageViewsBar' => [
             'periodInDays' => 31,
             'blackListedPages' => [],
+            'maxResults' => 6,
         ],
         'pageViewsPerPageDoughnut' => [
             'periodInDays' => 31,

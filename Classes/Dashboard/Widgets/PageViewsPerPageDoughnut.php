@@ -104,7 +104,7 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
             ->where(... $constraints)
             ->groupBy('tx_tracking_pageview.pid')
             ->orderBy('total', 'desc')
-            ->setMaxResults(6) // Because 6 colors are defined
+            ->setMaxResults($this->settings['maxResults'])
             ->execute()
             ->fetchAll();
 
