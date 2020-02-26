@@ -31,7 +31,7 @@ class PageViewsBar extends AbstractBarChartWidget
 {
     protected $title = Extension::LANGUAGE_PATH . ':dashboard.widgets.pageViewsBar.title';
 
-    protected $description = Extension::LANGUAGE_PATH . ':trackingdashboard.widgets.pageViewsBar.description';
+    protected $description = Extension::LANGUAGE_PATH . ':dashboard.widgets.pageViewsBar.description';
 
     protected $width = 2;
 
