@@ -45,9 +45,9 @@ Todos
 
 #. Add referrer if available.
 
-#. Add operating System
+#. Add device type phone, tablet, desktop?
 
-   #. Another Symfony Expression which returns the OS ("Ubuntu", "Macintosh", "Android", "iPhone", "Windows")
+#. Add operating system version?
 
 #. Add further widgets.
 
@@ -62,6 +62,7 @@ Todos
    #. Provide an overview of crawls as widgets. E.g. to allow fine grained robots.txt.
 
 #. Add information to Admin Panel.
+
 #. Add command that will iterate over all DB entries and remove ones matching the black list rule.
    E.g. if rule is adjusted in meanwhile.
 

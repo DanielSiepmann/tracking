@@ -24,10 +24,20 @@ namespace DanielSiepmann\Tracking\Domain\Pageview;
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 
 class Factory implements FromRequest
 {
+    /**
+     * @var SiteFinder
+     */
+    private $siteFinder;
+
+    public function __construct(SiteFinder $siteFinder)
+    {
+        $this->siteFinder = $siteFinder;
+    }
+
     public static function fromRequest(ServerRequestInterface $request): Pageview
     {
         return new PageView(
@@ -37,6 +47,19 @@ class Factory implements FromRequest
             (int) static::getRouting($request)->getPageType(),
             (string) $request->getUri(),
             $request->getHeader('User-Agent')[0] ?? ''
+        );
+    }
+
+    public function fromDbRow(array $dbRow): Pageview
+    {
+        return new PageView(
+            $dbRow['pid'],
+            $this->siteFinder->getSiteByPageId($dbRow['pid'])->getLanguageById($dbRow['sys_language_uid']),
+            new \DateTimeImmutable('@' . $dbRow['crdate']),
+            $dbRow['type'],
+            $dbRow['url'],
+            $dbRow['user_agent'],
+            $dbRow['uid']
         );
     }
 

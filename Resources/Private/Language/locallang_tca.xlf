@@ -27,6 +27,9 @@
             <trans-unit id="table.pageview.user_agent">
                 <source>User agent</source>
             </trans-unit>
+            <trans-unit id="table.pageview.operating_system">
+                <source>Operating System</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

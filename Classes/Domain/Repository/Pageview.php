@@ -22,6 +22,8 @@ namespace DanielSiepmann\Tracking\Domain\Repository;
  */
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview as Model;
+use DanielSiepmann\Tracking\Domain\Pageview\Factory;
+use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Database\Connection;
 
 class Pageview
@@ -31,24 +33,72 @@ class Pageview
      */
     private $connection;
 
-    public function __construct(Connection $connection)
-    {
+    /**
+     * @var Factory
+     */
+    private $factory;
+
+    public function __construct(
+        Connection $connection,
+        Factory $factory
+    ) {
         $this->connection = $connection;
+        $this->factory = $factory;
+    }
+
+    public function countAll(): int
+    {
+        return $this->connection->createQueryBuilder()
+            ->count('uid')
+            ->from('tx_tracking_pageview')
+            ->execute()
+            ->fetchColumn();
+    }
+
+    public function findAll(): \Generator
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $pageViews = $queryBuilder->select('*')->from('tx_tracking_pageview')->execute();
+
+        if ($pageViews instanceof Statement) {
+            while ($pageView = $pageViews->fetch()) {
+                yield $this->factory->fromDbRow($pageView);
+            }
+        }
+    }
+
+    public function update(Model $pageview): void
+    {
+        if ($pageview->getUid() === 0) {
+            throw new \InvalidArgumentException('Can not update pageview if uid is 0.', 1585770573);
+        }
+
+        $this->connection->update(
+            'tx_tracking_pageview',
+            $this->getFieldsFromModel($pageview),
+            ['uid' => $pageview->getUid()]
+        );
     }
 
     public function add(Model $pageview): void
     {
         $this->connection->insert(
             'tx_tracking_pageview',
-            [
-                'pid' => $pageview->getPageUid(),
-                'crdate' => $pageview->getCrdate()->format('U'),
-                'tstamp' => $pageview->getCrdate()->format('U'),
-                'type' => $pageview->getPageType(),
-                'sys_language_uid' => $pageview->getLanguage()->getLanguageId(),
-                'url' => $pageview->getUrl(),
-                'user_agent' => $pageview->getUserAgent(),
-            ]
+            $this->getFieldsFromModel($pageview)
         );
+    }
+
+    private function getFieldsFromModel(Model $pageview): array
+    {
+        return [
+            'pid' => $pageview->getPageUid(),
+            'crdate' => $pageview->getCrdate()->format('U'),
+            'tstamp' => $pageview->getCrdate()->format('U'),
+            'type' => $pageview->getPageType(),
+            'sys_language_uid' => $pageview->getLanguage()->getLanguageId(),
+            'url' => $pageview->getUrl(),
+            'user_agent' => $pageview->getUserAgent(),
+            'operating_system' => $pageview->getOperatingSystem(),
+        ];
     }
 }

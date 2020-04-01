@@ -15,7 +15,7 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid, pid, url, user_agent, type, crdate',
+            'showitem' => 'sys_language_uid, pid, url, user_agent, operating_system, type, crdate',
         ],
     ],
     'columns' => [
@@ -49,6 +49,13 @@ return [
         ],
         'user_agent' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.user_agent',
+            'config' => [
+                'type' => 'input',
+                'readOnly' => true,
+            ],
+        ],
+        'operating_system' => [
+            'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.operating_system',
             'config' => [
                 'type' => 'input',
                 'readOnly' => true,

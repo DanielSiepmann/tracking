@@ -21,14 +21,11 @@ namespace DanielSiepmann\Tracking\Dashboard\Provider;
  * 02110-1301, USA.
  */
 
-use DanielSiepmann\Tracking\Extension;
-use Doctrine\DBAL\ParameterType;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
-class PageviewsPerPage implements ChartDataProviderInterface
+class PageviewsPerOperatingSystem implements ChartDataProviderInterface
 {
     /**
      * @var QueryBuilder
@@ -45,26 +42,19 @@ class PageviewsPerPage implements ChartDataProviderInterface
      */
     private $maxResults;
 
-    /**
-     * @var array<int>
-     */
-    private $blackListedPages;
-
     public function __construct(
         QueryBuilder $queryBuilder,
         int $days = 31,
-        int $maxResults = 6,
-        array $blackListedPages = []
+        int $maxResults = 6
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
-        $this->blackListedPages = $blackListedPages;
         $this->maxResults = $maxResults;
     }
 
     public function getChartData(): array
     {
-        list($labels, $data) = $this->getPageviewsPerPage();
+        list($labels, $data) = $this->getPageViewsPerPage();
 
         return [
             'labels' => $labels,
@@ -77,7 +67,7 @@ class PageviewsPerPage implements ChartDataProviderInterface
         ];
     }
 
-    private function getPageviewsPerPage(): array
+    private function getPageViewsPerPage(): array
     {
         $labels = [];
         $data = [];
@@ -91,39 +81,25 @@ class PageviewsPerPage implements ChartDataProviderInterface
                 'tx_tracking_pageview.crdate',
                 time()
             ),
+            $this->queryBuilder->expr()->neq(
+                'tx_tracking_pageview.operating_system',
+                $this->queryBuilder->createNamedParameter('')
+            ),
         ];
-        if (count($this->blackListedPages)) {
-            $constraints[] = $this->queryBuilder->expr()->notIn(
-                'tx_tracking_pageview.pid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->blackListedPages,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
 
         $result = $this->queryBuilder
-            ->selectLiteral('count(tx_tracking_pageview.pid) as total')
-            ->addSelect('pages.title', 'pages.uid')
+            ->selectLiteral('count(operating_system) as total')
+            ->addSelect('operating_system')
             ->from('tx_tracking_pageview')
-            ->leftJoin(
-                'tx_tracking_pageview',
-                'pages',
-                'pages',
-                $this->queryBuilder->expr()->eq(
-                    'tx_tracking_pageview.pid',
-                    $this->queryBuilder->quoteIdentifier('pages.uid')
-                )
-            )
             ->where(... $constraints)
-            ->groupBy('tx_tracking_pageview.pid')
+            ->groupBy('tx_tracking_pageview.operating_system')
             ->orderBy('total', 'desc')
             ->setMaxResults($this->maxResults)
             ->execute()
             ->fetchAll();
 
         foreach ($result as $row) {
-            $labels[] = mb_strimwidth($row['title'], 0, 25, '…');
+            $labels[] = mb_strimwidth($row['operating_system'], 0, 50, '…');
             $data[] = $row['total'];
         }
 

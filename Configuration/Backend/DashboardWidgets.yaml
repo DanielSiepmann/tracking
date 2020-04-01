@@ -1,7 +1,7 @@
 services:
   _defaults:
-    autowire: true
-    autoconfigure: true
+    autowire: false
+    autoconfigure: false
     public: false
 
   DanielSiepmann\Tracking\Dashboard\:
@@ -11,7 +11,7 @@ services:
     arguments:
       $queryBuilder: '@querybuilder.tx_tracking_pageview'
 
-  dashboard.widget.danielsiepmann_tracking.pageViewsPerDay:
+  dashboard.widget.danielsiepmann.tracking.pageViewsPerDay:
     class: 'TYPO3\CMS\Dashboard\Widgets\BarChartWidget'
     arguments:
       $view: '@dashboard.views.widget'
@@ -31,7 +31,7 @@ services:
     arguments:
       $queryBuilder: '@querybuilder.tx_tracking_pageview'
 
-  dashboard.widget.danielsiepmann_tracking.pageViewsPerPage:
+  dashboard.widget.danielsiepmann.tracking.pageViewsPerPage:
     class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
     arguments:
       $view: '@dashboard.views.widget'
@@ -51,7 +51,7 @@ services:
     arguments:
       $queryBuilder: '@querybuilder.tx_tracking_pageview'
 
-  dashboard.widget.danielsiepmann_tracking.newestPageviews:
+  dashboard.widget.danielsiepmann.tracking.newestPageviews:
     class: 'TYPO3\CMS\Dashboard\Widgets\ListWidget'
     arguments:
       $view: '@dashboard.views.widget'
@@ -63,5 +63,26 @@ services:
         iconIdentifier: 'content-widget-list'
         title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.newestPageviewsList.title'
         description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.newestPageviewsList.description'
+        height: 'medium'
+        width: 'small'
+
+  DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem:
+    class: 'DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem'
+    arguments:
+      $queryBuilder: '@querybuilder.tx_tracking_pageview'
+
+  dashboard.widget.danielsiepmann.tracking.operatingSystems:
+    class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
+    arguments:
+      $view: '@dashboard.views.widget'
+      $dataProvider: '@DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem'
+    tags:
+      - name: 'dashboard.widget'
+        identifier: 'operatingSystemsDoughnut'
+        groupNames: 'tracking'
+        iconIdentifier: 'content-widget-chart-pie'
+        title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.operatingSystemsDoughnut.title'
+        description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.operatingSystemsDoughnut.description'
+        additionalCssClasses: 'dashboard-item--chart'
         height: 'medium'
         width: 'small'
