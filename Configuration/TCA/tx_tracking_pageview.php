@@ -12,10 +12,6 @@ return [
         'title' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview',
         'searchFields' => 'uid, url'
     ],
-    'interface' => [
-        'always_description' => 0,
-        'showRecordFieldList' => 'url, user_agent, type, sys_language_uid, crdate, tstamp, crdate, cruser_id'
-    ],
     'types' => [
         '0' => [
             'showitem' => 'sys_language_uid, pid, url, user_agent, type, crdate',
