@@ -28,7 +28,9 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophet;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
  * @covers DanielSiepmann\Tracking\Domain\Pageview\Factory
@@ -40,7 +42,7 @@ class FactoryTest extends TestCase
     /**
      * @test
      */
-    public function returnsPageview(): void
+    public function returnsPageviewFromRequest(): void
     {
         $routing = $this->prophesize(PageArguments::class);
         $routing->getPageId()->willReturn(10);
@@ -196,5 +198,38 @@ class FactoryTest extends TestCase
             10,
             $result->getPageUid()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function returnsPageviewFromDbRow(): void
+    {
+        $siteLanguage = $this->prophesize(SiteLanguage::class);
+        $site = $this->prophesize(Site::class);
+        $site->getLanguageById(0)->willReturn($siteLanguage->reveal());
+        $siteFinder = $this->prophesize(SiteFinder::class);
+        $siteFinder->getSiteByPageId(2)->willReturn($site->reveal());
+
+        $subject = new Factory($siteFinder->reveal());
+
+        $result = $subject->fromDbRow([
+            'uid' => 1,
+            'pid' => 2,
+            'sys_language_uid' => 0,
+            'crdate' => 1533906435,
+            'type' => 0,
+            'url' => 'https://example.com/path',
+            'user_agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36',
+        ]);
+
+        static::assertInstanceOf(Pageview::class, $result);
+        static::assertSame(1, $result->getUid());
+        static::assertSame(2, $result->getPageUid());
+        static::assertSame($siteLanguage->reveal(), $result->getLanguage());
+        static::assertSame('1533906435', $result->getCrdate()->format('U'));
+        static::assertSame(0, $result->getPageType());
+        static::assertSame('https://example.com/path', $result->getUrl());
+        static::assertSame('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', $result->getUserAgent());
     }
 }

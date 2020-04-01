@@ -21,6 +21,12 @@
             <trans-unit id="dashboard.widgets.pageViewsPerPageDoughnut.description">
                 <source>Displays total page views per page.</source>
             </trans-unit>
+            <trans-unit id="dashboard.widgets.operatingSystemsDoughnut.title">
+                <source>Page Views / Operating System</source>
+            </trans-unit>
+            <trans-unit id="dashboard.widgets.operatingSystemsDoughnut.description">
+                <source>Displays total page views per operating system.</source>
+            </trans-unit>
             <trans-unit id="dashboard.widgets.newestPageviewsList.title">
                 <source>Newest Page Views</source>
             </trans-unit>

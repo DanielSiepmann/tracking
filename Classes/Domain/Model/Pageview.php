@@ -28,6 +28,11 @@ class Pageview
     /**
      * @var int
      */
+    private $uid = 0;
+
+    /**
+     * @var int
+     */
     private $pageUid;
 
     /**
@@ -61,14 +66,21 @@ class Pageview
         \DateTimeImmutable $crdate,
         int $pageType,
         string $url,
-        string $userAgent
+        string $userAgent,
+        int $uid = 0
     ) {
+        $this->uid = $uid;
         $this->pageUid = $pageUid;
         $this->language = $language;
         $this->crdate = $crdate;
         $this->pageType = $pageType;
         $this->url = $url;
         $this->userAgent = $userAgent;
+    }
+
+    public function getUid(): int
+    {
+        return $this->uid;
     }
 
     public function getPageUid(): int
@@ -99,5 +111,35 @@ class Pageview
     public function getUserAgent(): string
     {
         return $this->userAgent;
+    }
+
+    public function getOperatingSystem(): string
+    {
+        if (mb_stripos($this->userAgent, 'Android') !== false) {
+            return 'Android';
+        }
+        if (mb_stripos($this->userAgent, 'Windows') !== false) {
+            return 'Windows';
+        }
+        if (mb_stripos($this->userAgent, 'Linux') !== false) {
+            return 'Linux';
+        }
+        if (mb_stripos($this->userAgent, 'Macintosh') !== false) {
+            return 'Macintosh';
+        }
+        if (mb_stripos($this->userAgent, 'CrOS') !== false) {
+            return 'Google Chrome OS';
+        }
+        if (mb_stripos($this->userAgent, 'OpenBSD') !== false) {
+            return 'OpenBSD';
+        }
+        if (
+            mb_stripos($this->userAgent, 'iPad') !== false
+            || mb_stripos($this->userAgent, 'iphone') !== false
+        ) {
+            return 'iOS';
+        }
+
+        return '';
     }
 }
