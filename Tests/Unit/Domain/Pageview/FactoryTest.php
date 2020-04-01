@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Unit\Domain\Pageview;
+namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Pageview;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -36,7 +36,7 @@ class FactoryTest extends TestCase
     /**
      * @test
      */
-    public function returnsPageview()
+    public function returnsPageview(): void
     {
         $routing = $this->prophesize(PageArguments::class);
         $routing->getPageId()->willReturn(10);
@@ -57,7 +57,7 @@ class FactoryTest extends TestCase
     /**
      * @test
      */
-    public function returnedPageviewContainsUserAgent()
+    public function returnedPageviewContainsUserAgent(): void
     {
         $routing = $this->prophesize(PageArguments::class);
         $routing->getPageId()->willReturn(10);
@@ -83,7 +83,7 @@ class FactoryTest extends TestCase
     /**
      * @test
      */
-    public function returnedPageviewContainsUri()
+    public function returnedPageviewContainsUri(): void
     {
         $routing = $this->prophesize(PageArguments::class);
         $routing->getPageId()->willReturn(10);
@@ -107,7 +107,7 @@ class FactoryTest extends TestCase
     /**
      * @test
      */
-    public function returnedPageviewContainsPageType()
+    public function returnedPageviewContainsPageType(): void
     {
         $routing = $this->prophesize(PageArguments::class);
         $routing->getPageId()->willReturn(10);
@@ -131,7 +131,7 @@ class FactoryTest extends TestCase
     /**
      * @test
      */
-    public function returnedPageviewContainsDateTime()
+    public function returnedPageviewContainsDateTime(): void
     {
         $routing = $this->prophesize(PageArguments::class);
         $routing->getPageId()->willReturn(10);
@@ -152,7 +152,7 @@ class FactoryTest extends TestCase
     /**
      * @test
      */
-    public function returnedPageviewContainsLanguage()
+    public function returnedPageviewContainsLanguage(): void
     {
         $routing = $this->prophesize(PageArguments::class);
         $routing->getPageId()->willReturn(10);
@@ -173,7 +173,7 @@ class FactoryTest extends TestCase
     /**
      * @test
      */
-    public function returnedPageviewContainsPageId()
+    public function returnedPageviewContainsPageId(): void
     {
         $routing = $this->prophesize(PageArguments::class);
         $routing->getPageId()->willReturn(10);

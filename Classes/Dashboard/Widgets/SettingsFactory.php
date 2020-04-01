@@ -25,6 +25,9 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 class SettingsFactory
 {
+    /**
+     * @var array
+     */
     private $defaults = [
         'pageViewsBar' => [
             'periodInDays' => 31,

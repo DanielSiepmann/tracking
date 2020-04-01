@@ -15,5 +15,8 @@ jobs:
       - name: Test CGL
         run: ./vendor/bin/phpcs
 
+      - name: Execute PHPStan Code Quality
+        run: ./vendor/bin/phpstan analyse
+
       - name: Execute PHPUnit Tests
         run: ./vendor/bin/phpunit
