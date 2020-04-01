@@ -109,7 +109,7 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
             ->fetchAll();
 
         foreach ($result as $row) {
-            $labels[] = $row['title'] . ' [' . $row['uid'] . ']';
+            $labels[] = mb_strimwidth($row['title'], 0, 50, '…') . ' [' . $row['uid'] . ']';
             $data[] = $row['total'];
         }
 
