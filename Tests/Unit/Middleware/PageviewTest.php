@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Unit\Middleware;
+namespace DanielSiepmann\Tracking\Tests\Unit\Middleware;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -41,7 +41,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function doesNotAddBlacklistedRequest()
+    public function doesNotAddBlacklistedRequest(): void
     {
         $repository = $this->prophesize(Repository::class);
         $context = $this->prophesize(Context::class);
@@ -63,7 +63,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function addsPageviewToRepository()
+    public function addsPageviewToRepository(): void
     {
         $repository = $this->prophesize(Repository::class);
         $context = $this->prophesize(Context::class);

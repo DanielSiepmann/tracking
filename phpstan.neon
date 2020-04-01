@@ -1,0 +1,10 @@
+parameters:
+    level: max
+    paths:
+        - Classes
+        - Tests
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
+        - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'

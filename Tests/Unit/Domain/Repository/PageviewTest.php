@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Unit\Domain\Repository;
+namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Repository;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -35,7 +35,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function modelCanBeAdded()
+    public function modelCanBeAdded(): void
     {
         $connection = $this->prophesize(Connection::class);
 

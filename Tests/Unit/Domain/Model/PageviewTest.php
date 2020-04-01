@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Unit\Domain\Model;
+namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -33,7 +33,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function canBeCreated()
+    public function canBeCreated(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
 
@@ -52,7 +52,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function returnsPageUid()
+    public function returnsPageUid(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
 
@@ -71,7 +71,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function returnsLanguage()
+    public function returnsLanguage(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
 
@@ -90,7 +90,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function returnsCrdate()
+    public function returnsCrdate(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
         $crdate = new \DateTimeImmutable();
@@ -110,7 +110,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function returnsPageType()
+    public function returnsPageType(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
 
@@ -129,7 +129,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function returnsUrl()
+    public function returnsUrl(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
 
@@ -148,7 +148,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function returnsUserAgent()
+    public function returnsUserAgent(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
 

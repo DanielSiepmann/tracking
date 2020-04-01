@@ -36,7 +36,7 @@ class Pageview
         $this->connection = $connection;
     }
 
-    public function add(Model $pageview)
+    public function add(Model $pageview): void
     {
         $this->connection->insert(
             'tx_tracking_pageview',
