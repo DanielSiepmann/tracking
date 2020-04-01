@@ -37,6 +37,16 @@ EXT:dashboard
 Todos
 =====
 
+#. Add 100% code coverage (Widgets are missing)
+
+#. Add campaigns if possible (twitter parameter, etc.)
+
+#. Add referrer if available.
+
+#. Add operating System
+
+   #. Another Symfony Expression which returns the OS ("Ubuntu", "Macintosh", "Android", "iPhone", "Windows")
+
 #. Add further widgets.
 
    #. Grouped by user agents (bar).
@@ -50,15 +60,8 @@ Todos
    #. Provide an overview of crawls as widgets. E.g. to allow fine grained robots.txt.
 
 #. Add information to Admin Panel.
-
-#. Add operating System
-
-   #. Another Symfony Expression which returns the OS ("Ubuntu", "Macintosh", "Android", "iPhone", "Windows")
-
 #. Add command that will iterate over all DB entries and remove ones matching the black list rule.
    E.g. if rule is adjusted in meanwhile.
-
-#. Add 100% code coverage (Widgets are missing)
 
 Example
 =======
