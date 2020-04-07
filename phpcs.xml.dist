@@ -13,4 +13,7 @@
 
     <!-- Base rules -->
     <rule ref="PSR12" />
+    <rule ref="Generic.Files.LineLength.TooLong">
+        <exclude-pattern>/Tests/*</exclude-pattern>
+    </rule>
 </ruleset>

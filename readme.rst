@@ -39,6 +39,8 @@ Todos
 
 #. Add 100% code coverage (Widgets are missing)
 
+#. Add version matrix to test with multiple PHP versions.
+
 #. Add campaigns if possible (twitter parameter, etc.)
 
 #. Add referrer if available.
