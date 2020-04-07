@@ -24,6 +24,7 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Repository;
 use DanielSiepmann\Tracking\Domain\Model\Pageview as Model;
 use DanielSiepmann\Tracking\Domain\Repository\Pageview;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
@@ -32,6 +33,8 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 class PageviewTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */

@@ -1,22 +1,62 @@
 name: CI
 on: [push]
 jobs:
-  build:
+  check-composer:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Validate composer.json and composer.lock
+      - name: Validate composer.json
         run: composer validate
+
+  check-dependencies:
+    runs-on: ubuntu-latest
+    needs: [check-composer]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --no-plugins
+
+      - name: Missing composer requirements
+        run: ./vendor/bin/composer-require-checker
+
+  full-check:
+    runs-on: ubuntu-latest
+    needs: [check-composer]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
-      - name: Test CGL
+      - name: Coding Guideline
         run: ./vendor/bin/phpcs
 
-      - name: Execute PHPStan Code Quality
+      - name: Code Quality (by PHPStan)
         run: ./vendor/bin/phpstan analyse
 
-      - name: Execute PHPUnit Tests
+      - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --testdox

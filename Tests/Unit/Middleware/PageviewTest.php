@@ -26,6 +26,7 @@ use DanielSiepmann\Tracking\Domain\Repository\Pageview as Repository;
 use DanielSiepmann\Tracking\Middleware\Pageview;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -38,6 +39,8 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 class PageviewTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */

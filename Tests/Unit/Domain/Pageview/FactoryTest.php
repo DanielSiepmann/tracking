@@ -24,6 +24,8 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Pageview;
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophet;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -33,6 +35,8 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 class FactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @test
      */
