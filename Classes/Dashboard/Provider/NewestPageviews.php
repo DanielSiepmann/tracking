@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Dashboard\Widgets;
+namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,67 +21,57 @@ namespace DanielSiepmann\Tracking\Dashboard\Widgets;
  * 02110-1301, USA.
  */
 
-use DanielSiepmann\Tracking\Extension;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Dashboard\Widgets\AbstractListWidget;
+use TYPO3\CMS\Dashboard\Widgets\Interfaces\ListDataProviderInterface;
 
-class NewestPageviewsList extends AbstractListWidget
+class NewestPageviews implements ListDataProviderInterface
 {
-    protected $title = Extension::LANGUAGE_PATH . ':dashboard.widgets.newestPageviewsList.title';
-
-    protected $description = Extension::LANGUAGE_PATH . ':dashboard.widgets.newestPageviewsList.description';
-
-    protected $width = 2;
-
-    protected $height = 4;
-
     /**
      * @var QueryBuilder
      */
-    protected $queryBuilder;
+    private $queryBuilder;
 
     /**
-     * @var \ArrayObject
+     * @var int
      */
-    private $settings;
+    private $maxResults;
+
+    /**
+     * @var array
+     */
+    private $blackListedPages;
 
     public function __construct(
-        string $identifier,
         QueryBuilder $queryBuilder,
-        \ArrayObject $settings
+        int $maxResults = 6,
+        array $blackListedPages = []
     ) {
-        parent::__construct($identifier);
-
         $this->queryBuilder = $queryBuilder;
-        $this->settings = $settings;
+        $this->maxResults = $maxResults;
+        $this->blackListedPages = $blackListedPages;
     }
 
-    public function renderWidgetContent(): string
+    public function getItems(): array
     {
-        $this->generateItems();
-        return parent::renderWidgetContent();
-    }
+        $preparedItems = [];
 
-    protected function generateItems(): void
-    {
         $constraints = [];
-        if (count($this->settings['blackListedPages'])) {
+        if (count($this->blackListedPages)) {
             $constraints[] = $this->queryBuilder->expr()->notIn(
                 'tx_tracking_pageview.pid',
                 $this->queryBuilder->createNamedParameter(
-                    $this->settings['blackListedPages'],
+                    $this->blackListedPages,
                     Connection::PARAM_INT_ARRAY
                 )
             );
         }
 
         $this->queryBuilder
-            ->select('*')
+            ->select('url', 'user_agent')
             ->from('tx_tracking_pageview')
             ->orderBy('crdate', 'desc')
-            ->setMaxResults($this->settings['maxResults']);
+            ->setMaxResults($this->maxResults);
 
         if ($constraints !== []) {
             $this->queryBuilder->where(... $constraints);
@@ -89,14 +79,13 @@ class NewestPageviewsList extends AbstractListWidget
 
         $items = $this->queryBuilder->execute()->fetchAll();
         foreach ($items as $item) {
-            $this->items[] = [
-                'link' => $item['url'],
-                'title' => sprintf(
-                    '%s - %s',
-                    $item['url'],
-                    $item['user_agent']
-                ),
-            ];
+            $preparedItems[] = sprintf(
+                '%s - %s',
+                $item['url'],
+                $item['user_agent']
+            );
         }
+
+        return $preparedItems;
     }
 }

@@ -1,0 +1,67 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  DanielSiepmann\Tracking\Dashboard\:
+    resource: '../Classes/Dashboard/*'
+
+  DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerDay:
+    arguments:
+      $queryBuilder: '@querybuilder.tx_tracking_pageview'
+
+  dashboard.widget.danielsiepmann_tracking.pageViewsPerDay:
+    class: 'TYPO3\CMS\Dashboard\Widgets\BarChartWidget'
+    arguments:
+      $view: '@dashboard.views.widget'
+      $dataProvider: '@DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerDay'
+    tags:
+      - name: 'dashboard.widget'
+        identifier: 'pageViewsBar'
+        groupNames: 'tracking'
+        iconIdentifier: 'content-widget-chart-bar'
+        title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsBar.title'
+        description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsBar.description'
+        additionalCssClasses: 'dashboard-item--chart'
+        height: 'medium'
+        width: 'small'
+
+  DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerPage:
+    arguments:
+      $queryBuilder: '@querybuilder.tx_tracking_pageview'
+
+  dashboard.widget.danielsiepmann_tracking.pageViewsPerPage:
+    class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
+    arguments:
+      $view: '@dashboard.views.widget'
+      $dataProvider: '@DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerPage'
+    tags:
+      - name: 'dashboard.widget'
+        identifier: 'pageViewsPerPageDoughnut'
+        groupNames: 'tracking'
+        iconIdentifier: 'content-widget-chart-bar'
+        title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsPerPageDoughnut.title'
+        description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsPerPageDoughnut.description'
+        additionalCssClasses: 'dashboard-item--chart'
+        height: 'medium'
+        width: 'small'
+
+  DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews:
+    arguments:
+      $queryBuilder: '@querybuilder.tx_tracking_pageview'
+
+  dashboard.widget.danielsiepmann_tracking.newestPageviews:
+    class: 'TYPO3\CMS\Dashboard\Widgets\ListWidget'
+    arguments:
+      $view: '@dashboard.views.widget'
+      $dataProvider: '@DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews'
+    tags:
+      - name: 'dashboard.widget'
+        identifier: 'newestPageviewsList'
+        groupNames: 'tracking'
+        iconIdentifier: 'content-widget-list'
+        title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.newestPageviewsList.title'
+        description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.newestPageviewsList.description'
+        height: 'medium'
+        width: 'small'

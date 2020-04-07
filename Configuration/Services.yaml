@@ -1,3 +1,6 @@
+imports:
+  - { resource: Backend/DashboardWidgets.yaml }
+
 services:
   _defaults:
     autowire: true
@@ -6,50 +9,28 @@ services:
 
   DanielSiepmann\Tracking\:
     resource: '../Classes/*'
+    exclude: '../Classes/Dashboard/*'
 
-  # Virtual services
-
-  DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsBar:
-    factory:
-      - '@DanielSiepmann\Tracking\Dashboard\Widgets\SettingsFactory'
-      - 'fromArray'
-    arguments:
-      $widgetIdentifier: 'pageViewsBar'
-      $settings: []
-  DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsPerPageDoughnut:
-    factory:
-      - '@DanielSiepmann\Tracking\Dashboard\Widgets\SettingsFactory'
-      - 'fromArray'
-    arguments:
-      $widgetIdentifier: 'pageViewsPerPageDoughnut'
-      $settings: []
-  DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\NewestPageviewsList:
-    factory:
-      - '@DanielSiepmann\Tracking\Dashboard\Widgets\SettingsFactory'
-      - 'fromArray'
-    arguments:
-      $widgetIdentifier: 'newestPageviewsList'
-      $settings: []
-
-  DanielSiepmann\Tracking\DI\DatabaseConnection\Pageview:
+  dbconnection.tx_tracking_pageview:
+    class: 'TYPO3\CMS\Core\Database\Connection'
     factory:
       - '@TYPO3\CMS\Core\Database\ConnectionPool'
       - 'getConnectionForTable'
     arguments:
       - 'tx_tracking_pageview'
-  DanielSiepmann\Tracking\DI\QueryBuilder\PageView:
+
+  querybuilder.tx_tracking_pageview:
+    class: 'TYPO3\CMS\Core\Database\Query\QueryBuilder'
     factory:
       - '@TYPO3\CMS\Core\Database\ConnectionPool'
       - 'getQueryBuilderForTable'
     arguments:
       - 'tx_tracking_pageview'
 
-  # Existing classes
-
   DanielSiepmann\Tracking\Domain\Repository\Pageview:
     public: true
     arguments:
-      - '@DanielSiepmann\Tracking\DI\DatabaseConnection\Pageview'
+      - '@dbconnection.tx_tracking_pageview'
 
   DanielSiepmann\Tracking\Middleware\Pageview:
     public: true
@@ -60,38 +41,3 @@ services:
           and not (request.getHeader("User-Agent")[0] matches "/Wget|curl|Go-http-client/")
           and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|NextCloud-News|Feedly|XING FeedReader|CCBot|SemrushBot|SEOkicks|Twitterbot|Seekport Crawler|SemanticScholarBot|ia_archiver|PaperLiBot|TrendsmapResolver|AhrefsBot|Nuzzel/")
           and not (request.getHeader("User-Agent")[0] matches "/mattermost|Slackbot|WhatsApp/")
-
-  # Dashboard Widgets
-
-  DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsBar:
-    class: 'DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsBar'
-    arguments:
-      $identifier: 'pageViewsBar'
-      $queryBuilder: '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
-      $settings: '@DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsBar'
-    tags:
-      - name: 'dashboard.widget'
-        identifier: 'pageViewsBar'
-        widgetGroups: 'tracking'
-
-  DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsPerPageDoughnut:
-    class: 'DanielSiepmann\Tracking\Dashboard\Widgets\PageViewsPerPageDoughnut'
-    arguments:
-      $identifier: 'pageViewsPerPageDoughnut'
-      $queryBuilder: '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
-      $settings: '@DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\PageViewsPerPageDoughnut'
-    tags:
-      - name: 'dashboard.widget'
-        identifier: 'pageViewsPerPageDoughnut'
-        widgetGroups: 'tracking'
-
-  DanielSiepmann\Tracking\Dashboard\Widgets\NewestPageviewsList:
-    class: 'DanielSiepmann\Tracking\Dashboard\Widgets\NewestPageviewsList'
-    arguments:
-      $identifier: 'newestPageviewsList'
-      $queryBuilder: '@DanielSiepmann\Tracking\DI\QueryBuilder\PageView'
-      $settings: '@DanielSiepmann\Tracking\DI\Dashboard\Widgets\Settings\NewestPageviewsList'
-    tags:
-      - name: 'dashboard.widget'
-        identifier: 'newestPageviewsList'
-        widgetGroups: 'tracking'

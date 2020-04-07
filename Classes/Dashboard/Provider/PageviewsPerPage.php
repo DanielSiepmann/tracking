@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Dashboard\Widgets;
+namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -25,64 +25,78 @@ use DanielSiepmann\Tracking\Extension;
 use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Dashboard\Widgets\AbstractDoughnutChartWidget;
+use TYPO3\CMS\Dashboard\WidgetApi;
+use TYPO3\CMS\Dashboard\Widgets\Interfaces\ChartDataProviderInterface;
 
-class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
+class PageviewsPerPage implements ChartDataProviderInterface
 {
-    protected $title = Extension::LANGUAGE_PATH . ':dashboard.widgets.pageViewsPerPageDoughnut.title';
-
-    protected $description = Extension::LANGUAGE_PATH . ':dashboard.widgets.pageViewsPerPageDoughnut.description';
-
     /**
      * @var QueryBuilder
      */
-    protected $queryBuilder;
+    private $queryBuilder;
 
     /**
-     * @var \ArrayObject
+     * @var int
      */
-    private $settings;
+    private $days;
+
+    /**
+     * @var int
+     */
+    private $maxResults;
+
+    /**
+     * @var array<int>
+     */
+    private $blackListedPages;
 
     public function __construct(
-        string $identifier,
         QueryBuilder $queryBuilder,
-        \ArrayObject $settings
+        int $days = 31,
+        int $maxResults = 6,
+        array $blackListedPages = []
     ) {
-        parent::__construct($identifier);
-
         $this->queryBuilder = $queryBuilder;
-        $this->settings = $settings;
+        $this->days = $days;
+        $this->blackListedPages = $blackListedPages;
+        $this->maxResults = $maxResults;
     }
 
-    protected function prepareChartData(): void
+    public function getChartData(): array
     {
-        list($labels, $data) = $this->getPageViewsPerPage((int) $this->settings['periodInDays']);
+        list($labels, $data) = $this->getPageviewsPerPage();
 
-        $this->chartData = [
+        return [
             'labels' => $labels,
             'datasets' => [
                 [
-                    'backgroundColor' => $this->chartColors,
+                    'backgroundColor' => WidgetApi::getDefaultChartColors(),
                     'data' => $data,
                 ]
             ],
         ];
     }
 
-    private function getPageViewsPerPage(int $days): array
+    private function getPageviewsPerPage(): array
     {
         $labels = [];
         $data = [];
 
         $constraints = [
-            $this->queryBuilder->expr()->gte('tx_tracking_pageview.crdate', strtotime('-' . $days . ' day 0:00:00')),
-            $this->queryBuilder->expr()->lte('tx_tracking_pageview.crdate', time()),
+            $this->queryBuilder->expr()->gte(
+                'tx_tracking_pageview.crdate',
+                strtotime('-' . $this->days . ' day 0:00:00')
+            ),
+            $this->queryBuilder->expr()->lte(
+                'tx_tracking_pageview.crdate',
+                time()
+            ),
         ];
-        if (count($this->settings['blackListedPages'])) {
+        if (count($this->blackListedPages)) {
             $constraints[] = $this->queryBuilder->expr()->notIn(
                 'tx_tracking_pageview.pid',
                 $this->queryBuilder->createNamedParameter(
-                    $this->settings['blackListedPages'],
+                    $this->blackListedPages,
                     Connection::PARAM_INT_ARRAY
                 )
             );
@@ -104,7 +118,7 @@ class PageViewsPerPageDoughnut extends AbstractDoughnutChartWidget
             ->where(... $constraints)
             ->groupBy('tx_tracking_pageview.pid')
             ->orderBy('total', 'desc')
-            ->setMaxResults($this->settings['maxResults'])
+            ->setMaxResults($this->maxResults)
             ->execute()
             ->fetchAll();
 
