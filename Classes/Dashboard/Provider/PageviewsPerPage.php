@@ -26,7 +26,7 @@ use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Dashboard\WidgetApi;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\ChartDataProviderInterface;
+use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
 class PageviewsPerPage implements ChartDataProviderInterface
 {
