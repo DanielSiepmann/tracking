@@ -23,7 +23,7 @@ namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Dashboard\Widgets\Interfaces\ListDataProviderInterface;
+use TYPO3\CMS\Dashboard\Widgets\ListDataProviderInterface;
 
 class NewestPageviews implements ListDataProviderInterface
 {
