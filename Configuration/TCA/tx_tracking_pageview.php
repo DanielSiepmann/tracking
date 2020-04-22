@@ -10,7 +10,8 @@ return [
         'cruser_id' => 'cruser_id',
         'languageField' => 'sys_language_uid',
         'title' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview',
-        'searchFields' => 'uid, url'
+        'searchFields' => 'uid, url',
+        'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-default.svg',
     ],
     'types' => [
         '0' => [
