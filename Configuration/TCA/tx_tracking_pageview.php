@@ -22,10 +22,10 @@ return [
         'pid' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.pid',
             'config' => [
-                'type' => 'select',
+                // TODO: TYPO3 v10 does no longer allow to resolve PID relations, e.g. via select or group
+                // This will break internal PID handling.
+                'type' => 'input',
                 'readOnly' => true,
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'pages',
             ],
         ],
         'crdate' => [
