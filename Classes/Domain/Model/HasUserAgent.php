@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Domain\Pageview;
+namespace DanielSiepmann\Tracking\Domain\Model;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,10 +21,7 @@ namespace DanielSiepmann\Tracking\Domain\Pageview;
  * 02110-1301, USA.
  */
 
-use DanielSiepmann\Tracking\Domain\Model\Pageview;
-use Psr\Http\Message\ServerRequestInterface;
-
-interface FromRequest
+interface HasUserAgent
 {
-    public static function fromRequest(ServerRequestInterface $request): Pageview;
+    public function getUserAgent(): string;
 }

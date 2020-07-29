@@ -27,10 +27,31 @@ services:
     arguments:
       - 'tx_tracking_pageview'
 
+  dbconnection.tx_tracking_recordview:
+    class: 'TYPO3\CMS\Core\Database\Connection'
+    factory:
+      - '@TYPO3\CMS\Core\Database\ConnectionPool'
+      - 'getConnectionForTable'
+    arguments:
+      - 'tx_tracking_recordview'
+
+  querybuilder.tx_tracking_recordview:
+    class: 'TYPO3\CMS\Core\Database\Query\QueryBuilder'
+    factory:
+      - '@TYPO3\CMS\Core\Database\ConnectionPool'
+      - 'getQueryBuilderForTable'
+    arguments:
+      - 'tx_tracking_recordview'
+
   DanielSiepmann\Tracking\Domain\Repository\Pageview:
     public: true
     arguments:
       - '@dbconnection.tx_tracking_pageview'
+
+  DanielSiepmann\Tracking\Domain\Repository\Recordview:
+    public: true
+    arguments:
+      - '@dbconnection.tx_tracking_recordview'
 
   DanielSiepmann\Tracking\Middleware\Pageview:
     public: true
@@ -41,6 +62,11 @@ services:
           and not (request.getHeader("User-Agent")[0] matches "/Wget|curl|Go-http-client/")
           and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|NextCloud-News|Feedly|XING FeedReader|CCBot|SemrushBot|SEOkicks|Twitterbot|Seekport Crawler|SemanticScholarBot|ia_archiver|PaperLiBot|TrendsmapResolver|AhrefsBot|Nuzzel/")
           and not (request.getHeader("User-Agent")[0] matches "/mattermost|Slackbot|WhatsApp/")
+
+  DanielSiepmann\Tracking\Middleware\Recordview:
+    public: true
+    arguments:
+      $rules: []
 
   DanielSiepmann\Tracking\Command\UpdateDataCommand:
     tags:

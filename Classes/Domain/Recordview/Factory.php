@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Domain\Pageview;
+namespace DanielSiepmann\Tracking\Domain\Recordview;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,45 +21,32 @@ namespace DanielSiepmann\Tracking\Domain\Pageview;
  * 02110-1301, USA.
  */
 
-use DanielSiepmann\Tracking\Domain\Model\Pageview;
+use DanielSiepmann\Tracking\Domain\Model\RecordRule;
+use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\SiteFinder;
 
 class Factory
 {
-    /**
-     * @var SiteFinder
-     */
-    private $siteFinder;
+    public static function fromRequest(
+        ServerRequestInterface $request,
+        RecordRule $rule
+    ): Recordview {
+        // Need silent, as expression language doens't provide a way to check for array keys
+        $recordUid = @(new ExpressionLanguage())->evaluate(
+            $rule->getUidExpression(),
+            ['request' => $request]
+        );
 
-    public function __construct(SiteFinder $siteFinder)
-    {
-        $this->siteFinder = $siteFinder;
-    }
-
-    public static function fromRequest(ServerRequestInterface $request): Pageview
-    {
-        return new Pageview(
+        return new Recordview(
             static::getRouting($request)->getPageId(),
             $request->getAttribute('language'),
             new \DateTimeImmutable(),
-            (int) static::getRouting($request)->getPageType(),
             (string) $request->getUri(),
-            $request->getHeader('User-Agent')[0] ?? ''
-        );
-    }
-
-    public function fromDbRow(array $dbRow): Pageview
-    {
-        return new Pageview(
-            $dbRow['pid'],
-            $this->siteFinder->getSiteByPageId($dbRow['pid'])->getLanguageById($dbRow['sys_language_uid']),
-            new \DateTimeImmutable('@' . $dbRow['crdate']),
-            $dbRow['type'],
-            $dbRow['url'],
-            $dbRow['user_agent'],
-            $dbRow['uid']
+            $request->getHeader('User-Agent')[0] ?? '',
+            $recordUid,
+            $rule->getTableName()
         );
     }
 
