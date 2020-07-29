@@ -23,7 +23,6 @@ namespace DanielSiepmann\Tracking\Domain\Repository;
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview as Model;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
-use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Core\Database\Connection;
 
 class Pageview
@@ -60,10 +59,8 @@ class Pageview
         $queryBuilder = $this->connection->createQueryBuilder();
         $pageViews = $queryBuilder->select('*')->from('tx_tracking_pageview')->execute();
 
-        if ($pageViews instanceof Statement) {
-            while ($pageView = $pageViews->fetch()) {
-                yield $this->factory->fromDbRow($pageView);
-            }
+        while ($pageView = $pageViews->fetch()) {
+            yield $this->factory->fromDbRow($pageView);
         }
     }
 

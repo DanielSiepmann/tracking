@@ -30,6 +30,34 @@
             <trans-unit id="table.pageview.operating_system">
                 <source>Operating System</source>
             </trans-unit>
+
+            <trans-unit id="table.recordview">
+                <source>Recordview</source>
+            </trans-unit>
+            <trans-unit id="table.recordview.pid">
+                <source>Page</source>
+            </trans-unit>
+            <trans-unit id="table.recordview.record">
+                <source>Record</source>
+            </trans-unit>
+            <trans-unit id="table.recordview.url">
+                <source>URL</source>
+            </trans-unit>
+            <trans-unit id="table.recordview.sys_language">
+                <source>System language</source>
+            </trans-unit>
+            <trans-unit id="table.recordview.sys_language.0">
+                <source>Default system language</source>
+            </trans-unit>
+            <trans-unit id="table.recordview.crdate">
+                <source>Date + Time</source>
+            </trans-unit>
+            <trans-unit id="table.recordview.user_agent">
+                <source>User agent</source>
+            </trans-unit>
+            <trans-unit id="table.recordview.operating_system">
+                <source>Operating System</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

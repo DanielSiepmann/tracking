@@ -23,13 +23,8 @@ namespace DanielSiepmann\Tracking\Domain\Model;
 
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
-class Pageview implements HasUserAgent
+class Recordview implements HasUserAgent
 {
-    /**
-     * @var int
-     */
-    private $uid = 0;
-
     /**
      * @var int
      */
@@ -46,11 +41,6 @@ class Pageview implements HasUserAgent
     private $crdate;
 
     /**
-     * @var int
-     */
-    private $pageType;
-
-    /**
      * @var string
      */
     private $url;
@@ -60,27 +50,32 @@ class Pageview implements HasUserAgent
      */
     private $userAgent;
 
+    /**
+     * @var int
+     */
+    private $recordUid;
+
+    /**
+     * @var string
+     */
+    private $tableName;
+
     public function __construct(
         int $pageUid,
         SiteLanguage $language,
         \DateTimeImmutable $crdate,
-        int $pageType,
         string $url,
         string $userAgent,
-        int $uid = 0
+        int $recordUid,
+        string $tableName
     ) {
-        $this->uid = $uid;
         $this->pageUid = $pageUid;
         $this->language = $language;
         $this->crdate = $crdate;
-        $this->pageType = $pageType;
         $this->url = $url;
         $this->userAgent = $userAgent;
-    }
-
-    public function getUid(): int
-    {
-        return $this->uid;
+        $this->recordUid = $recordUid;
+        $this->tableName = $tableName;
     }
 
     public function getPageUid(): int
@@ -98,11 +93,6 @@ class Pageview implements HasUserAgent
         return $this->crdate;
     }
 
-    public function getPageType(): int
-    {
-        return $this->pageType;
-    }
-
     public function getUrl(): string
     {
         return $this->url;
@@ -111,6 +101,16 @@ class Pageview implements HasUserAgent
     public function getUserAgent(): string
     {
         return $this->userAgent;
+    }
+
+    public function getRecordUid(): int
+    {
+        return $this->recordUid;
+    }
+
+    public function getTableName(): string
+    {
+        return $this->tableName;
     }
 
     public function getOperatingSystem(): string

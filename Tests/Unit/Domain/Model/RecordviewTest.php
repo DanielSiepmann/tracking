@@ -21,15 +21,15 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  * 02110-1301, USA.
  */
 
-use DanielSiepmann\Tracking\Domain\Model\Pageview;
+use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
- * @covers DanielSiepmann\Tracking\Domain\Model\Pageview
+ * @covers DanielSiepmann\Tracking\Domain\Model\Recordview
  */
-class PageviewTest extends TestCase
+class RecordviewTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -40,16 +40,17 @@ class PageviewTest extends TestCase
     {
         $language = $this->prophesize(SiteLanguage::class);
 
-        $subject = new Pageview(
+        $subject = new Recordview(
             0,
             $language->reveal(),
             new \DateTimeImmutable(),
-            0,
             '',
-            ''
+            '',
+            10,
+            'sys_category'
         );
 
-        static::assertInstanceOf(Pageview::class, $subject);
+        static::assertInstanceOf(Recordview::class, $subject);
     }
 
     /**
@@ -59,13 +60,14 @@ class PageviewTest extends TestCase
     {
         $language = $this->prophesize(SiteLanguage::class);
 
-        $subject = new Pageview(
+        $subject = new Recordview(
             500,
             $language->reveal(),
             new \DateTimeImmutable(),
-            0,
             '',
-            ''
+            '',
+            10,
+            'sys_category'
         );
 
         static::assertSame(500, $subject->getPageUid());
@@ -78,13 +80,14 @@ class PageviewTest extends TestCase
     {
         $language = $this->prophesize(SiteLanguage::class);
 
-        $subject = new Pageview(
+        $subject = new Recordview(
             0,
             $language->reveal(),
             new \DateTimeImmutable(),
-            0,
             '',
-            ''
+            '',
+            10,
+            'sys_category'
         );
 
         static::assertSame($language->reveal(), $subject->getLanguage());
@@ -98,35 +101,17 @@ class PageviewTest extends TestCase
         $language = $this->prophesize(SiteLanguage::class);
         $crdate = new \DateTimeImmutable();
 
-        $subject = new Pageview(
+        $subject = new Recordview(
             0,
             $language->reveal(),
             $crdate,
-            0,
             '',
-            ''
+            '',
+            10,
+            'sys_category'
         );
 
         static::assertSame($crdate, $subject->getCrdate());
-    }
-
-    /**
-     * @test
-     */
-    public function returnsPageType(): void
-    {
-        $language = $this->prophesize(SiteLanguage::class);
-
-        $subject = new Pageview(
-            0,
-            $language->reveal(),
-            new \DateTimeImmutable(),
-            999,
-            '',
-            ''
-        );
-
-        static::assertSame(999, $subject->getPageType());
     }
 
     /**
@@ -136,13 +121,14 @@ class PageviewTest extends TestCase
     {
         $language = $this->prophesize(SiteLanguage::class);
 
-        $subject = new Pageview(
+        $subject = new Recordview(
             0,
             $language->reveal(),
             new \DateTimeImmutable(),
-            0,
             'https://example.com/path.html',
-            ''
+            '',
+            10,
+            'sys_category'
         );
 
         static::assertSame('https://example.com/path.html', $subject->getUrl());
@@ -155,13 +141,14 @@ class PageviewTest extends TestCase
     {
         $language = $this->prophesize(SiteLanguage::class);
 
-        $subject = new Pageview(
+        $subject = new Recordview(
             0,
             $language->reveal(),
             new \DateTimeImmutable(),
-            0,
             '',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0'
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
+            10,
+            'sys_category'
         );
 
         static::assertSame(
@@ -173,45 +160,46 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function returnsZeroAsDefaultUid(): void
+    public function returnsRecordUid(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
 
-        $subject = new Pageview(
+        $subject = new Recordview(
             0,
             $language->reveal(),
             new \DateTimeImmutable(),
-            0,
             '',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0'
+            '',
+            10,
+            'sys_category'
         );
 
         static::assertSame(
-            0,
-            $subject->getUid()
+            10,
+            $subject->getRecordUid()
         );
     }
 
     /**
      * @test
      */
-    public function returnsSetAsUid(): void
+    public function returnsTableName(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
 
-        $subject = new Pageview(
+        $subject = new Recordview(
             0,
             $language->reveal(),
             new \DateTimeImmutable(),
-            0,
             '',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
-            10
+            '',
+            10,
+            'sys_category'
         );
 
         static::assertSame(
-            10,
-            $subject->getUid()
+            'sys_category',
+            $subject->getTableName()
         );
     }
 
@@ -222,13 +210,14 @@ class PageviewTest extends TestCase
     {
         $language = $this->prophesize(SiteLanguage::class);
 
-        $subject = new Pageview(
+        $subject = new Recordview(
             0,
             $language->reveal(),
             new \DateTimeImmutable(),
-            0,
             '',
-            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36'
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36',
+            10,
+            'sys_category'
         );
 
         static::assertSame(
