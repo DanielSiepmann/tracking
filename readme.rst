@@ -37,34 +37,7 @@ EXT:dashboard
 Todos
 =====
 
-#. Add 100% code coverage (Widgets are missing)
-
 #. Add version matrix to test with multiple PHP versions.
-
-#. Add campaigns if possible (twitter parameter, etc.)
-
-#. Add referrer if available.
-
-#. Add device type phone, tablet, desktop?
-
-#. Add operating system version?
-
-#. Add further widgets.
-
-   #. Grouped by user agents (bar).
-
-   #. Top 404 requests (Collect them to show them, doughnut).
-
-#. Move bot detection to another rule.
-
-   #. Keep indexing those requests, but mark them as bot and separate them in widgets.
-
-   #. Provide an overview of crawls as widgets. E.g. to allow fine grained robots.txt.
-
-#. Add information to Admin Panel.
-
-#. Add command that will iterate over all DB entries and remove ones matching the black list rule.
-   E.g. if rule is adjusted in meanwhile.
 
 Example
 =======
@@ -75,4 +48,6 @@ The following widgets are added and could look like:
 
 A new record is added which looks like:
 
-.. image:: Documentation/Images/ListView.png
+.. image:: Documentation/Images/ListViewPageviews.png
+
+.. image:: Documentation/Images/RecordRecordview.png
