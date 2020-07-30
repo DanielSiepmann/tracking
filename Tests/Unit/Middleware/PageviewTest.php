@@ -44,7 +44,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function doesNotAddBlacklistedRequest(): void
+    public function doesNotAddRequestIfRuleDoesNotApply(): void
     {
         $repository = $this->prophesize(Repository::class);
         $context = $this->prophesize(Context::class);

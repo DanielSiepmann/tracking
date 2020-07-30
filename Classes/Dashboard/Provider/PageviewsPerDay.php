@@ -48,7 +48,7 @@ class PageviewsPerDay implements ChartDataProviderInterface
     /**
      * @var array<int>
      */
-    private $blackListedPages;
+    private $pagesToExclude;
 
     /**
      * @var string
@@ -59,13 +59,13 @@ class PageviewsPerDay implements ChartDataProviderInterface
         LanguageService $languageService,
         QueryBuilder $queryBuilder,
         int $days = 31,
-        array $blackListedPages = [],
+        array $pagesToExclude = [],
         string $dateFormat = 'Y-m-d'
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
         $this->languageService = $languageService;
-        $this->blackListedPages = $blackListedPages;
+        $this->pagesToExclude = $pagesToExclude;
         $this->dateFormat = $dateFormat;
     }
 
@@ -119,11 +119,11 @@ class PageviewsPerDay implements ChartDataProviderInterface
             $this->queryBuilder->expr()->lte('crdate', $end),
         ];
 
-        if (count($this->blackListedPages)) {
+        if (count($this->pagesToExclude)) {
             $constraints[] = $this->queryBuilder->expr()->notIn(
                 'tx_tracking_pageview.pid',
                 $this->queryBuilder->createNamedParameter(
-                    $this->blackListedPages,
+                    $this->pagesToExclude,
                     Connection::PARAM_INT_ARRAY
                 )
             );
