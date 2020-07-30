@@ -62,9 +62,9 @@ class PageviewsPerDay implements ChartDataProviderInterface
         array $pagesToExclude = [],
         string $dateFormat = 'Y-m-d'
     ) {
+        $this->languageService = $languageService;
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
-        $this->languageService = $languageService;
         $this->pagesToExclude = $pagesToExclude;
         $this->dateFormat = $dateFormat;
     }
@@ -97,10 +97,6 @@ class PageviewsPerDay implements ChartDataProviderInterface
             $timeForLabel = strtotime('-' . $daysBefore . ' day');
             $startPeriod = strtotime('-' . $daysBefore . ' day 0:00:00');
             $endPeriod =  strtotime('-' . $daysBefore . ' day 23:59:59');
-
-            if ($timeForLabel === false || $startPeriod === false || $endPeriod === false) {
-                continue;
-            }
 
             $labels[] = date($this->dateFormat, $timeForLabel);
             $data[] = $this->getPageviewsInPeriod($startPeriod, $endPeriod);

@@ -24,7 +24,6 @@ Default widget configuration.
      DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerDay:
        arguments:
          $queryBuilder: '@querybuilder.tx_tracking_pageview'
-         $blackListedPages: [1, 11, 38]
          $pagesToExclude: [1, 11, 38]
 
      dashboard.widget.danielsiepmann.tracking.pageViewsPerDay:

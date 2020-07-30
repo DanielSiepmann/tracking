@@ -71,6 +71,7 @@ class NewestPageviews implements ListDataProviderInterface
             ->select('url', 'user_agent')
             ->from('tx_tracking_pageview')
             ->orderBy('crdate', 'desc')
+            ->addOrderBy('uid', 'desc')
             ->setMaxResults($this->maxResults);
 
         if ($constraints !== []) {
