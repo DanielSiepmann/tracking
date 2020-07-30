@@ -101,3 +101,13 @@ Options
 
    Using this option offers a way to limit records e.g. to specific types of news or
    address records.
+
+.. option:: $languageLimitation
+
+   Array of ``sys_language_uid``'s to include.
+   Defaults to empty array, all languages are shown.
+
+   Allows to limit results to specific lanuages.
+   All entries tracked when visiting page with this language are shown.
+   If multiple languages are shown, default system language labels are used.
+   If only a single lanugage is allowed, record labels are translated to that language.

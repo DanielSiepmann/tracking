@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <pid>1</pid>
+        <uid>1</uid>
+        <title>Page 1</title>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>11</uid>
+        <title>Seite 1</title>
+        <l10n_parent>1</l10n_parent>
+        <sys_language_uid>1</sys_language_uid>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>2</uid>
+        <title>Page 2</title>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>3</uid>
+        <title>Page 3</title>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>4</uid>
+        <title>Page 4</title>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>5</uid>
+        <title>Page 5</title>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>6</uid>
+        <title>Page 6</title>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>7</uid>
+        <title>Page 7</title>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>8</uid>
+        <title>Page 8</title>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>9</uid>
+        <title>Page 9</title>
+    </pages>
+    <pages>
+        <pid>1</pid>
+        <uid>10</uid>
+        <title>Page 10</title>
+    </pages>
+</dataset>

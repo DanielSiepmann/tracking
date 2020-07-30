@@ -77,10 +77,6 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
                 'tx_tracking_pageview.crdate',
                 strtotime('-' . $this->days . ' day 0:00:00')
             ),
-            $this->queryBuilder->expr()->lte(
-                'tx_tracking_pageview.crdate',
-                time()
-            ),
             $this->queryBuilder->expr()->neq(
                 'tx_tracking_pageview.operating_system',
                 $this->queryBuilder->createNamedParameter('')
@@ -94,6 +90,7 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
             ->where(... $constraints)
             ->groupBy('tx_tracking_pageview.operating_system')
             ->orderBy('total', 'desc')
+            ->addOrderBy('operating_system', 'asc')
             ->setMaxResults($this->maxResults)
             ->execute()
             ->fetchAll();

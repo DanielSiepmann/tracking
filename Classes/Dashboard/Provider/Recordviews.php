@@ -24,12 +24,14 @@ namespace DanielSiepmann\Tracking\Dashboard\Provider;
 use DanielSiepmann\Tracking\Extension;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Statement;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
@@ -39,6 +41,11 @@ class Recordviews implements ChartDataProviderInterface
      * @var ConnectionPool
      */
     private $connectionPool;
+
+    /**
+     * @var PageRepository
+     */
+    private $pageRepository;
 
     /**
      * @var QueryBuilder
@@ -61,6 +68,11 @@ class Recordviews implements ChartDataProviderInterface
     private $pagesToExclude;
 
     /**
+     * @var array<int>
+     */
+    private $languageLimitation;
+
+    /**
      * @var array
      */
     private $recordTableLimitation;
@@ -72,17 +84,21 @@ class Recordviews implements ChartDataProviderInterface
 
     public function __construct(
         ConnectionPool $connectionPool,
+        PageRepository $pageRepository,
         QueryBuilder $queryBuilder,
         int $days = 31,
         int $maxResults = 6,
         array $pagesToExclude = [],
+        array $languageLimitation = [],
         array $recordTableLimitation = [],
         array $recordTypeLimitation = []
     ) {
         $this->connectionPool = $connectionPool;
+        $this->pageRepository = $pageRepository;
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
         $this->pagesToExclude = $pagesToExclude;
+        $this->languageLimitation = $languageLimitation;
         $this->maxResults = $maxResults;
         $this->recordTableLimitation = $recordTableLimitation;
         $this->recordTypeLimitation = $recordTypeLimitation;
@@ -109,7 +125,11 @@ class Recordviews implements ChartDataProviderInterface
         $data = [];
 
         foreach ($this->getRecordviewsRecords() as $recordview) {
-            $record = $this->getRecord($recordview['record_uid'], $recordview['record_table_name']);
+            $record = $this->getRecord(
+                $recordview['record_uid'],
+                $recordview['record_table_name'],
+                $recordview['sys_language_uid']
+            );
 
             if (
                 $this->recordTypeLimitation !== []
@@ -134,11 +154,7 @@ class Recordviews implements ChartDataProviderInterface
             $this->queryBuilder->expr()->gte(
                 'tx_tracking_recordview.crdate',
                 strtotime('-' . $this->days . ' day 0:00:00')
-            ),
-            $this->queryBuilder->expr()->lte(
-                'tx_tracking_recordview.crdate',
-                time()
-            ),
+            )
         ];
 
         if (count($this->pagesToExclude)) {
@@ -146,6 +162,16 @@ class Recordviews implements ChartDataProviderInterface
                 'tx_tracking_recordview.pid',
                 $this->queryBuilder->createNamedParameter(
                     $this->pagesToExclude,
+                    Connection::PARAM_INT_ARRAY
+                )
+            );
+        }
+
+        if (count($this->languageLimitation)) {
+            $constraints[] = $this->queryBuilder->expr()->in(
+                'tx_tracking_recordview.sys_language_uid',
+                $this->queryBuilder->createNamedParameter(
+                    $this->languageLimitation,
                     Connection::PARAM_INT_ARRAY
                 )
             );
@@ -163,11 +189,12 @@ class Recordviews implements ChartDataProviderInterface
 
         $result = $this->queryBuilder
             ->selectLiteral('count(record) as total')
-            ->addSelect('record_uid', 'record_table_name')
+            ->addSelect('record_uid', 'record_table_name', 'sys_language_uid')
             ->from('tx_tracking_recordview')
             ->where(... $constraints)
             ->groupBy('record')
             ->orderBy('total', 'desc')
+            ->addOrderBy('uid', 'desc')
             ->setMaxResults($this->maxResults)
             ->execute();
 
@@ -176,31 +203,20 @@ class Recordviews implements ChartDataProviderInterface
         }
     }
 
-    private function getRecord(int $recordUid, string $recordTable): array
-    {
-        $titlefield = $GLOBALS['TCA'][$recordTable]['ctrl']['label'];
-        $recordTypeField = $GLOBALS['TCA'][$recordTable]['ctrl']['type'] ?? '';
+    private function getRecord(
+        int $uid,
+        string $table,
+        int $sysLanguageUid
+    ): array {
+        $recordTypeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? '';
 
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($recordTable);
-
-        $queryBuilder->getRestrictions()
-            ->removeByType(StartTimeRestriction::class)
-            ->removeByType(EndTimeRestriction::class)
-            ->removeByType(HiddenRestriction::class)
-            ;
-
-        $queryBuilder->select($titlefield)
-            ->from($recordTable)
-            ->where('uid = ' . $recordUid);
-
-        if ($recordTypeField !== '') {
-            $queryBuilder->addSelect($recordTypeField);
+        $record = BackendUtility::getRecord($table, $uid);
+        if ($sysLanguageUid > 0 && count($this->languageLimitation) === 1 && $record !== null) {
+            $record = $this->pageRepository->getRecordOverlay($table, $record, $sysLanguageUid);
         }
 
-        $record = $queryBuilder->execute()->fetch();
-
         return [
-            'title' => $record[$titlefield],
+            'title' => BackendUtility::getRecordTitle($table, $record, true),
             'type' => $record[$recordTypeField] ?? '',
         ];
     }
