@@ -48,17 +48,17 @@ class PageviewsPerPage implements ChartDataProviderInterface
     /**
      * @var array<int>
      */
-    private $blackListedPages;
+    private $pagesToExclude;
 
     public function __construct(
         QueryBuilder $queryBuilder,
         int $days = 31,
         int $maxResults = 6,
-        array $blackListedPages = []
+        array $pagesToExclude = []
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
-        $this->blackListedPages = $blackListedPages;
+        $this->pagesToExclude = $pagesToExclude;
         $this->maxResults = $maxResults;
     }
 
@@ -92,11 +92,11 @@ class PageviewsPerPage implements ChartDataProviderInterface
                 time()
             ),
         ];
-        if (count($this->blackListedPages)) {
+        if (count($this->pagesToExclude)) {
             $constraints[] = $this->queryBuilder->expr()->notIn(
                 'tx_tracking_pageview.pid',
                 $this->queryBuilder->createNamedParameter(
-                    $this->blackListedPages,
+                    $this->pagesToExclude,
                     Connection::PARAM_INT_ARRAY
                 )
             );

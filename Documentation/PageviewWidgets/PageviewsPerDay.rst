@@ -25,6 +25,7 @@ Default widget configuration.
        arguments:
          $queryBuilder: '@querybuilder.tx_tracking_pageview'
          $blackListedPages: [1, 11, 38]
+         $pagesToExclude: [1, 11, 38]
 
      dashboard.widget.danielsiepmann.tracking.pageViewsPerDay:
        class: 'TYPO3\CMS\Dashboard\Widgets\BarChartWidget'
@@ -51,7 +52,7 @@ Options
 
    Defaults to 31.
 
-.. option:: $blackListedPages
+.. option:: $pagesToExclude
 
    Array of page uids that should not be collected.
    Defaults to empty array, all pages are shown.

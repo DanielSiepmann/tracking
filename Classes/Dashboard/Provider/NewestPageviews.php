@@ -40,16 +40,16 @@ class NewestPageviews implements ListDataProviderInterface
     /**
      * @var array
      */
-    private $blackListedPages;
+    private $pagesToExclude;
 
     public function __construct(
         QueryBuilder $queryBuilder,
         int $maxResults = 6,
-        array $blackListedPages = []
+        array $pagesToExclude = []
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->maxResults = $maxResults;
-        $this->blackListedPages = $blackListedPages;
+        $this->pagesToExclude = $pagesToExclude;
     }
 
     public function getItems(): array
@@ -57,11 +57,11 @@ class NewestPageviews implements ListDataProviderInterface
         $preparedItems = [];
 
         $constraints = [];
-        if (count($this->blackListedPages)) {
+        if (count($this->pagesToExclude)) {
             $constraints[] = $this->queryBuilder->expr()->notIn(
                 'tx_tracking_pageview.pid',
                 $this->queryBuilder->createNamedParameter(
-                    $this->blackListedPages,
+                    $this->pagesToExclude,
                     Connection::PARAM_INT_ARRAY
                 )
             );

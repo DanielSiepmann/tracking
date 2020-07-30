@@ -78,7 +78,7 @@ class NewestPageviewsTest extends TestCase
     /**
      * @test
      */
-    public function defaultsToNoBlackListedPages(): void
+    public function defaultsToNoExcludedPages(): void
     {
         $statement = $this->prophesize(Statement::class);
         $statement->fetchAll()->willReturn([]);
@@ -99,7 +99,7 @@ class NewestPageviewsTest extends TestCase
     /**
      * @test
      */
-    public function respectsBlackListedPages(): void
+    public function respectsExcludedPages(): void
     {
         $expressionBuilder = $this->prophesize(ExpressionBuilder::class);
         $queryBuilder = $this->prophesize(QueryBuilder::class);

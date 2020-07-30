@@ -22,7 +22,7 @@ PSR-11 Container Interface
    Used to resolve external dependencies, e.g. foreign classes.
    Existing TYPO3 factories are used to build `QueryBuilder` instances.
    Also DI is "misused" to provide configuration for dashboard widgets
-   and tracking blacklists.
+   and tracking.
 
 PSR-15 HTTP Handlers
    Also known as middlewares.

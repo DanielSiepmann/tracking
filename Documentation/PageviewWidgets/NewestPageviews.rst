@@ -23,7 +23,7 @@ Default widget configuration.
      DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews:
        arguments:
          $queryBuilder: '@querybuilder.tx_tracking_pageview'
-         $blackListedPages: [1, 11, 38]
+         $pagesToExclude: [1, 11, 38]
 
      dashboard.widget.danielsiepmann.tracking.newestPageviews:
        class: 'TYPO3\CMS\Dashboard\Widgets\ListWidget'
@@ -48,7 +48,7 @@ Options
    Integer defining how many results should be displayed.
    Defaults to 6.
 
-.. option:: $blackListedPages
+.. option:: $pagesToExclude
 
    Array of page uids that should not be collected.
    Defaults to empty array, all pages are shown.
