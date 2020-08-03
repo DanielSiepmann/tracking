@@ -55,17 +55,24 @@ class PageviewsPerDay implements ChartDataProviderInterface
      */
     private $dateFormat;
 
+    /**
+     * @var array<int>
+     */
+    private $languageLimitation;
+
     public function __construct(
         LanguageService $languageService,
         QueryBuilder $queryBuilder,
         int $days = 31,
         array $pagesToExclude = [],
+        array $languageLimitation = [],
         string $dateFormat = 'Y-m-d'
     ) {
         $this->languageService = $languageService;
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
         $this->pagesToExclude = $pagesToExclude;
+        $this->languageLimitation = $languageLimitation;
         $this->dateFormat = $dateFormat;
     }
 
@@ -120,6 +127,16 @@ class PageviewsPerDay implements ChartDataProviderInterface
                 'tx_tracking_pageview.pid',
                 $this->queryBuilder->createNamedParameter(
                     $this->pagesToExclude,
+                    Connection::PARAM_INT_ARRAY
+                )
+            );
+        }
+
+        if (count($this->languageLimitation)) {
+            $constraints[] = $this->queryBuilder->expr()->in(
+                'tx_tracking_pageview.sys_language_uid',
+                $this->queryBuilder->createNamedParameter(
+                    $this->languageLimitation,
                     Connection::PARAM_INT_ARRAY
                 )
             );

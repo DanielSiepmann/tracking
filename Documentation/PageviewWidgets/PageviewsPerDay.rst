@@ -70,3 +70,13 @@ Options
    String defining the format used for labels.
 
    Defaults to 'Y-m-d'.
+
+.. option:: $languageLimitation
+
+   Array of ``sys_language_uid``'s to include.
+   Defaults to empty array, all languages are shown.
+
+   Allows to limit results to specific lanuages.
+   All entries tracked when visiting page with this language are shown.
+   If multiple languages are shown, default system language labels are used.
+   If only a single lanugage is allowed, record labels are translated to that language.
