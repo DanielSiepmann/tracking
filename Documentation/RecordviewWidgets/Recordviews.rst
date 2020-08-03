@@ -28,24 +28,24 @@ Example widget configuration.
 :file:`Configuration/Services.yaml`::
 
    services:
-     dashboard.provider.danielsiepmann.tracking.records.topics:
+     dashboard.provider.danielsiepmann.tracking.records.news:
        class: 'DanielSiepmann\Tracking\Dashboard\Provider\Recordviews'
        arguments:
          $queryBuilder: '@querybuilder.tx_tracking_recordview'
-         $recordTableLimitation: ['sys_category']
+         $recordTableLimitation: ['tx_news_domain_model_news']
 
-     dashboard.widget.danielsiepmann.tracking.records.topics:
+     dashboard.widget.danielsiepmann.tracking.records.news:
        class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
        arguments:
          $view: '@dashboard.views.widget'
-         $dataProvider: '@dashboard.provider.danielsiepmann.tracking.records.topics'
+         $dataProvider: '@dashboard.provider.danielsiepmann.tracking.records.news'
        tags:
          - name: 'dashboard.widget'
-           identifier: 'topicsDoughnut'
+           identifier: 'newsDoughnut'
            groupNames: 'tracking'
            iconIdentifier: 'content-widget-chart-pie'
-           title: 'Topics'
-           description: 'Shows which topics are called most'
+           title: 'News'
+           description: 'Shows which news are called most'
            additionalCssClasses: 'dashboard-item--chart'
            height: 'medium'
            width: 'small'

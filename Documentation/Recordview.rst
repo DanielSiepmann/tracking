@@ -51,17 +51,16 @@ Let us examine an concrete example::
        public: true
        arguments:
          $rules:
-           topics:
+           news:
              matches: >
-                 request.getQueryParams()["topic_id"] > 0
+                 request.getQueryParams()["tx_news_pi1"] && request.getQueryParams()["tx_news_pi1"]["news"] > 0
                  and not (context.getAspect("backend.user").isLoggedIn())
                  and not (request.getHeader("User-Agent")[0] matches "/^TYPO3|TYPO3 linkvalidator/")
-                 and not (request.getHeader("User-Agent")[0] matches "/^Codeception Testing/")
                  and not (request.getHeader("User-Agent")[0] matches "/Wget|curl|Go-http-client/")
                  and not (request.getHeader("User-Agent")[0] matches "/bot|spider|Slurp|Sogou|NextCloud-News|Feedly|XING FeedReader|SEOkicks|Seekport Crawler|ia_archiver|TrendsmapResolver|Nuzzel/")
                  and not (request.getHeader("User-Agent")[0] matches "/mattermost|Slackbot|WhatsApp/")
-             recordUid: 'request.getQueryParams()["topic_id"]'
-             tableName: 'sys_category'
+             recordUid: 'request.getQueryParams()["tx_news_pi1"]["news"]'
+             tableName: 'tx_news_domain_model_news'
 
 The first paragraph will not be explained, check out :ref:`t3coreapi:configure-dependency-injection-in-extensions` instead.
 
