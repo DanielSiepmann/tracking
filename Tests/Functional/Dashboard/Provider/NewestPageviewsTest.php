@@ -120,4 +120,36 @@ class NewestPageviewsTest extends TestCase
             'Url 4 - User-Agent 4',
         ], $subject->getItems());
     }
+
+    /**
+     * @test
+     */
+    public function respectsLimitToLanguages(): void
+    {
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
+        for ($i = 1; $i <= 10; $i++) {
+            $connection->insert('tx_tracking_pageview', [
+                'pid' => $i,
+                'url' => 'Url ' . $i,
+                'sys_language_uid' => $i % 2,
+                'user_agent' => 'User-Agent ' . $i,
+                'crdate' => $i,
+            ]);
+        }
+
+        $subject = new NewestPageviews(
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
+            6,
+            [],
+            [1]
+        );
+
+        static::assertSame([
+            'Url 9 - User-Agent 9',
+            'Url 7 - User-Agent 7',
+            'Url 5 - User-Agent 5',
+            'Url 3 - User-Agent 3',
+            'Url 1 - User-Agent 1',
+        ], $subject->getItems());
+    }
 }

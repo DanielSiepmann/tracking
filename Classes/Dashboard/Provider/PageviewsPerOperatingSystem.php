@@ -21,6 +21,7 @@ namespace DanielSiepmann\Tracking\Dashboard\Provider;
  * 02110-1301, USA.
  */
 
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
@@ -42,14 +43,21 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
      */
     private $maxResults;
 
+    /**
+     * @var array<int>
+     */
+    private $languageLimitation;
+
     public function __construct(
         QueryBuilder $queryBuilder,
         int $days = 31,
-        int $maxResults = 6
+        int $maxResults = 6,
+        array $languageLimitation = []
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
         $this->maxResults = $maxResults;
+        $this->languageLimitation = $languageLimitation;
     }
 
     public function getChartData(): array
@@ -82,6 +90,16 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
                 $this->queryBuilder->createNamedParameter('')
             ),
         ];
+
+        if (count($this->languageLimitation)) {
+            $constraints[] = $this->queryBuilder->expr()->in(
+                'tx_tracking_pageview.sys_language_uid',
+                $this->queryBuilder->createNamedParameter(
+                    $this->languageLimitation,
+                    Connection::PARAM_INT_ARRAY
+                )
+            );
+        }
 
         $result = $this->queryBuilder
             ->selectLiteral('count(operating_system) as total')

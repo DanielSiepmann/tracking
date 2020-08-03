@@ -133,6 +133,7 @@ class PageviewsPerDayTest extends TestCase
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
             1,
             [],
+            [],
             'd.m.Y'
         );
 
@@ -142,5 +143,44 @@ class PageviewsPerDayTest extends TestCase
             date('d.m.Y'),
         ], $result['labels']);
         static::assertCount(2, $result['datasets'][0]['data']);
+    }
+
+    /**
+     * @test
+     */
+    public function respectsLimitToLanguages(): void
+    {
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
+        for ($i = 1; $i <= 10; $i++) {
+            $connection->insert('tx_tracking_pageview', [
+                'pid' => $i,
+                'crdate' => strtotime('-' . $i . ' days'),
+                'sys_language_uid' => $i % 2,
+            ]);
+        }
+
+        $subject = new PageviewsPerDay(
+            GeneralUtility::makeInstance(LanguageService::class),
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
+            11,
+            [],
+            [1]
+        );
+
+        $result = $subject->getChartData();
+        static::assertSame([
+            0 => 0,
+            1 => 0,
+            2 => 1,
+            3 => 0,
+            4 => 1,
+            5 => 0,
+            6 => 1,
+            7 => 0,
+            8 => 1,
+            9 => 0,
+            10 => 1,
+            11 => 0,
+        ], $result['datasets'][0]['data']);
     }
 }

@@ -42,14 +42,21 @@ class NewestPageviews implements ListDataProviderInterface
      */
     private $pagesToExclude;
 
+    /**
+     * @var array<int>
+     */
+    private $languageLimitation;
+
     public function __construct(
         QueryBuilder $queryBuilder,
         int $maxResults = 6,
-        array $pagesToExclude = []
+        array $pagesToExclude = [],
+        array $languageLimitation = []
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->maxResults = $maxResults;
         $this->pagesToExclude = $pagesToExclude;
+        $this->languageLimitation = $languageLimitation;
     }
 
     public function getItems(): array
@@ -62,6 +69,16 @@ class NewestPageviews implements ListDataProviderInterface
                 'tx_tracking_pageview.pid',
                 $this->queryBuilder->createNamedParameter(
                     $this->pagesToExclude,
+                    Connection::PARAM_INT_ARRAY
+                )
+            );
+        }
+
+        if (count($this->languageLimitation)) {
+            $constraints[] = $this->queryBuilder->expr()->in(
+                'tx_tracking_pageview.sys_language_uid',
+                $this->queryBuilder->createNamedParameter(
+                    $this->languageLimitation,
                     Connection::PARAM_INT_ARRAY
                 )
             );

@@ -172,4 +172,38 @@ class PageviewsPerOperatingSystemTest extends TestCase
         ], $result['labels']);
         static::assertCount(4, $result['datasets'][0]['data']);
     }
+
+    /**
+     * @test
+     */
+    public function respectsLimitToLanguages(): void
+    {
+        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Pages.xml');
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
+        for ($i = 1; $i <= 10; $i++) {
+            $connection->insert('tx_tracking_pageview', [
+                'pid' => $i,
+                'sys_language_uid' => $i % 2,
+                'operating_system' => 'System ' . $i,
+                'crdate' => time(),
+            ]);
+        }
+
+        $subject = new PageviewsPerOperatingSystem(
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
+            31,
+            6,
+            [1]
+        );
+
+        $result = $subject->getChartData();
+        static::assertSame([
+            'System 1',
+            'System 3',
+            'System 5',
+            'System 7',
+            'System 9',
+        ], $result['labels']);
+        static::assertCount(5, $result['datasets'][0]['data']);
+    }
 }
