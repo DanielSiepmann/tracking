@@ -20,6 +20,11 @@ Default widget configuration.
 :file:`Configuration/Services.yaml`::
 
    services:
+     _defaults:
+       autowire: true
+       autoconfigure: true
+       public: false
+
      DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews:
        arguments:
          $queryBuilder: '@querybuilder.tx_tracking_pageview'
