@@ -28,6 +28,11 @@ Example widget configuration.
 :file:`Configuration/Services.yaml`::
 
    services:
+     _defaults:
+       autowire: true
+       autoconfigure: true
+       public: false
+
      dashboard.provider.danielsiepmann.tracking.records.news:
        class: 'DanielSiepmann\Tracking\Dashboard\Provider\Recordviews'
        arguments:
