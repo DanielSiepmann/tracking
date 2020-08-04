@@ -216,7 +216,7 @@ class Recordviews implements ChartDataProviderInterface
         }
 
         return [
-            'title' => BackendUtility::getRecordTitle($table, $record, true),
+            'title' => strip_tags(BackendUtility::getRecordTitle($table, $record, true)),
             'type' => $record[$recordTypeField] ?? '',
         ];
     }

@@ -163,6 +163,6 @@ class PageviewsPerPage implements ChartDataProviderInterface
             $record = $this->pageRepository->getRecordOverlay('pages', $record, $sysLanguageUid);
         }
 
-        return BackendUtility::getRecordTitle('pages', $record, true);
+        return strip_tags(BackendUtility::getRecordTitle('pages', $record, true));
     }
 }
