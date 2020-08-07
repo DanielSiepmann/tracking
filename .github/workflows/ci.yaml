@@ -58,8 +58,5 @@ jobs:
       - name: Code Quality (by PHPStan)
         run: ./vendor/bin/phpstan analyse
 
-      - name: PHPUnit Unit Tests
+      - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --testdox
-
-      - name: PHPUnit Functional Tests
-        run: ./vendor/bin/phpunit -c Tests/Functional/phpunit.xml.dist --testdox
