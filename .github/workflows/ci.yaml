@@ -19,6 +19,7 @@ jobs:
         id: composer-cache
         run: |
             echo "::set-output name=dir::$(composer config cache-files-dir)"
+
       - uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
@@ -32,9 +33,9 @@ jobs:
       - name: Missing composer requirements
         run: ./vendor/bin/composer-require-checker
 
-  full-check:
+  coding-guideline:
     runs-on: ubuntu-latest
-    needs: [check-composer]
+    needs: [check-dependencies]
     steps:
       - uses: actions/checkout@v2
 
@@ -42,6 +43,7 @@ jobs:
         id: composer-cache
         run: |
             echo "::set-output name=dir::$(composer config cache-files-dir)"
+
       - uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
@@ -55,8 +57,50 @@ jobs:
       - name: Coding Guideline
         run: ./vendor/bin/phpcs
 
-      - name: Code Quality (by PHPStan)
-        run: ./vendor/bin/phpstan analyse
+  tests:
+    runs-on: ubuntu-latest
+    needs: [check-dependencies]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --testdox
+
+  code-quality:
+    runs-on: ubuntu-latest
+    needs: [check-dependencies]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Code Quality (by PHPStan)
+        run: ./vendor/bin/phpstan analyse
