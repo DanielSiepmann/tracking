@@ -114,7 +114,7 @@ jobs:
       - name: Coding Guideline
         run: ./vendor/bin/phpcs
 
-  tests:
+  tests-sqlite:
     runs-on: ubuntu-latest
     needs:
       - check-dependencies
@@ -139,6 +139,41 @@ jobs:
 
       - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --testdox
+
+  tests-mysql:
+    runs-on: ubuntu-latest
+    needs:
+      - check-dependencies
+      - xml-linting
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: PHPUnit Tests
+        run: |-
+          export typo3DatabaseDriver="mysqli"
+          export typo3DatabaseName="typo3"
+          export typo3DatabaseHost="127.0.0.1"
+          export typo3DatabaseUsername="root"
+          export typo3DatabasePassword="root"
+          ./vendor/bin/phpunit --testdox
 
   code-quality:
     runs-on: ubuntu-latest
