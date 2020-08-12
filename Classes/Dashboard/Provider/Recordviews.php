@@ -127,8 +127,7 @@ class Recordviews implements ChartDataProviderInterface
         foreach ($this->getRecordviewsRecords() as $recordview) {
             $record = $this->getRecord(
                 $recordview['record_uid'],
-                $recordview['record_table_name'],
-                $recordview['sys_language_uid']
+                $recordview['record_table_name']
             );
 
             if (
@@ -188,13 +187,16 @@ class Recordviews implements ChartDataProviderInterface
         }
 
         $result = $this->queryBuilder
-            ->selectLiteral('count(record) as total')
-            ->addSelect('record_uid', 'record_table_name', 'sys_language_uid')
+            ->selectLiteral(
+                $this->queryBuilder->expr()->count('record', 'total'),
+                $this->queryBuilder->expr()->max('uid', 'latest')
+            )
+            ->addSelect('record_uid', 'record_table_name')
             ->from('tx_tracking_recordview')
             ->where(... $constraints)
-            ->groupBy('record')
+            ->groupBy('record', 'record_uid', 'record_table_name')
             ->orderBy('total', 'desc')
-            ->addOrderBy('uid', 'desc')
+            ->addOrderBy('latest', 'desc')
             ->setMaxResults($this->maxResults)
             ->execute();
 
@@ -205,14 +207,13 @@ class Recordviews implements ChartDataProviderInterface
 
     private function getRecord(
         int $uid,
-        string $table,
-        int $sysLanguageUid
+        string $table
     ): array {
         $recordTypeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? '';
 
         $record = BackendUtility::getRecord($table, $uid);
-        if ($sysLanguageUid > 0 && count($this->languageLimitation) === 1 && $record !== null) {
-            $record = $this->pageRepository->getRecordOverlay($table, $record, $sysLanguageUid);
+        if (count($this->languageLimitation) === 1 && $record !== null) {
+            $record = $this->pageRepository->getRecordOverlay($table, $record, $this->languageLimitation[0]);
         }
 
         return [
