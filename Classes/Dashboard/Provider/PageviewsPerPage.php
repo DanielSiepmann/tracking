@@ -125,28 +125,22 @@ class PageviewsPerPage implements ChartDataProviderInterface
         }
 
         $result = $this->queryBuilder
-            ->selectLiteral('count(tx_tracking_pageview.pid) as total')
-            ->addSelect('pages.uid', 'tx_tracking_pageview.sys_language_uid')
-            ->from('tx_tracking_pageview')
-            ->leftJoin(
-                'tx_tracking_pageview',
-                'pages',
-                'pages',
-                $this->queryBuilder->expr()->eq(
-                    'tx_tracking_pageview.pid',
-                    $this->queryBuilder->quoteIdentifier('pages.uid')
-                )
+            ->selectLiteral(
+                $this->queryBuilder->expr()->count('pid', 'total'),
+                $this->queryBuilder->expr()->max('uid', 'latest')
             )
+            ->addSelect('pid')
+            ->from('tx_tracking_pageview')
             ->where(... $constraints)
-            ->groupBy('tx_tracking_pageview.pid')
+            ->groupBy('pid')
             ->orderBy('total', 'desc')
-            ->addOrderBy('tx_tracking_pageview.uid', 'desc')
+            ->addOrderBy('latest', 'desc')
             ->setMaxResults($this->maxResults)
             ->execute()
             ->fetchAll();
 
         foreach ($result as $row) {
-            $labels[] = $this->getRecordTitle($row['uid'], $row['sys_language_uid']);
+            $labels[] = $this->getRecordTitle($row['pid']);
             $data[] = $row['total'];
         }
 
@@ -156,11 +150,11 @@ class PageviewsPerPage implements ChartDataProviderInterface
         ];
     }
 
-    private function getRecordTitle(int $uid, int $sysLanguageUid): string
+    private function getRecordTitle(int $uid): string
     {
         $record = BackendUtility::getRecord('pages', $uid);
-        if ($sysLanguageUid > 0 && count($this->languageLimitation) === 1 && $record !== null) {
-            $record = $this->pageRepository->getRecordOverlay('pages', $record, $sysLanguageUid);
+        if (count($this->languageLimitation) === 1 && $record !== null) {
+            $record = $this->pageRepository->getRecordOverlay('pages', $record, $this->languageLimitation[0]);
         }
 
         return strip_tags(BackendUtility::getRecordTitle('pages', $record, true));
