@@ -83,10 +83,10 @@ jobs:
         run: xmllint --schema vendor/squizlabs/php_codesniffer/phpcs.xsd --noout phpcs.xml.dist
 
       - name: Fetch schema for xliff
-        run: wget https://raw.githubusercontent.com/TYPO3-Documentation/tea/master/.github/build/xliff-core-1.2-strict.xsd --output-document=.Build/xliff-core-1.2.xsd
+        run: wget https://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd --output-document=.Build/xliff-core-1.2-strict.xsd
 
       - name: TYPO3 language files
-        run: xmllint --schema .Build/xliff-core-1.2.xsd --noout $(find Resources -name '*.xlf')
+        run: xmllint --schema .Build/xliff-core-1.2-strict.xsd --noout $(find Resources -name '*.xlf')
 
   coding-guideline:
     runs-on: ubuntu-latest
