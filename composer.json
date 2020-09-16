@@ -46,7 +46,7 @@
         "jangregor/phpstan-prophecy": "^0.8.1",
         "maglnet/composer-require-checker": "^3.2",
         "phpspec/prophecy-phpunit": "^2.0",
-        "typo3/testing-framework": "^6.3",
+        "typo3/testing-framework": "^6.8.2",
         "saschaegerer/phpstan-typo3": "^0.13.1"
     },
     "minimum-stability": "dev",

@@ -23,7 +23,7 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Pageview;
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
-use PHPUnit\Framework\TestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophet;
 use Psr\Http\Message\ServerRequestInterface;

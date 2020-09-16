@@ -24,11 +24,11 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Recordview;
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
 use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use DanielSiepmann\Tracking\Domain\Recordview\Factory;
-use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
  * @covers DanielSiepmann\Tracking\Domain\Recordview\Factory
