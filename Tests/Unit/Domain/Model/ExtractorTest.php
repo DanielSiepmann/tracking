@@ -23,7 +23,7 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
 
 use DanielSiepmann\Tracking\Domain\Model\Extractor;
 use DanielSiepmann\Tracking\Domain\Model\HasUserAgent;
-use PHPUnit\Framework\TestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 /**

@@ -22,7 +22,7 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  */
 
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
-use PHPUnit\Framework\TestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
  * @covers DanielSiepmann\Tracking\Domain\Model\RecordRule

@@ -24,7 +24,7 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Middleware;
 use DanielSiepmann\Tracking\Domain\Model\Recordview as Model;
 use DanielSiepmann\Tracking\Domain\Repository\Recordview as Repository;
 use DanielSiepmann\Tracking\Middleware\Recordview;
-use PHPUnit\Framework\TestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
