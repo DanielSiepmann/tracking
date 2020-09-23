@@ -1,0 +1,13 @@
+<svg id="recordview" data-name="recordview" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <g>
+    <path d="M1,1H15V15H1Z" fill="#fff"/>
+    <path d="M1,1V15H15V1ZM2,2H14V14H2Z" fill="#999"/>
+    <path d="M3,3H13V5H3Z" fill="#666"/>
+    <path d="M3,6H13V7H3ZM3,8H13V9H3Zm0,2H13v1H3Zm0,2H13v1H3Z" fill="#b9b9b9"/>
+    <g>
+      <path d="M7.19,10.64H9.73v3.81H7.19Z" fill="#59f"/>
+      <path d="M9.73,5.55h2.54v8.9H9.73Z" fill="#ffc857"/>
+      <path d="M12.27,8.09h2.54v6.36H12.27Z" fill="#79a548"/>
+    </g>
+  </g>
+</svg>
