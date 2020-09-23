@@ -12,7 +12,7 @@ return [
         'languageField' => 'sys_language_uid',
         'title' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.recordview',
         'searchFields' => 'uid, url',
-        'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/apps/apps-pagetree-page-default.svg',
+        'iconfile' => 'EXT:tracking/Resources/Public/Icons/Record/Recordview.svg',
     ],
     'types' => [
         '0' => [

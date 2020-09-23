@@ -1,0 +1,13 @@
+<svg id="pageview" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 16.00004">
+  <g opacity="0.5">
+    <path d="M2,0V16H14V4L10,0Z" transform="translate(-2 0.00004)" fill="#efefef"/>
+    <path d="M10,4V0l4,4Z" transform="translate(-2 0.00004)" fill="#fff" opacity="0.65" style="isolation: isolate"/>
+    <path d="M13,5v5L9,5Z" transform="translate(-2 0.00004)" opacity="0.2" style="isolation: isolate"/>
+  </g>
+  <path d="M2,.06V16H14V4h0L10,0H2Zm1,1H9V5h4V15H3Zm7,.41L12.59,4H10Z" transform="translate(-2 0.00004)" fill="#999"/>
+  <g>
+    <path d="M7.37,11.19H9.92V15H7.37Z" transform="translate(-2 0.00004)" fill="#59f"/>
+    <path d="M9.92,6.1h2.54V15H9.92Z" transform="translate(-2 0.00004)" fill="#ffc857"/>
+    <path d="M12.46,8.65H15V15H12.46Z" transform="translate(-2 0.00004)" fill="#79a548"/>
+  </g>
+</svg>
