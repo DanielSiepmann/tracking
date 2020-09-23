@@ -119,8 +119,18 @@ jobs:
     needs:
       - check-dependencies
       - xml-linting
+    strategy:
+      matrix:
+        php-version:
+          - 7.3
+          - 7.4
     steps:
       - uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -145,8 +155,18 @@ jobs:
     needs:
       - check-dependencies
       - xml-linting
+    strategy:
+      matrix:
+        php-version:
+          - 7.3
+          - 7.4
     steps:
       - uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
 
       - name: Get Composer Cache Directory
         id: composer-cache
