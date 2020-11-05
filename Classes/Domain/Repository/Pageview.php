@@ -96,6 +96,7 @@ class Pageview
             'url' => $pageview->getUrl(),
             'user_agent' => $pageview->getUserAgent(),
             'operating_system' => $pageview->getOperatingSystem(),
+            'bot' => $pageview->getBot(),
         ];
     }
 }

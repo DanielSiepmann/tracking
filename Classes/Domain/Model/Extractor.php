@@ -57,4 +57,56 @@ class Extractor
 
         return '';
     }
+
+    public static function getBot(HasUserAgent $model): string
+    {
+        $userAgent = strtolower($model->getUserAgent());
+
+        if (mb_stripos($userAgent, 'mastodon') !== false) {
+            return 'mastodon';
+        }
+        if (mb_stripos($userAgent, 'slack') !== false) {
+            return 'slack';
+        }
+        if (mb_stripos($userAgent, 'mattermost') !== false) {
+            return 'mattermost';
+        }
+        if (mb_stripos($userAgent, 'whatsapp') !== false) {
+            return 'whatsapp';
+        }
+        if (mb_stripos($userAgent, 'telegram') !== false) {
+            return 'telegram';
+        }
+        if (mb_stripos($userAgent, 'twitter') !== false) {
+            return 'twitter';
+        }
+        if (mb_stripos($userAgent, 'googlebot') !== false) {
+            return 'google';
+        }
+        if (mb_stripos($userAgent, 'bingbot') !== false) {
+            return 'bing';
+        }
+        if (mb_stripos($userAgent, 'dukduckgo') !== false) {
+            return 'dukduckgo';
+        }
+        if (mb_stripos($userAgent, 'duckduckgo-favicons') !== false) {
+            return 'duckduckgo-favicon';
+        }
+        if (mb_stripos($userAgent, 'feedly') !== false) {
+            return 'feedly';
+        }
+        if (mb_stripos($userAgent, 'feedly') !== false) {
+            return 'feedly';
+        }
+        if (mb_stripos($userAgent, 'nextcloud-news') !== false) {
+            return 'nextcloud-news';
+        }
+        if (mb_stripos($userAgent, 'xing feedreader') !== false) {
+            return 'xing-feedreader';
+        }
+
+        // TODO: Add Hook, or read config?
+
+        return '';
+    }
 }

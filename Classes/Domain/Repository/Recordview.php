@@ -55,6 +55,7 @@ class Recordview
             'url' => $recordview->getUrl(),
             'user_agent' => $recordview->getUserAgent(),
             'operating_system' => $recordview->getOperatingSystem(),
+            'bot' => $recordview->getBot(),
             'record_uid' => $recordview->getRecordUid(),
             'record_table_name' => $recordview->getTableName(),
             'record' => $recordview->getTableName() . '_' . $recordview->getRecordUid(),

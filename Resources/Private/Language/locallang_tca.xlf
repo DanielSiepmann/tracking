@@ -30,6 +30,9 @@
             <trans-unit id="table.pageview.operating_system">
                 <source>Operating System</source>
             </trans-unit>
+            <trans-unit id="table.pageview.bot">
+                <source>Bot</source>
+            </trans-unit>
 
             <trans-unit id="table.recordview">
                 <source>Recordview</source>
@@ -57,6 +60,9 @@
             </trans-unit>
             <trans-unit id="table.recordview.operating_system">
                 <source>Operating System</source>
+            </trans-unit>
+            <trans-unit id="table.recordview.bot">
+                <source>Bot</source>
             </trans-unit>
         </body>
     </file>

@@ -94,4 +94,93 @@ class ExtractorTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider possibleUserStringWithBot
+     * @testdox Bot $expectedBot is extracted from UserAgent string: $userAgent
+     */
+    public function returnsBot(string $userAgent, string $expectedBot): void
+    {
+        $model = $this->prophesize(HasUserAgent::class);
+        $model->getUserAgent()->willReturn($userAgent);
+
+        static::assertSame(
+            $expectedBot,
+            Extractor::getBot($model->reveal())
+        );
+    }
+
+    public function possibleUserStringWithBot(): array
+    {
+        return [
+            'No Bot' => [
+                'userAgent' => '',
+                'expectedBot' => '',
+            ],
+            // Software / social media
+            'WhatsApp' => [
+                'userAgent' => 'WhatsApp/2.20.47 A',
+                'expectedBot' => 'whatsapp',
+            ],
+            'Mattermost' => [
+                'userAgent' => 'mattermost-5.17.0',
+                'expectedBot' => 'mattermost',
+            ],
+            'Slack' => [
+                'userAgent' => 'Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)',
+                'expectedBot' => 'slack',
+            ],
+            'Mastodon' => [
+                'userAgent' => 'http.rb/4.3.0 (Mastodon/3.1.3; +https://fosstodon.org/)',
+                'expectedBot' => 'mastodon',
+            ],
+            'Twitter iPhone' => [
+                'userAgent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/17D50 Twitter for iPhone/8.9',
+                'expectedBot' => 'twitter',
+            ],
+            'Twitter Bot' => [
+                'userAgent' => 'Twitterbot/1.0',
+                'expectedBot' => 'twitter',
+            ],
+            'Twitter' => [
+                'userAgent' => 'Twitter/8.2 CFNetwork/1121.2.2 Darwin/19.3.0',
+                'expectedBot' => 'twitter',
+            ],
+            'Telegram' => [
+                'userAgent' => 'TelegramBot (like TwitterBot)',
+                'expectedBot' => 'telegram',
+            ],
+            // Searchmachine indexing
+            'Googlebot' => [
+                'userAgent' => 'Googlebot/2.1 (+http://www.google.com/bot.html)',
+                'expectedBot' => 'google',
+            ],
+            'Bingbot' => [
+                'userAgent' => 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)',
+                'expectedBot' => 'bing',
+            ],
+            'DuckDuckBot' => [
+                'userAgent' => 'Mozilla/5.0 (Linux; Android 7.0) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/80.0.3987.132 Mobile Safari/537.36 DuckDuckGo/5',
+                'expectedBot' => 'duckduckgo',
+            ],
+            'DuckDuckBot' => [
+                'userAgent' => 'Mozilla/5.0 (compatible; DuckDuckGo-Favicons-Bot/1.0; +http://duckduckgo.com)',
+                'expectedBot' => 'duckduckgo-favicon',
+            ],
+            // Aggregator
+            'Feedly' => [
+                'userAgent' => 'Feedly/1.0 (+http://www.feedly.com/fetcher.html; 1 subscribers; like FeedFetcher-Google)',
+                'expectedBot' => 'feedly',
+            ],
+            'NextCloud-News' => [
+                'userAgent' => 'NextCloud-News/1.0',
+                'expectedBot' => 'nextcloud-news',
+            ],
+            'XING FeedReader' => [
+                'userAgent' => 'XING FeedReader (xing.com)',
+                'expectedBot' => 'xing-feedreader',
+            ],
+        ];
+    }
 }

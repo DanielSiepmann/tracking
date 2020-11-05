@@ -38,6 +38,7 @@ class UpdateDataCommand extends Command
     public function __construct(Pageview $repository)
     {
         $this->repository = $repository;
+        // TODO: Also update recordview
 
         parent::__construct();
     }

@@ -117,4 +117,9 @@ class Pageview implements HasUserAgent
     {
         return Extractor::getOperatingSystem($this);
     }
+
+    public function getBot(): string
+    {
+        return Extractor::getBot($this);
+    }
 }
