@@ -47,8 +47,7 @@
         "maglnet/composer-require-checker": "^2.1",
         "phpspec/prophecy-phpunit": "^2.0",
         "typo3/testing-framework": "^6.3",
-        "saschaegerer/phpstan-typo3": "^0.13.1",
-        "sensiolabs/security-checker": "^6.0"
+        "saschaegerer/phpstan-typo3": "^0.13.1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
