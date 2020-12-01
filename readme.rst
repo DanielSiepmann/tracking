@@ -1,8 +1,9 @@
 About
 =====
 
-This extension should only demonstrate technical features of TYPO3.
-It is not intended for use in production systems.
+This extension was made to demonstrate technical features of TYPO3.
+Since v1.0.0 it is also available on packagist and intended for usage on production
+systems.
 
 The following features should be demonstrated:
 
