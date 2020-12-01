@@ -46,6 +46,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Keep composer V1 until all dev dependencies are ready
+        run: sudo composer selfupdate --1
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --no-plugins
 
@@ -72,6 +75,9 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
+
+      - name: Keep composer V1 until all dev dependencies are ready
+        run: sudo composer selfupdate --1
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
@@ -108,6 +114,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Keep composer V1 until all dev dependencies are ready
+        run: sudo composer selfupdate --1
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
@@ -143,6 +152,9 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
+
+      - name: Keep composer V1 until all dev dependencies are ready
+        run: sudo composer selfupdate --1
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
@@ -183,6 +195,9 @@ jobs:
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
 
+      - name: Keep composer V1 until all dev dependencies are ready
+        run: sudo composer selfupdate --1
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
@@ -213,6 +228,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Keep composer V1 until all dev dependencies are ready
+        run: sudo composer selfupdate --1
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
@@ -236,6 +254,9 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
+
+      - name: Keep composer V1 until all dev dependencies are ready
+        run: sudo composer selfupdate --1
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
