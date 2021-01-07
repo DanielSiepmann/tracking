@@ -1,0 +1,39 @@
+1.0.1
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+* Add icons for extension #40
+
+  * Add Icons for extension itself.
+
+  * Add Icons for custom records.
+
+  Contributed by https://www.werkraum-media.de/
+
+* Add default and docs to not track preview #44
+
+  Preview is also active if a preview link is shared via EXT:workspace.
+  Those views should probably not be tracked,
+  just like active backend sessions.
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+* Remove allowTableOnStandardPages for records #43
+
+Deprecation
+-----------
+
+Nothing
