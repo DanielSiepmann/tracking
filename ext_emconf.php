@@ -1,4 +1,5 @@
 <?php
+
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Tracking',
     'description' => 'Tracks page visits in TYPO3.',
@@ -10,7 +11,7 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Daniel Siepmann',
     'author_email' => 'coding@daniel-siepmann.de',
     'author_company' => '',
-    'version' => '0.1.0',
+    'version' => '1.0.1',
     'constraints' => [
         'depends' => [
             'core' => '',
