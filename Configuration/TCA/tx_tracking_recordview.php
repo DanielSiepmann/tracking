@@ -10,6 +10,7 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
         'title' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.recordview',
         'searchFields' => 'uid, url',
         'iconfile' => 'EXT:tracking/Resources/Public/Icons/Record/Recordview.svg',
