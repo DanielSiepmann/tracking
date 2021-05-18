@@ -14,8 +14,8 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - 7.3
           - 7.4
+          - 8.0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -28,16 +28,23 @@ jobs:
       - name: PHP lint
         run: "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l"
 
-  check-dependencies:
+  check-dependencies-TYPO3-v10:
     runs-on: ubuntu-latest
-    needs: [check-composer]
+    needs:
+      - check-composer
+    strategy:
+      matrix:
+        php-version:
+          - '7.4'
+        typo3-version:
+          - '^10.4'
     steps:
       - uses: actions/checkout@v2
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.3"
+          php-version: "${{ matrix.php-version }}"
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -51,25 +58,66 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Keep composer V1 until all dev dependencies are ready
-        run: sudo composer selfupdate --1
-
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest --no-plugins
+        run: composer install --prefer-dist --no-progress --no-plugins
+
+      - name: Switch to expected TYPO3 Version
+        run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: Missing composer requirements
         run: ./vendor/bin/composer-require-checker check --config-file dependency-checker.json
 
-  xml-linting:
+  check-dependencies-TYPO3-v11:
     runs-on: ubuntu-latest
-    needs: [check-composer]
+    needs:
+      - check-composer
+    strategy:
+      matrix:
+        php-version:
+          - '7.4'
+          - '8.0'
+        typo3-version:
+          - '11.2.*'
     steps:
       - uses: actions/checkout@v2
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.3"
+          php-version: "${{ matrix.php-version }}"
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-plugins
+
+      - name: Switch to expected TYPO3 Version
+        run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+
+      - name: Missing composer requirements
+        run: ./vendor/bin/composer-require-checker check --config-file dependency-checker.json
+
+  xml-linting:
+    runs-on: ubuntu-latest
+    needs:
+      - check-composer
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
 
       - name: Install xmllint
         run: sudo apt-get install libxml2-utils
@@ -85,9 +133,6 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
-
-      - name: Keep composer V1 until all dev dependencies are ready
-        run: sudo composer selfupdate --1
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
@@ -106,8 +151,7 @@ jobs:
 
   coding-guideline:
     runs-on: ubuntu-latest
-    needs: 
-      - check-dependencies
+    needs:
       - xml-linting
     steps:
       - uses: actions/checkout@v2
@@ -115,7 +159,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.3"
+          php-version: "7.4"
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -129,25 +173,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Keep composer V1 until all dev dependencies are ready
-        run: sudo composer selfupdate --1
-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Coding Guideline
         run: ./vendor/bin/phpcs
 
-  tests-sqlite:
+  tests-sqlite-TYPO3-v10:
     runs-on: ubuntu-latest
     needs:
-      - check-dependencies
+      - check-dependencies-TYPO3-v10
       - xml-linting
     strategy:
       matrix:
         php-version:
-          - 7.3
-          - 7.4
+          - '7.4'
+        typo3-version:
+          - '^10.4'
     steps:
       - uses: actions/checkout@v2
 
@@ -168,25 +210,67 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Keep composer V1 until all dev dependencies are ready
-        run: sudo composer selfupdate --1
-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Switch to expected TYPO3 Version
+        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --testdox
 
-  tests-mysql:
+  tests-sqlite-TYPO3-v11:
     runs-on: ubuntu-latest
     needs:
-      - check-dependencies
+      - check-dependencies-TYPO3-v11
       - xml-linting
     strategy:
       matrix:
         php-version:
-          - 7.3
-          - 7.4
+          - '7.4'
+          - '8.0'
+        typo3-version:
+          - '11.2.*'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Switch to expected TYPO3 Version
+        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+
+      - name: PHPUnit Tests
+        run: ./vendor/bin/phpunit --testdox
+
+  tests-mysql-TYPO3-v10:
+    runs-on: ubuntu-latest
+    needs:
+      - check-dependencies-TYPO3-v10
+      - xml-linting
+    strategy:
+      matrix:
+        php-version:
+          - '7.4'
+        typo3-version:
+          - '^10.4'
     steps:
       - uses: actions/checkout@v2
 
@@ -210,11 +294,11 @@ jobs:
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
 
-      - name: Keep composer V1 until all dev dependencies are ready
-        run: sudo composer selfupdate --1
-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Switch to expected TYPO3 Version
+        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: PHPUnit Tests
         run: |-
@@ -225,16 +309,25 @@ jobs:
           export typo3DatabasePassword="root"
           ./vendor/bin/phpunit --testdox
 
-  code-quality:
+  tests-mysql-TYPO3-v11:
     runs-on: ubuntu-latest
-    needs: [check-dependencies]
+    needs:
+      - check-dependencies-TYPO3-V11
+      - xml-linting
+    strategy:
+      matrix:
+        php-version:
+          - '7.4'
+          - '8.0'
+        typo3-version:
+          - '11.2.*'
     steps:
       - uses: actions/checkout@v2
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.3"
+          php-version: "${{ matrix.php-version }}"
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -248,11 +341,99 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Keep composer V1 until all dev dependencies are ready
-        run: sudo composer selfupdate --1
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Switch to expected TYPO3 Version
+        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+
+      - name: PHPUnit Tests
+        run: |-
+          export typo3DatabaseDriver="mysqli"
+          export typo3DatabaseName="typo3"
+          export typo3DatabaseHost="127.0.0.1"
+          export typo3DatabaseUsername="root"
+          export typo3DatabasePassword="root"
+          ./vendor/bin/phpunit --testdox
+
+  code-quality-TYPO3-v10:
+    runs-on: ubuntu-latest
+    needs:
+      - check-dependencies-TYPO3-v10
+    strategy:
+      matrix:
+        php-version:
+          - '7.4'
+        typo3-version:
+          - '^10.4'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Switch to expected TYPO3 Version
+        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+
+      - name: Code Quality (by PHPStan)
+        run: ./vendor/bin/phpstan analyse
+
+  code-quality-TYPO3-v11:
+    runs-on: ubuntu-latest
+    needs:
+      - check-dependencies-TYPO3-v11
+    strategy:
+      matrix:
+        php-version:
+          - '7.4'
+          - '8.0'
+        typo3-version:
+          - '11.2.*'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Switch to expected TYPO3 Version
+        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: Code Quality (by PHPStan)
         run: ./vendor/bin/phpstan analyse
