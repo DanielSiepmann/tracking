@@ -189,7 +189,7 @@ class PageviewsPerPageTest extends TestCase
             GeneralUtility::makeInstance(PageRepository::class),
             31,
             6,
-            [1,2,3,4,5,6]
+            [1, 2, 3, 4, 5, 6]
         );
 
         $result = $subject->getChartData();

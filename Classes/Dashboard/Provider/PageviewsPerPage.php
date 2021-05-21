@@ -131,7 +131,7 @@ class PageviewsPerPage implements ChartDataProviderInterface
             )
             ->addSelect('pid')
             ->from('tx_tracking_pageview')
-            ->where(... $constraints)
+            ->where(...$constraints)
             ->groupBy('pid')
             ->orderBy('total', 'desc')
             ->addOrderBy('latest', 'desc')

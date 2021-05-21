@@ -23,7 +23,6 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Pageview;
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophet;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,6 +30,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
  * @covers DanielSiepmann\Tracking\Domain\Pageview\Factory

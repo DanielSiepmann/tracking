@@ -92,7 +92,7 @@ class NewestPageviews implements ListDataProviderInterface
             ->setMaxResults($this->maxResults);
 
         if ($constraints !== []) {
-            $this->queryBuilder->where(... $constraints);
+            $this->queryBuilder->where(...$constraints);
         }
 
         $items = $this->queryBuilder->execute()->fetchAll();

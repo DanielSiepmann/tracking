@@ -22,9 +22,9 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  */
 
 use DanielSiepmann\Tracking\Domain\Model\Recordview;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
  * @covers DanielSiepmann\Tracking\Domain\Model\Recordview

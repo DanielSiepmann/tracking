@@ -25,11 +25,11 @@ use DanielSiepmann\Tracking\Domain\Model\Pageview as Model;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
 use DanielSiepmann\Tracking\Domain\Repository\Pageview;
 use Doctrine\DBAL\Statement;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
  * @covers DanielSiepmann\Tracking\Domain\Repository\Pageview
