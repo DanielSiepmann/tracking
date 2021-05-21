@@ -16,4 +16,7 @@
     <rule ref="Generic.Files.LineLength.TooLong">
         <exclude-pattern>/Tests/*</exclude-pattern>
     </rule>
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>/Classes/Hooks/DataHandler.php</exclude-pattern>
+    </rule>
 </ruleset>
