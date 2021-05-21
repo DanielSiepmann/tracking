@@ -1,0 +1,10 @@
+pages
+,"uid","pid"
+,1,0
+,2,1
+tx_tracking_pageview
+,"uid","pid"
+,1,1
+tx_tracking_recordview
+,"uid","pid"
+,1,1
