@@ -24,7 +24,6 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Middleware;
 use DanielSiepmann\Tracking\Domain\Model\Recordview as Model;
 use DanielSiepmann\Tracking\Domain\Repository\Recordview as Repository;
 use DanielSiepmann\Tracking\Middleware\Recordview;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
@@ -33,6 +32,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
  * @covers DanielSiepmann\Tracking\Middleware\Recordview

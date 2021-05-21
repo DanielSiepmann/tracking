@@ -193,7 +193,7 @@ class Recordviews implements ChartDataProviderInterface
             )
             ->addSelect('record_uid', 'record_table_name')
             ->from('tx_tracking_recordview')
-            ->where(... $constraints)
+            ->where(...$constraints)
             ->groupBy('record', 'record_uid', 'record_table_name')
             ->orderBy('total', 'desc')
             ->addOrderBy('latest', 'desc')

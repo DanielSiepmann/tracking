@@ -229,7 +229,7 @@ class RecordviewsTest extends TestCase
             $connectionPool->getQueryBuilderForTable('tx_tracking_recordview'),
             31,
             6,
-            [1,2,3,4,5]
+            [1, 2, 3, 4, 5]
         );
 
         $result = $subject->getChartData();
@@ -320,7 +320,7 @@ class RecordviewsTest extends TestCase
             [],
             [],
             [],
-            ['1',2]
+            ['1', 2]
         );
 
         $result = $subject->getChartData();

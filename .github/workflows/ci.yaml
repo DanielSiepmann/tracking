@@ -140,9 +140,6 @@ jobs:
       - name: PHPUnit configuration file
         run: xmllint --schema vendor/phpunit/phpunit/phpunit.xsd --noout phpunit.xml.dist
 
-      - name: PHPCodeSniffer configuration file
-        run: xmllint --schema vendor/squizlabs/php_codesniffer/phpcs.xsd --noout phpcs.xml.dist
-
       - name: Fetch schema for xliff
         run: wget https://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd --output-document=.Build/xliff-core-1.2-strict.xsd
 
@@ -151,8 +148,6 @@ jobs:
 
   coding-guideline:
     runs-on: ubuntu-latest
-    needs:
-      - xml-linting
     steps:
       - uses: actions/checkout@v2
 
@@ -177,7 +172,7 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Coding Guideline
-        run: ./vendor/bin/phpcs
+        run: ./vendor/bin/ecs check
 
   tests-sqlite-TYPO3-v10:
     runs-on: ubuntu-latest

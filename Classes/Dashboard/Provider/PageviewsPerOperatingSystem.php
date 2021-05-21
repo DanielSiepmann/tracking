@@ -105,7 +105,7 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
             ->selectLiteral('count(operating_system) as total')
             ->addSelect('operating_system')
             ->from('tx_tracking_pageview')
-            ->where(... $constraints)
+            ->where(...$constraints)
             ->groupBy('tx_tracking_pageview.operating_system')
             ->orderBy('total', 'desc')
             ->addOrderBy('operating_system', 'asc')

@@ -103,7 +103,7 @@ class PageviewsPerDay implements ChartDataProviderInterface
         for ($daysBefore = $this->days; $daysBefore >= 0; $daysBefore--) {
             $timeForLabel = (int) strtotime('-' . $daysBefore . ' day');
             $startPeriod = (int) strtotime('-' . $daysBefore . ' day 0:00:00');
-            $endPeriod =  (int) strtotime('-' . $daysBefore . ' day 23:59:59');
+            $endPeriod = (int) strtotime('-' . $daysBefore . ' day 23:59:59');
 
             $labels[] = date($this->dateFormat, $timeForLabel);
             $data[] = $this->getPageviewsInPeriod($startPeriod, $endPeriod);
@@ -145,7 +145,7 @@ class PageviewsPerDay implements ChartDataProviderInterface
         return (int)$this->queryBuilder
             ->count('*')
             ->from('tx_tracking_pageview')
-            ->where(... $constraints)
+            ->where(...$constraints)
             ->execute()
             ->fetchColumn();
     }
