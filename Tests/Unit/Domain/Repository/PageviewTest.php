@@ -82,7 +82,7 @@ class PageviewTest extends TestCase
     /**
      * @test
      */
-    public function throwsExceptionIfModelToUodateHasNoUid(): void
+    public function throwsExceptionIfModelToUpdateHasNoUid(): void
     {
         $connection = $this->prophesize(Connection::class);
         $factory = $this->prophesize(Factory::class);
@@ -91,7 +91,9 @@ class PageviewTest extends TestCase
         $model->getUid()->willReturn(0);
 
         $subject = new Pageview($connection->reveal(), $factory->reveal());
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Can not update pageview if uid is 0.');
+        $this->expectExceptionCode(1585770573);
         $subject->update($model->reveal());
     }
 
