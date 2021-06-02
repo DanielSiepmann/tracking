@@ -1,0 +1,56 @@
+1.1.1
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+* Allow copy of pages
+
+  Pages can not be copied by administrators as DataHandler will copy all
+  pages, including tx_tracking_* tables.
+  Those are not allowed on tables which will result in error messages.
+
+  A test is added to simulate the action and ensure it doesn't fail with
+  errors.
+
+  Resolves: :issue:`52`.
+
+Tasks
+-----
+
+* Mark extension as stable within extension manager
+
+  This extension is already stable.
+  It is used since a year in multiple production systems.
+  Don't provide a bad feeling to integrators and users.
+
+* Add missing changelog for 1.1.0
+
+* Always use TestCase of testing framework
+
+  That way the framework can add extra logic like cleanup.
+  We don't have to worry about such things.
+
+* Switch to ECS for coding style
+
+  This allows configuration via PHP.
+  It also combines code sniffer and php cs fixer.
+
+* Remove --no-suggest from CI
+
+  This is no longer supported by composer V2.
+
+Deprecation
+-----------
+
+Nothing
