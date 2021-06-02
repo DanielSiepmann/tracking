@@ -1,0 +1,33 @@
+1.1.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+* Add Support for TYPO3 v11.2 and PHP 8.0.
+  Existing support is kept.
+  CI is extended to execute tests and checks with new possible combinations.
+
+Fixes
+-----
+
+* Add necessary transOrigPointerField.
+
+  This is necessary for TYPO3 11.2 support.
+  This can be dropped when 11.3 is released,
+  see: https://review.typo3.org/c/Packages/TYPO3.CMS/+/69180
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
