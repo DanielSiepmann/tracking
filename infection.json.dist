@@ -1,0 +1,24 @@
+{
+    "source": {
+        "directories": [
+            "Classes"
+        ]
+    },
+    "logs": {
+        "text": ".Build\/infection"
+    },
+    "mutators": {
+        "@default": true,
+        "CastArray": false,
+        "CastBool": false,
+        "CastFloat": false,
+        "CastInt": false,
+        "CastObject": false,
+        "CastString": false,
+        "MBString": {
+            "settings": {
+                "mb_stripos": false
+            }
+        }
+    }
+}

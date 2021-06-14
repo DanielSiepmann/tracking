@@ -296,4 +296,37 @@ class PageviewsPerPageTest extends TestCase
         ], $result['labels']);
         static::assertCount(3, $result['datasets'][0]['data']);
     }
+
+    /**
+     * @test
+     */
+    public function shortensTitleBasedOnUserSettings(): void
+    {
+        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Pages.xml');
+        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/BackendUserWithTitleLen.xml');
+        $this->setUpBackendUser(10);
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
+        for ($i = 1; $i <= 10; $i++) {
+            $connection->insert('tx_tracking_pageview', [
+                'pid' => $i,
+                'crdate' => time(),
+            ]);
+        }
+
+        $subject = new PageviewsPerPage(
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
+            GeneralUtility::makeInstance(PageRepository::class)
+        );
+
+        $result = $subject->getChartData();
+        static::assertSame([
+            'Page...',
+            'Page...',
+            'Page...',
+            'Page...',
+            'Page...',
+            'Page...',
+        ], $result['labels']);
+        static::assertCount(6, $result['datasets'][0]['data']);
+    }
 }
