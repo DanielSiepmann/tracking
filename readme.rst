@@ -35,11 +35,6 @@ PSR-14 Event Dispatcher
 EXT:dashboard
    Used to visualize collected tracking information.
 
-Todos
-=====
-
-#. Add version matrix to test with multiple PHP versions.
-
 Thanks
 ======
 
