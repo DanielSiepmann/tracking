@@ -17,7 +17,18 @@ Nothing
 Fixes
 -----
 
-Nothing
+* Improve performance of widgets with large datasets
+
+  A new database index is added which is used by widget queries.
+  This can reduce the calculation time of database based on dataset.
+  One concrete project reduced from > 5 seconds to below 0.2 seconds.
+
+  This mainly improves the PageviewsPerPage widget.
+
+  PageviewsPerDay is still way to slow, but I couldn't find a working approach to
+  improve performance.
+
+  Relates: :issue:`63`.
 
 Tasks
 -----
