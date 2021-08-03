@@ -32,6 +32,8 @@ Fixes
 
   Resolves: :issue:`63`.
 
+  Sponsored by: https://www.werkraum-media.de/
+
 Tasks
 -----
 
