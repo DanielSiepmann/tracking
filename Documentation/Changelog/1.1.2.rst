@@ -25,10 +25,12 @@ Fixes
 
   This mainly improves the PageviewsPerPage widget.
 
-  PageviewsPerDay is still way to slow, but I couldn't find a working approach to
-  improve performance.
+  PageviewsPerDay is fixed by altering the whole query to fetch all data in a
+  performant way.
+  A single query with native group by date is issued, instead of a single query per
+  day.
 
-  Relates: :issue:`63`.
+  Resolves: :issue:`63`.
 
 Tasks
 -----

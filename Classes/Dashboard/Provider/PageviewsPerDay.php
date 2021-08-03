@@ -101,21 +101,26 @@ class PageviewsPerDay implements ChartDataProviderInterface
         $data = [];
 
         for ($daysBefore = $this->days; $daysBefore >= 0; $daysBefore--) {
-            $timeForLabel = (int) strtotime('-' . $daysBefore . ' day');
-            $startPeriod = (int) strtotime('-' . $daysBefore . ' day 0:00:00');
-            $endPeriod = (int) strtotime('-' . $daysBefore . ' day 23:59:59');
+            $label = date($this->dateFormat, (int) strtotime('-' . $daysBefore . ' day'));
+            $labels[$label] = $label;
+            $data[$label] = 0;
+        }
 
-            $labels[] = date($this->dateFormat, $timeForLabel);
-            $data[] = $this->getPageviewsInPeriod($startPeriod, $endPeriod);
+        $start = (int) strtotime('-' . $this->days . ' day 0:00:00');
+        $end = (int) strtotime('tomorrow midnight');
+
+
+        foreach ($this->getPageviewsInPeriod($start, $end) as $day) {
+            $data[$day['label']] = (int) $day['count'];
         }
 
         return [
-            $labels,
-            $data,
+            array_values($labels),
+            array_values($data),
         ];
     }
 
-    private function getPageviewsInPeriod(int $start, int $end): int
+    private function getPageviewsInPeriod(int $start, int $end): array
     {
         $constraints = [
             $this->queryBuilder->expr()->gte('crdate', $start),
@@ -142,11 +147,20 @@ class PageviewsPerDay implements ChartDataProviderInterface
             );
         }
 
-        return (int)$this->queryBuilder
-            ->count('*')
+        $this->queryBuilder
+            ->addSelectLiteral('COUNT(*) as "count"')
             ->from('tx_tracking_pageview')
             ->where(...$constraints)
-            ->execute()
-            ->fetchColumn();
+            ->groupBy('label')
+            ->orderBy('label', 'ASC')
+            ;
+
+        if ($this->queryBuilder->getConnection()->getDatabasePlatform()->getName() === 'sqlite') {
+            $this->queryBuilder->addSelectLiteral('date(crdate, "unixepoch") as "label"');
+        } else {
+            $this->queryBuilder->addSelectLiteral('FROM_UNIXTIME(crdate, "%Y-%m-%d") as "label"');
+        }
+
+        return $this->queryBuilder->execute()->fetchAll();
     }
 }
