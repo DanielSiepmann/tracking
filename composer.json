@@ -34,9 +34,9 @@
         "psr/http-server-middleware": "^1.0",
         "symfony/console": "^5.2",
         "symfony/expression-language": "^5.2",
-        "typo3/cms-backend": "^10.4 || ~11.2",
-        "typo3/cms-core": "^10.4 || ~11.2",
-        "typo3/cms-dashboard": "^10.4 || ~11.2"
+        "typo3/cms-backend": "^10.4 || ~11.3",
+        "typo3/cms-core": "^10.4 || ~11.3",
+        "typo3/cms-dashboard": "^10.4 || ~11.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
