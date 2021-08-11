@@ -4,8 +4,12 @@ parameters:
         - Classes
         - Tests
     checkMissingIterableValueType: false
-    reportUnmatchedIgnoredErrors: true
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
+        # Ignore error for TYPO3 10 (ResultStatement) and TYPO3 11 (Statement)
         - '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
+        - '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
         - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
+        - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
         - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
+        - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
