@@ -14,6 +14,7 @@ jobs:
     strategy:
       matrix:
         php-version:
+          - 7.3
           - 7.4
           - 8.0
     steps:
@@ -35,6 +36,9 @@ jobs:
     strategy:
       matrix:
         php-version:
+          # no 7.3
+          # maglnet/composer-require-checker has no compatible version
+          # - '7.3'
           - '7.4'
         typo3-version:
           - '^10.4'
@@ -60,6 +64,9 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-plugins
+
+      - name: Install dependency checker
+        run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "maglnet/composer-require-checker"
 
       - name: Switch to expected TYPO3 Version
         run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
@@ -100,6 +107,9 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-plugins
+
+      - name: Install dependency checker
+        run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "maglnet/composer-require-checker"
 
       - name: Switch to expected TYPO3 Version
         run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
@@ -182,6 +192,7 @@ jobs:
     strategy:
       matrix:
         php-version:
+          - '7.3'
           - '7.4'
         typo3-version:
           - '^10.4'
@@ -255,13 +266,72 @@ jobs:
       - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --testdox
 
-  tests-mysql-TYPO3-v10:
+  tests-mysql-v5-TYPO3-v10:
     runs-on: ubuntu-latest
     needs:
       - check-dependencies-TYPO3-v10
       - xml-linting
     strategy:
       matrix:
+        db-version:
+          - '5.7'
+          - '5.6'
+        php-version:
+          - '7.3'
+          - '7.4'
+        typo3-version:
+          - '^10.4'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+            echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '${{ matrix.db-version }}'
+          mysql database: 'typo3'
+          mysql root password: 'root'
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Switch to expected TYPO3 Version
+        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+
+      - name: PHPUnit Tests
+        run: |-
+          export typo3DatabaseDriver="pdo_mysql"
+          export typo3DatabaseName="typo3"
+          export typo3DatabaseHost="127.0.0.1"
+          export typo3DatabaseUsername="root"
+          export typo3DatabasePassword="root"
+          ./vendor/bin/phpunit --testdox
+
+  tests-mysql-v8-TYPO3-v10:
+    runs-on: ubuntu-latest
+    needs:
+      - check-dependencies-TYPO3-v10
+      - xml-linting
+    strategy:
+      matrix:
+        db-version:
+          - '8'
         php-version:
           - '7.4'
         typo3-version:
@@ -286,8 +356,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '${{ matrix.db-version }}'
+          mysql database: 'typo3'
+          mysql root password: 'root'
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
@@ -297,20 +371,22 @@ jobs:
 
       - name: PHPUnit Tests
         run: |-
-          export typo3DatabaseDriver="mysqli"
+          export typo3DatabaseDriver="pdo_mysql"
           export typo3DatabaseName="typo3"
           export typo3DatabaseHost="127.0.0.1"
           export typo3DatabaseUsername="root"
           export typo3DatabasePassword="root"
           ./vendor/bin/phpunit --testdox
 
-  tests-mysql-TYPO3-v11:
+  tests-mysql-v8-TYPO3-v11:
     runs-on: ubuntu-latest
     needs:
       - check-dependencies-TYPO3-V11
       - xml-linting
     strategy:
       matrix:
+        db-version:
+          - '8'
         php-version:
           - '7.4'
           - '8.0'
@@ -336,8 +412,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: '${{ matrix.db-version }}'
+          mysql database: 'typo3'
+          mysql root password: 'root'
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
@@ -347,7 +427,7 @@ jobs:
 
       - name: PHPUnit Tests
         run: |-
-          export typo3DatabaseDriver="mysqli"
+          export typo3DatabaseDriver="pdo_mysql"
           export typo3DatabaseName="typo3"
           export typo3DatabaseHost="127.0.0.1"
           export typo3DatabaseUsername="root"
@@ -361,6 +441,7 @@ jobs:
     strategy:
       matrix:
         php-version:
+          - '7.3'
           - '7.4'
         typo3-version:
           - '^10.4'

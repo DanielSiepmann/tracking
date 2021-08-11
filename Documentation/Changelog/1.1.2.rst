@@ -12,7 +12,15 @@ Breaking
 Features
 --------
 
-Nothing
+* Support TYPO3 v10 running PHP version 7.3.
+  CI is extended to execute tests and checks with new possible combinations.
+
+  CI is also extended to test with multiple MySQL versions which depend on concrete
+  PHP version.
+
+  Resolves: :issue:`69`.
+
+  Sponsored by: https://www.werkraum-media.de/
 
 Fixes
 -----
