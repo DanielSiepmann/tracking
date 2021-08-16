@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dataset>
     <pages>
-        <pid>1</pid>
+        <pid>0</pid>
         <uid>1</uid>
         <title>Page 1</title>
+        <slug>/</slug>
     </pages>
     <pages>
         <pid>1</pid>

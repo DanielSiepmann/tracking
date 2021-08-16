@@ -13,3 +13,4 @@ parameters:
         - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
         - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
         - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
+        - '#^Variable \$_EXTKEY might not be defined\.$#'
