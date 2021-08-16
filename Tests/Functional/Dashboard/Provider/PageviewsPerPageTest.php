@@ -244,7 +244,7 @@ class PageviewsPerPageTest extends TestCase
         $result = $subject->getChartData();
         static::assertSame([
             'Page 2',
-            'Seite 1',
+            'Page 1',
         ], $result['labels']);
         static::assertCount(2, $result['datasets'][0]['data']);
     }
