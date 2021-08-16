@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Tests\Functional;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2021 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,13 +21,15 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * 02110-1301, USA.
  */
 
+namespace DanielSiepmann\Tracking\Tests\Functional;
+
 use DanielSiepmann\Tracking\Functional\CopyingPageWithRecordsWorks;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
- * @covers \DanielSiepmann\Tracking\Functional\CopyingPageWithRecordsWorks
+ * @covers \DanielSiepmann\Tracking\Hooks\DataHandler
  * @testdox This extension works with TYPO3 feature:
  */
 class Typo3FeaturesTest extends TestCase

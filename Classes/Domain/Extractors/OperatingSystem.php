@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
+ * Copyright (C) 2021 Daniel Siepmann <coding@daniel-siepmann.de>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,17 +21,25 @@ declare(strict_types=1);
  * 02110-1301, USA.
  */
 
-namespace DanielSiepmann\Tracking\Domain\Model;
+namespace DanielSiepmann\Tracking\Domain\Extractors;
 
-/**
- * API to extract further info out of an model.
- */
-class Extractor
+use DanielSiepmann\Tracking\Domain\Model\Pageview;
+use DanielSiepmann\Tracking\Domain\Model\Recordview;
+
+class OperatingSystem implements PageviewExtractor, RecordviewExtractor
 {
-    public static function getOperatingSystem(HasUserAgent $model): string
+    public function extractTagFromPageview(Pageview $pageview): array
     {
-        $userAgent = $model->getUserAgent();
+        return [new Tag('os', $this->getOperatingSystem($pageview->getUserAgent()))];
+    }
 
+    public function extractTagFromRecordview(Recordview $recordview): array
+    {
+        return [new Tag('os', $this->getOperatingSystem($recordview->getUserAgent()))];
+    }
+
+    private function getOperatingSystem(string $userAgent): string
+    {
         if (mb_stripos($userAgent, 'Android') !== false) {
             return 'Android';
         }
@@ -57,6 +65,6 @@ class Extractor
             return 'iOS';
         }
 
-        return '';
+        return 'Unkown';
     }
 }

@@ -30,6 +30,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 
 class Factory
 {
@@ -38,9 +39,16 @@ class Factory
      */
     private $expressionFactory;
 
+    /**
+     * @var SiteFinder
+     */
+    private $siteFinder;
+
     public function __construct(
+        SiteFinder $siteFinder,
         ExpressionFactory $expressionFactory
     ) {
+        $this->siteFinder = $siteFinder;
         $this->expressionFactory = $expressionFactory;
     }
 
@@ -72,6 +80,20 @@ class Factory
             $request->getHeader('User-Agent')[0] ?? '',
             (int) $recordUid,
             $rule->getTableName()
+        );
+    }
+
+    public function fromDbRow(array $dbRow): Recordview
+    {
+        return new Recordview(
+            $dbRow['pid'],
+            $this->siteFinder->getSiteByPageId($dbRow['pid'])->getLanguageById($dbRow['sys_language_uid']),
+            new \DateTimeImmutable('@' . $dbRow['crdate']),
+            $dbRow['url'],
+            $dbRow['user_agent'],
+            $dbRow['record_uid'],
+            $dbRow['record_table_name'],
+            $dbRow['uid']
         );
     }
 

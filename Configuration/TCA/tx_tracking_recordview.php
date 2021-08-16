@@ -17,7 +17,7 @@ return [
     ],
     'types' => [
         '0' => [
-            'showitem' => 'sys_language_uid, pid, record, url, user_agent, operating_system, crdate',
+            'showitem' => 'sys_language_uid, pid, record, url, user_agent, tags, crdate',
         ],
     ],
     'columns' => [
@@ -56,13 +56,6 @@ return [
                 'readOnly' => true,
             ],
         ],
-        'operating_system' => [
-            'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.recordview.operating_system',
-            'config' => [
-                'type' => 'input',
-                'readOnly' => true,
-            ],
-        ],
         'url' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.recordview.url',
             'config' => [
@@ -80,6 +73,16 @@ return [
                 'maxitems' => 1,
                 'minitems' => 1,
                 'size' => 1,
+            ],
+        ],
+        'tags' => [
+            'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.recordview.tags',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_tracking_tag',
+                'foreign_field' => 'record_uid',
+                'foreign_table_field' => 'record_table_name',
+                'readOnly' => true,
             ],
         ],
     ],

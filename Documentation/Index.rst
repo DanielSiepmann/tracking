@@ -41,6 +41,8 @@ The extension allows to track :ref:`pageview`,
 as well as views to specific TYPO3 records via :ref:`recordview`,
 e.g. records from EXT:news or EXT:tt_address.
 
+Each of them can be extended with arbitrary tags extracted from request.
+
 Missing features
 ----------------
 
@@ -90,4 +92,6 @@ in order to extract further information from them with future updates.
    Installation
    Pageview
    Recordview
+   Tags
+   UpdateExistingRecords
    Changelog

@@ -1,0 +1,65 @@
+2.0.0
+=====
+
+Breaking
+--------
+
+* No longer has ``operating_system`` database column.
+
+* No longer ships default rule to not track requests from bots.
+  Does track them as bots now.
+
+  How to update:
+
+  Remove custom adjustments from :file:`Services.yaml` regarding bot detection.
+  Instead extend built in bot extraction and adjust custom widgets to exclude those
+  bots.
+
+  Execute the provided command (scheduler task) to update existing data.
+  Bots and operating system will be extracted from stored user agent.
+
+  See: :ref:`tags`.
+
+* Existing widgets will no longer work with custom configuration.
+  Configuration needs to be adjusted.
+
+  .. todo:: document how to migrate
+
+* Widgets will not work with old data.
+  How to migrate data:
+
+  Execute the provided scheduler task.
+  It will incrementally update pageviews and recordviews.
+  3500 records of each will be updated per each run.
+  Roughly executing every 10 minutes seems to be a good idea.
+
+Features
+--------
+
+* Added support for tags
+
+  Tags can now be added to :ref:`pageview` and :ref:`recordview`.
+  The extension ships with some out of the box, but further can be added, see
+  :ref:`tags`.
+
+  Resolves: :issue:`46`.
+
+  Sponsored by: https://www.werkraum-media.de/
+
+* Uses ``matomo/device-detector`` library to detect bots.
+  Some known bots are added on top.
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing

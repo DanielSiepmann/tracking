@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Recordview;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,6 +21,8 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Recordview;
  * 02110-1301, USA.
  */
 
+namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Recordview;
+
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
 use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use DanielSiepmann\Tracking\Domain\Recordview\Factory;
@@ -31,7 +33,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Domain\Recordview\Factory
+ * @covers \DanielSiepmann\Tracking\Domain\Recordview\Factory
  */
 class FactoryTest extends FunctionalTestCase
 {
@@ -67,7 +69,7 @@ class FactoryTest extends FunctionalTestCase
         $subject = $this->get(Factory::class);
 
         $result = $subject->fromRequest($request->reveal(), $rule->reveal());
-        static::assertInstanceOf(Recordview::class, $result);
+        self::assertInstanceOf(Recordview::class, $result);
     }
 
     /**
@@ -96,7 +98,7 @@ class FactoryTest extends FunctionalTestCase
         $subject = $this->get(Factory::class);
 
         $result = $subject->fromRequest($request->reveal(), $rule->reveal());
-        static::assertSame('Some User Agent', $result->getUserAgent());
+        self::assertSame('Some User Agent', $result->getUserAgent());
     }
 
     /**
@@ -125,7 +127,7 @@ class FactoryTest extends FunctionalTestCase
         $subject = $this->get(Factory::class);
 
         $result = $subject->fromRequest($request->reveal(), $rule->reveal());
-        static::assertSame('https://example.com', $result->getUrl());
+        self::assertSame('https://example.com', $result->getUrl());
     }
 
     /**
@@ -154,7 +156,7 @@ class FactoryTest extends FunctionalTestCase
         $subject = $this->get(Factory::class);
 
         $result = $subject->fromRequest($request->reveal(), $rule->reveal());
-        static::assertInstanceOf(\DateTimeImmutable::class, $result->getCrdate());
+        self::assertInstanceOf(\DateTimeImmutable::class, $result->getCrdate());
     }
 
     /**
@@ -183,7 +185,7 @@ class FactoryTest extends FunctionalTestCase
         $subject = $this->get(Factory::class);
 
         $result = $subject->fromRequest($request->reveal(), $rule->reveal());
-        static::assertSame($language->reveal(), $result->getLanguage());
+        self::assertSame($language->reveal(), $result->getLanguage());
     }
 
     /**
@@ -212,7 +214,7 @@ class FactoryTest extends FunctionalTestCase
         $subject = $this->get(Factory::class);
 
         $result = $subject->fromRequest($request->reveal(), $rule->reveal());
-        static::assertSame(10, $result->getPageUid());
+        self::assertSame(10, $result->getPageUid());
     }
 
     /**
@@ -241,7 +243,7 @@ class FactoryTest extends FunctionalTestCase
         $subject = $this->get(Factory::class);
 
         $result = $subject->fromRequest($request->reveal(), $rule->reveal());
-        static::assertSame(20, $result->getRecordUid());
+        self::assertSame(20, $result->getRecordUid());
     }
 
     /**
@@ -270,6 +272,6 @@ class FactoryTest extends FunctionalTestCase
         $subject = $this->get(Factory::class);
 
         $result = $subject->fromRequest($request->reveal(), $rule->reveal());
-        static::assertSame('sys_category', $result->getTableName());
+        self::assertSame('sys_category', $result->getTableName());
     }
 }

@@ -36,30 +36,16 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
     private $queryBuilder;
 
     /**
-     * @var int
+     * @var Demand
      */
-    private $days;
-
-    /**
-     * @var int
-     */
-    private $maxResults;
-
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
+    private $demand;
 
     public function __construct(
         QueryBuilder $queryBuilder,
-        int $days = 31,
-        int $maxResults = 6,
-        array $languageLimitation = []
+        Demand $demand
     ) {
         $this->queryBuilder = $queryBuilder;
-        $this->days = $days;
-        $this->maxResults = $maxResults;
-        $this->languageLimitation = $languageLimitation;
+        $this->demand = $demand;
     }
 
     public function getChartData(): array
@@ -85,33 +71,42 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
         $constraints = [
             $this->queryBuilder->expr()->gte(
                 'tx_tracking_pageview.crdate',
-                strtotime('-' . $this->days . ' day 0:00:00')
+                strtotime('-' . $this->demand->getDays() . ' day 0:00:00')
             ),
             $this->queryBuilder->expr()->neq(
-                'tx_tracking_pageview.operating_system',
+                'operating_system',
                 $this->queryBuilder->createNamedParameter('')
             ),
         ];
 
-        if (count($this->languageLimitation)) {
-            $constraints[] = $this->queryBuilder->expr()->in(
-                'tx_tracking_pageview.sys_language_uid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->languageLimitation,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
+        $constraints = array_merge($constraints, $this->demand->getConstraints(
+            $this->queryBuilder,
+            'tx_tracking_pageview'
+        ));
+
+        $this->demand->addJoins($this->queryBuilder, 'tx_tracking_pageview');
 
         $result = $this->queryBuilder
-            ->selectLiteral('count(operating_system) as total')
-            ->addSelect('operating_system')
+            ->addSelect('tag.value as operating_system')
+            ->addSelectLiteral(
+                'count(' . $this->queryBuilder->quoteIdentifier('operating_system') . ') as total'
+            )
             ->from('tx_tracking_pageview')
+            ->leftJoin(
+                'tx_tracking_pageview',
+                'tx_tracking_tag',
+                'tag',
+                (string) $this->queryBuilder->expr()->andX(
+                    $this->queryBuilder->expr()->eq('tx_tracking_pageview.uid', $this->queryBuilder->quoteIdentifier('tag.record_uid')),
+                    $this->queryBuilder->expr()->eq('tag.name', $this->queryBuilder->createNamedParameter('os')),
+                    $this->queryBuilder->expr()->eq('tag.record_table_name', $this->queryBuilder->createNamedParameter('tx_tracking_pageview'))
+                )
+            )
             ->where(...$constraints)
-            ->groupBy('tx_tracking_pageview.operating_system')
+            ->groupBy('operating_system')
             ->orderBy('total', 'desc')
             ->addOrderBy('operating_system', 'asc')
-            ->setMaxResults($this->maxResults)
+            ->setMaxResults($this->demand->getMaxResults())
             ->execute()
             ->fetchAll();
 

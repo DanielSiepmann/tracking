@@ -24,7 +24,12 @@ declare(strict_types=1);
 namespace DanielSiepmann\Tracking\Domain\Repository;
 
 use DanielSiepmann\Tracking\Domain\Model\Recordview as Model;
+use DanielSiepmann\Tracking\Domain\Recordview\Factory;
+use DanielSiepmann\Tracking\Extension;
 use TYPO3\CMS\Core\Database\Connection;
+
+// TODO: Move common code to API class.
+// Call API Class with table name
 
 class Recordview
 {
@@ -33,10 +38,77 @@ class Recordview
      */
     private $connection;
 
+    /**
+     * @var Factory
+     */
+    private $factory;
+
+    /**
+     * @var Tag
+     */
+    private $tagRepository;
+
     public function __construct(
-        Connection $connection
+        Connection $connection,
+        Factory $factory,
+        Tag $tagRepository
     ) {
         $this->connection = $connection;
+        $this->factory = $factory;
+        $this->tagRepository = $tagRepository;
+    }
+
+    public function findLegacyCount(): int
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->count('*');
+        $queryBuilder->from('tx_tracking_recordview');
+        $queryBuilder->where($queryBuilder->expr()->neq('compatible_version', $queryBuilder->createNamedParameter(Extension::getCompatibleVersionNow())));
+        $queryBuilder->setMaxResults(Extension::getMaximumRowsForUpdate());
+
+        $recordviews = $queryBuilder->execute()->fetchColumn();
+        if (is_numeric($recordviews) === false) {
+            return 0;
+        }
+
+        if ($recordviews > Extension::getMaximumRowsForUpdate()) {
+            return Extension::getMaximumRowsForUpdate();
+        }
+        return (int) $recordviews;
+    }
+
+    public function findLegacy(): \Generator
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->select('*');
+        $queryBuilder->from('tx_tracking_recordview');
+        $queryBuilder->where($queryBuilder->expr()->neq('compatible_version', $queryBuilder->createNamedParameter(Extension::getCompatibleVersionNow())));
+        $queryBuilder->setMaxResults(Extension::getMaximumRowsForUpdate());
+
+        $recordviews = $queryBuilder->execute();
+
+        while ($pageView = $recordviews->fetch()) {
+            if (is_array($pageView) === false) {
+                continue;
+            }
+
+            yield $this->factory->fromDbRow($pageView);
+        }
+    }
+
+    public function update(Model $model): void
+    {
+        if ($model->getUid() === 0) {
+            throw new \InvalidArgumentException('Can not update recordview if uid is 0.', 1585770573);
+        }
+
+        $this->connection->update(
+            'tx_tracking_recordview',
+            $this->getFieldsFromModel($model),
+            ['uid' => $model->getUid()]
+        );
+
+        $this->tagRepository->updateForRecordview($model);
     }
 
     public function add(Model $recordview): void
@@ -44,6 +116,11 @@ class Recordview
         $this->connection->insert(
             'tx_tracking_recordview',
             $this->getFieldsFromModel($recordview)
+        );
+
+        $this->tagRepository->addForRecordview(
+            $recordview,
+            (int) $this->connection->lastInsertId('tx_tracking_recordview')
         );
     }
 
@@ -56,10 +133,10 @@ class Recordview
             'sys_language_uid' => $recordview->getLanguage()->getLanguageId(),
             'url' => $recordview->getUrl(),
             'user_agent' => $recordview->getUserAgent(),
-            'operating_system' => $recordview->getOperatingSystem(),
             'record_uid' => $recordview->getRecordUid(),
             'record_table_name' => $recordview->getTableName(),
             'record' => $recordview->getTableName() . '_' . $recordview->getRecordUid(),
+            'compatible_version' => Extension::getCompatibleVersionNow(),
         ];
     }
 }

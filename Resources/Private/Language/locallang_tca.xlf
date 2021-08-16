@@ -27,8 +27,8 @@
             <trans-unit id="table.pageview.user_agent">
                 <source>User agent</source>
             </trans-unit>
-            <trans-unit id="table.pageview.operating_system">
-                <source>Operating System</source>
+            <trans-unit id="table.pageview.tags">
+                <source>Tags</source>
             </trans-unit>
 
             <trans-unit id="table.recordview">
@@ -55,8 +55,24 @@
             <trans-unit id="table.recordview.user_agent">
                 <source>User agent</source>
             </trans-unit>
-            <trans-unit id="table.recordview.operating_system">
-                <source>Operating System</source>
+            <trans-unit id="table.recordview.tags">
+                <source>Tags</source>
+            </trans-unit>
+
+            <trans-unit id="table.tag.pid">
+                <source>PID</source>
+            </trans-unit>
+            <trans-unit id="table.tag.record_uid">
+                <source>Foreign Record UID</source>
+            </trans-unit>
+            <trans-unit id="table.tag.record_table_name">
+                <source>Foreign Record Table Name</source>
+            </trans-unit>
+            <trans-unit id="table.tag.name">
+                <source>Name</source>
+            </trans-unit>
+            <trans-unit id="table.tag.value">
+                <source>Value</source>
             </trans-unit>
         </body>
     </file>

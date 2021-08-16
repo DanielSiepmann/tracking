@@ -56,11 +56,6 @@ Let us examine an concrete example::
                  request.getQueryParams()["tx_news_pi1"] && request.getQueryParams()["tx_news_pi1"]["news"] > 0
                  and not (context.getAspect("backend.user").isLoggedIn())
                  and not (context.getAspect("frontend.preview").isPreview())
-                 and traverse(request.getHeader("User-Agent"), '0')
-                 and not (request.getHeader("User-Agent")[0] matches "/^TYPO3|TYPO3 linkvalidator/")
-                 and not (request.getHeader("User-Agent")[0] matches "/Wget|curl|Go-http-client/")
-                 and not (request.getHeader("User-Agent")[0] matches "/bot|spider|Slurp|Sogou|NextCloud-News|Feedly|XING FeedReader|SEOkicks|Seekport Crawler|ia_archiver|TrendsmapResolver|Nuzzel/")
-                 and not (request.getHeader("User-Agent")[0] matches "/mattermost|Slackbot|WhatsApp/")
              recordUid: 'traverse(request.getQueryParams(), "tx_news_pi1", "news")'
              tableName: 'tx_news_domain_model_news'
 

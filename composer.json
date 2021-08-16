@@ -36,7 +36,8 @@
         "symfony/expression-language": "^5.2",
         "typo3/cms-backend": "^10.4 || ^11.5",
         "typo3/cms-core": "^10.4 || ^11.5",
-        "typo3/cms-dashboard": "^10.4 || ^11.5"
+        "typo3/cms-dashboard": "^10.4 || ^11.5",
+        "matomo/device-detector": "^6.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",

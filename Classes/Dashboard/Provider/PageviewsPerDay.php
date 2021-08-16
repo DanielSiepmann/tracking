@@ -43,38 +43,24 @@ class PageviewsPerDay implements ChartDataProviderInterface
     private $queryBuilder;
 
     /**
-     * @var int
+     * @var Demand
      */
-    private $days;
-
-    /**
-     * @var array<int>
-     */
-    private $pagesToExclude;
+    private $demand;
 
     /**
      * @var string
      */
     private $dateFormat;
 
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
-
     public function __construct(
         LanguageService $languageService,
         QueryBuilder $queryBuilder,
-        int $days = 31,
-        array $pagesToExclude = [],
-        array $languageLimitation = [],
+        Demand $demand,
         string $dateFormat = 'Y-m-d'
     ) {
         $this->languageService = $languageService;
         $this->queryBuilder = $queryBuilder;
-        $this->days = $days;
-        $this->pagesToExclude = $pagesToExclude;
-        $this->languageLimitation = $languageLimitation;
+        $this->demand = $demand;
         $this->dateFormat = $dateFormat;
     }
 
@@ -102,13 +88,13 @@ class PageviewsPerDay implements ChartDataProviderInterface
         $labels = [];
         $data = [];
 
-        for ($daysBefore = $this->days; $daysBefore >= 0; $daysBefore--) {
+        for ($daysBefore = $this->demand->getDays(); $daysBefore >= 0; $daysBefore--) {
             $label = date($this->dateFormat, (int) strtotime('-' . $daysBefore . ' day'));
             $labels[$label] = $label;
             $data[$label] = 0;
         }
 
-        $start = (int) strtotime('-' . $this->days . ' day 0:00:00');
+        $start = (int) strtotime('-' . $this->demand->getDays() . ' day 0:00:00');
         $end = (int) strtotime('tomorrow midnight');
 
 
@@ -125,32 +111,19 @@ class PageviewsPerDay implements ChartDataProviderInterface
     private function getPageviewsInPeriod(int $start, int $end): array
     {
         $constraints = [
-            $this->queryBuilder->expr()->gte('crdate', $start),
-            $this->queryBuilder->expr()->lte('crdate', $end),
+            $this->queryBuilder->expr()->gte('tx_tracking_pageview.crdate', $start),
+            $this->queryBuilder->expr()->lte('tx_tracking_pageview.crdate', $end),
         ];
 
-        if (count($this->pagesToExclude)) {
-            $constraints[] = $this->queryBuilder->expr()->notIn(
-                'tx_tracking_pageview.pid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->pagesToExclude,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
+        $constraints = array_merge($constraints, $this->demand->getConstraints(
+            $this->queryBuilder,
+            'tx_tracking_pageview'
+        ));
 
-        if (count($this->languageLimitation)) {
-            $constraints[] = $this->queryBuilder->expr()->in(
-                'tx_tracking_pageview.sys_language_uid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->languageLimitation,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
+        $this->demand->addJoins($this->queryBuilder, 'tx_tracking_pageview');
 
         $this->queryBuilder
-            ->addSelectLiteral('COUNT(*) as "count"')
+            ->addSelectLiteral('COUNT(tx_tracking_pageview.uid) as "count"')
             ->from('tx_tracking_pageview')
             ->where(...$constraints)
             ->groupBy('label')
@@ -158,9 +131,9 @@ class PageviewsPerDay implements ChartDataProviderInterface
             ;
 
         if ($this->queryBuilder->getConnection()->getDatabasePlatform()->getName() === 'sqlite') {
-            $this->queryBuilder->addSelectLiteral('date(crdate, "unixepoch") as "label"');
+            $this->queryBuilder->addSelectLiteral('date(tx_tracking_pageview.crdate, "unixepoch") as "label"');
         } else {
-            $this->queryBuilder->addSelectLiteral('FROM_UNIXTIME(crdate, "%Y-%m-%d") as "label"');
+            $this->queryBuilder->addSelectLiteral('FROM_UNIXTIME(tx_tracking_pageview.crdate, "%Y-%m-%d") as "label"');
         }
 
         return $this->queryBuilder->execute()->fetchAll();

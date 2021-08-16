@@ -43,12 +43,6 @@ Let us examine an concrete example::
          $rule: >
              not (context.getAspect("backend.user").isLoggedIn())
              and not (context.getAspect("frontend.preview").isPreview())
-             and traverse(request.getHeader("User-Agent"), '0')
-             and not (request.getHeader("User-Agent")[0] matches "/^TYPO3|TYPO3 linkvalidator/")
-             and not (request.getHeader("User-Agent")[0] matches "/^Codeception Testing/")
-             and not (request.getHeader("User-Agent")[0] matches "/Wget|curl|Go-http-client/")
-             and not (request.getHeader("User-Agent")[0] matches "/bot|spider|Slurp|Sogou|NextCloud-News|Feedly|XING FeedReader|SEOkicks|Seekport Crawler|ia_archiver|TrendsmapResolver|Nuzzel/")
-             and not (request.getHeader("User-Agent")[0] matches "/mattermost|Slackbot|WhatsApp/")
 
 The first paragraph will not be explained, check out :ref:`t3coreapi:configure-dependency-injection-in-extensions` instead.
 
@@ -71,8 +65,7 @@ Check `PSR-7: HTTP message interfaces <https://www.php-fig.org/psr/psr-7/#321-ps
 as well as
 :ref:`t3coreapi:context-api`.
 
-The above example blocks tracking for requests with logged in backend user,
-as well as specific user agents like bots, TYPO3 itself and other systems.
+The above example blocks tracking for requests with logged in backend user.
 
 Widgets
 -------

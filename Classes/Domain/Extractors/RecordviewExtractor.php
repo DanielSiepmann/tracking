@@ -21,9 +21,17 @@ declare(strict_types=1);
  * 02110-1301, USA.
  */
 
-namespace DanielSiepmann\Tracking\Domain\Model;
+namespace DanielSiepmann\Tracking\Domain\Extractors;
 
-interface HasUserAgent
+use DanielSiepmann\Tracking\Domain\Model\Recordview;
+
+/**
+ * API to extract further info out of an model.
+ */
+interface RecordviewExtractor
 {
-    public function getUserAgent(): string;
+    /**
+     * @return Tag[]
+     */
+    public function extractTagFromRecordview(Recordview $recordview): array;
 }

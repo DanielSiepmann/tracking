@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,13 +21,16 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
  * 02110-1301, USA.
  */
 
+namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
+
+use DanielSiepmann\Tracking\Dashboard\Provider\Demand;
 use DanielSiepmann\Tracking\Dashboard\Provider\Recordviews;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Dashboard\Provider\Recordviews
+ * @covers \DanielSiepmann\Tracking\Dashboard\Provider\Recordviews
  */
 class RecordviewsTest extends TestCase
 {
@@ -53,11 +56,12 @@ class RecordviewsTest extends TestCase
 
         $subject = new Recordviews(
             GeneralUtility::makeInstance(PageRepository::class),
-            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview')
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new Demand()
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Category 10',
             'Category 9',
             'Category 8',
@@ -65,7 +69,7 @@ class RecordviewsTest extends TestCase
             'Category 6',
             'Category 5',
         ], $result['labels']);
-        static::assertCount(6, $result['datasets'][0]['data']);
+        self::assertCount(6, $result['datasets'][0]['data']);
     }
 
     /**
@@ -103,16 +107,16 @@ class RecordviewsTest extends TestCase
         $subject = new Recordviews(
             GeneralUtility::makeInstance(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
-            2
+            new Demand(2)
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Category 2',
             'Category 3',
             'Category 1',
         ], $result['labels']);
-        static::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, $result['datasets'][0]['data']);
     }
 
     /**
@@ -144,15 +148,15 @@ class RecordviewsTest extends TestCase
         $subject = new Recordviews(
             GeneralUtility::makeInstance(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
-            2
+            new Demand(2)
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Category 3',
             'Category 2',
         ], $result['labels']);
-        static::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, $result['datasets'][0]['data']);
     }
 
     /**
@@ -174,16 +178,15 @@ class RecordviewsTest extends TestCase
         $subject = new Recordviews(
             GeneralUtility::makeInstance(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
-            31,
-            2
+            new Demand(31, 2)
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Category 10',
             'Category 9',
         ], $result['labels']);
-        static::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, $result['datasets'][0]['data']);
     }
 
     /**
@@ -206,20 +209,18 @@ class RecordviewsTest extends TestCase
         $subject = new Recordviews(
             GeneralUtility::makeInstance(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
-            31,
-            6,
-            [1, 2, 3, 4, 5]
+            new Demand(31, 6, [1, 2, 3, 4, 5])
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Category 10',
             'Category 9',
             'Category 8',
             'Category 7',
             'Category 6',
         ], $result['labels']);
-        static::assertCount(5, $result['datasets'][0]['data']);
+        self::assertCount(5, $result['datasets'][0]['data']);
     }
 
     /**
@@ -247,20 +248,17 @@ class RecordviewsTest extends TestCase
         $subject = new Recordviews(
             GeneralUtility::makeInstance(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
-            31,
-            6,
-            [],
-            [],
+            new Demand(31, 6),
             ['sys_category']
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Category 3',
             'Category 2',
             'Category 1',
         ], $result['labels']);
-        static::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, $result['datasets'][0]['data']);
     }
 
     /**
@@ -286,20 +284,17 @@ class RecordviewsTest extends TestCase
         $subject = new Recordviews(
             GeneralUtility::makeInstance(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
-            31,
-            6,
-            [],
-            [],
+            new Demand(31, 6),
             [],
             ['1', 2]
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Content element 2',
             'Content element 1',
         ], $result['labels']);
-        static::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, $result['datasets'][0]['data']);
     }
 
     /**
@@ -334,20 +329,15 @@ class RecordviewsTest extends TestCase
         $subject = new Recordviews(
             GeneralUtility::makeInstance(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
-            31,
-            6,
-            [],
-            [1],
-            [],
-            []
+            new Demand(31, 6, [], [1])
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Category 2',
             'Kategorie 1',
         ], $result['labels']);
-        static::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, $result['datasets'][0]['data']);
     }
 
     /**
@@ -382,19 +372,16 @@ class RecordviewsTest extends TestCase
         $subject = new Recordviews(
             GeneralUtility::makeInstance(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
-            31,
-            6,
-            [],
-            [1, 0],
-            [],
-            []
+            new Demand(31, 6, [], [1, 0])
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Category 1',
             'Category 2',
         ], $result['labels']);
-        static::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, $result['datasets'][0]['data']);
     }
+
+    // TODO: Add tests for new feature regarding tags
 }

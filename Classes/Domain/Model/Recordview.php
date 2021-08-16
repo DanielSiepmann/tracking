@@ -25,8 +25,13 @@ namespace DanielSiepmann\Tracking\Domain\Model;
 
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
-class Recordview implements HasUserAgent
+class Recordview
 {
+    /**
+     * @var int
+     */
+    private $uid = 0;
+
     /**
      * @var int
      */
@@ -69,8 +74,10 @@ class Recordview implements HasUserAgent
         string $url,
         string $userAgent,
         int $recordUid,
-        string $tableName
+        string $tableName,
+        int $uid = 0
     ) {
+        $this->uid = $uid;
         $this->pageUid = $pageUid;
         $this->language = $language;
         $this->crdate = $crdate;
@@ -78,6 +85,11 @@ class Recordview implements HasUserAgent
         $this->userAgent = $userAgent;
         $this->recordUid = $recordUid;
         $this->tableName = $tableName;
+    }
+
+    public function getUid(): int
+    {
+        return $this->uid;
     }
 
     public function getPageUid(): int
@@ -113,10 +125,5 @@ class Recordview implements HasUserAgent
     public function getTableName(): string
     {
         return $this->tableName;
-    }
-
-    public function getOperatingSystem(): string
-    {
-        return Extractor::getOperatingSystem($this);
     }
 }

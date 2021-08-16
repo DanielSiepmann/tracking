@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,32 +21,54 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  * 02110-1301, USA.
  */
 
+namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Extractors;
+
+use DanielSiepmann\Tracking\Domain\Extractors\OperatingSystem;
 use DanielSiepmann\Tracking\Domain\Model\Extractor;
-use DanielSiepmann\Tracking\Domain\Model\HasUserAgent;
+use DanielSiepmann\Tracking\Domain\Model\Pageview;
+use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Domain\Model\Extractor
+ * @covers \DanielSiepmann\Tracking\Domain\Extractors\OperatingSystem
  */
-class ExtractorTest extends TestCase
+class OperatingSystemTest extends TestCase
 {
     use ProphecyTrait;
 
     /**
      * @test
      * @dataProvider possibleUserStringWithOperatingSystems
-     * @testdox Operating system $expectedOperatingSystem is extracted from UserAgent string: $userAgent
+     * @testdox Operating system $expectedOperatingSystem is extracted from Pageview UserAgent string: $userAgent
      */
-    public function returnsOperatingSystem(string $userAgent, string $expectedOperatingSystem): void
+    public function returnsOperatingSystemForPageview(string $userAgent, string $expectedOperatingSystem): void
     {
-        $model = $this->prophesize(HasUserAgent::class);
+        $model = $this->prophesize(Pageview::class);
         $model->getUserAgent()->willReturn($userAgent);
 
-        static::assertSame(
-            $expectedOperatingSystem,
-            Extractor::getOperatingSystem($model->reveal())
-        );
+        $extractor = new OperatingSystem();
+        $tags = $extractor->extractTagFromPageview($model->reveal());
+
+        self::assertCount(1, $tags);
+        self::assertSame($expectedOperatingSystem, $tags[0]->getValue());
+    }
+
+    /**
+     * @test
+     * @dataProvider possibleUserStringWithOperatingSystems
+     * @testdox Operating system $expectedOperatingSystem is extracted from Recordview UserAgent string: $userAgent
+     */
+    public function returnsOperatingSystemForRecordview(string $userAgent, string $expectedOperatingSystem): void
+    {
+        $model = $this->prophesize(Recordview::class);
+        $model->getUserAgent()->willReturn($userAgent);
+
+        $extractor = new OperatingSystem();
+        $tags = $extractor->extractTagFromRecordview($model->reveal());
+
+        self::assertCount(1, $tags);
+        self::assertSame($expectedOperatingSystem, $tags[0]->getValue());
     }
 
     public function possibleUserStringWithOperatingSystems(): array
@@ -62,11 +84,11 @@ class ExtractorTest extends TestCase
             ],
             [
                 'userAgent' => 'Apache-HttpClient/4.5.2 (Java/1.8.0_151)',
-                'expectedOperatingSystem' => '',
+                'expectedOperatingSystem' => 'Unkown',
             ],
             [
                 'userAgent' => 'AwarioSmartBot/1.0 (+https://awario.com/bots.html; bots@awario.com)',
-                'expectedOperatingSystem' => '',
+                'expectedOperatingSystem' => 'Unkown',
             ],
             [
                 'userAgent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)',

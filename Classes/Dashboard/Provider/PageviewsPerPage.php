@@ -45,39 +45,18 @@ class PageviewsPerPage implements ChartDataProviderInterface
     private $pageRepository;
 
     /**
-     * @var int
+     * @var Demand
      */
-    private $days;
-
-    /**
-     * @var int
-     */
-    private $maxResults;
-
-    /**
-     * @var array<int>
-     */
-    private $pagesToExclude;
-
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
+    private $demand;
 
     public function __construct(
         QueryBuilder $queryBuilder,
         PageRepository $pageRepository,
-        int $days = 31,
-        int $maxResults = 6,
-        array $pagesToExclude = [],
-        array $languageLimitation = []
+        Demand $demand
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->pageRepository = $pageRepository;
-        $this->days = $days;
-        $this->maxResults = $maxResults;
-        $this->pagesToExclude = $pagesToExclude;
-        $this->languageLimitation = $languageLimitation;
+        $this->demand = $demand;
     }
 
     public function getChartData(): array
@@ -99,45 +78,33 @@ class PageviewsPerPage implements ChartDataProviderInterface
     {
         $labels = [];
         $data = [];
-
         $constraints = [
-            $this->queryBuilder->expr()->gte(
+            (string) $this->queryBuilder->expr()->gte(
                 'tx_tracking_pageview.crdate',
-                strtotime('-' . $this->days . ' day 0:00:00')
+                strtotime('-' . $this->demand->getDays() . ' day 0:00:00')
             ),
         ];
-        if (count($this->pagesToExclude)) {
-            $constraints[] = $this->queryBuilder->expr()->notIn(
-                'tx_tracking_pageview.pid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->pagesToExclude,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
-
-        if (count($this->languageLimitation)) {
-            $constraints[] = $this->queryBuilder->expr()->in(
-                'tx_tracking_pageview.sys_language_uid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->languageLimitation,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
+        $constraints = array_merge($constraints, $this->demand->getConstraints(
+            $this->queryBuilder,
+            'tx_tracking_pageview'
+        ));
+        $this->demand->addJoins(
+            $this->queryBuilder,
+            'tx_tracking_pageview'
+        );
 
         $result = $this->queryBuilder
             ->selectLiteral(
-                $this->queryBuilder->expr()->count('pid', 'total'),
-                $this->queryBuilder->expr()->max('uid', 'latest')
+                $this->queryBuilder->expr()->count('tx_tracking_pageview.pid', 'total'),
+                $this->queryBuilder->expr()->max('tx_tracking_pageview.uid', 'latest')
             )
-            ->addSelect('pid')
+            ->addSelect('tx_tracking_pageview.pid')
             ->from('tx_tracking_pageview')
             ->where(...$constraints)
-            ->groupBy('pid')
+            ->groupBy('tx_tracking_pageview.pid')
             ->orderBy('total', 'desc')
             ->addOrderBy('latest', 'desc')
-            ->setMaxResults($this->maxResults)
+            ->setMaxResults($this->demand->getMaxResults())
             ->execute()
             ->fetchAll();
 
@@ -159,8 +126,8 @@ class PageviewsPerPage implements ChartDataProviderInterface
     private function getRecordTitle(int $uid): string
     {
         $record = BackendUtility::getRecord('pages', $uid);
-        if (count($this->languageLimitation) === 1 && $record !== null) {
-            $record = $this->pageRepository->getRecordOverlay('pages', $record, $this->languageLimitation[0]);
+        if (count($this->demand->getLanguageLimitation()) === 1 && $record !== null) {
+            $record = $this->pageRepository->getRecordOverlay('pages', $record, $this->demand->getLanguageLimitation()[0]);
         }
 
         if (is_array($record) === false) {

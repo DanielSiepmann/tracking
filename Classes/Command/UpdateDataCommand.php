@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace DanielSiepmann\Tracking\Command;
 
 use DanielSiepmann\Tracking\Domain\Repository\Pageview;
+use DanielSiepmann\Tracking\Domain\Repository\Recordview;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,33 +36,58 @@ class UpdateDataCommand extends Command
     /**
      * @var Pageview
      */
-    private $repository;
+    private $pageviews;
 
-    public function __construct(Pageview $repository)
-    {
-        $this->repository = $repository;
+    /**
+     * @var Recordview
+     */
+    private $recordviews;
+
+    public function __construct(
+        Pageview $pageviews,
+        Recordview $recordviews
+    ) {
+        $this->pageviews = $pageviews;
+        $this->recordviews = $recordviews;
 
         parent::__construct();
     }
 
     protected function configure(): void
     {
-        $this->setDescription('Updates existing data.');
-        $this->setHelp('In case some more data can be extracted of the existing data.');
+        $this->setHelp('Converts legacy data to new format if necessary. Runs incrementel to work with large data sets.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $io->progressStart($this->repository->countAll());
 
-        foreach ($this->repository->findAll() as $pageView) {
-            $this->repository->update($pageView);
-            $io->progressAdvance();
-        }
-
-        $io->progressFinish();
+        $io->writeln('Updating: Pageviews');
+        $this->update($this->pageviews, $io);
+        $io->writeln('Updating: Recordviews');
+        $this->update($this->recordviews, $io);
 
         return 0;
+    }
+
+    /**
+     * @param Pageview|Recordview $repository
+     */
+    private function update(
+        $repository,
+        SymfonyStyle $io
+    ): void {
+        $count = $repository->findLegacyCount();
+        if ($count === 0) {
+            $io->writeln('No more data to update.');
+            return;
+        }
+
+        $io->progressStart($count);
+        foreach ($repository->findLegacy() as $data) {
+            $repository->update($data);
+            $io->progressAdvance();
+        }
+        $io->progressFinish();
     }
 }

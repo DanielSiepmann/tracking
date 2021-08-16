@@ -43,6 +43,14 @@ services:
     arguments:
       - 'tx_tracking_recordview'
 
+  dbconnection.tx_tracking_tag:
+    class: 'TYPO3\CMS\Core\Database\Connection'
+    factory:
+      - '@TYPO3\CMS\Core\Database\ConnectionPool'
+      - 'getConnectionForTable'
+    arguments:
+      - 'tx_tracking_tag'
+
   DanielSiepmann\Tracking\Domain\Repository\Pageview:
     public: true
     arguments:
@@ -53,18 +61,17 @@ services:
     arguments:
       - '@dbconnection.tx_tracking_recordview'
 
+  DanielSiepmann\Tracking\Domain\Repository\Tag:
+    public: true
+    arguments:
+      - '@dbconnection.tx_tracking_tag'
+
   DanielSiepmann\Tracking\Middleware\Pageview:
     public: true
     arguments:
       $rule: >
           not (context.getAspect("backend.user").isLoggedIn())
           and not (context.getAspect("frontend.preview").isPreview())
-          and traverse(request.getHeader("User-Agent"), '0')
-          and not (request.getHeader("User-Agent")[0] matches "/^TYPO3|TYPO3 linkvalidator/")
-          and not (request.getHeader("User-Agent")[0] matches "/Wget|curl|Go-http-client/")
-          and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|NextCloud-News|Feedly|XING FeedReader|CCBot|SemrushBot|SEOkicks|Twitterbot|Seekport Crawler|SemanticScholarBot|ia_archiver|PaperLiBot|TrendsmapResolver|AhrefsBot|Nuzzel/")
-          and not (request.getHeader("User-Agent")[0] matches "/mattermost|Slackbot|WhatsApp/")
-          and not (request.getHeader("User-Agent")[0] matches "/UptimeRobot|Pingdom/")
 
   DanielSiepmann\Tracking\Middleware\Recordview:
     public: true
@@ -75,3 +82,4 @@ services:
     tags:
       - name: 'console.command'
         command: 'tracking:updatedata'
+        description: 'Updates existing data.'

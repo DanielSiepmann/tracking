@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,13 +21,15 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  * 02110-1301, USA.
  */
 
+namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
+
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Domain\Model\Pageview
+ * @covers \DanielSiepmann\Tracking\Domain\Model\Pageview
  */
 class PageviewTest extends TestCase
 {
@@ -49,7 +51,7 @@ class PageviewTest extends TestCase
             ''
         );
 
-        static::assertInstanceOf(Pageview::class, $subject);
+        self::assertInstanceOf(Pageview::class, $subject);
     }
 
     /**
@@ -68,7 +70,7 @@ class PageviewTest extends TestCase
             ''
         );
 
-        static::assertSame(500, $subject->getPageUid());
+        self::assertSame(500, $subject->getPageUid());
     }
 
     /**
@@ -87,7 +89,7 @@ class PageviewTest extends TestCase
             ''
         );
 
-        static::assertSame($language->reveal(), $subject->getLanguage());
+        self::assertSame($language->reveal(), $subject->getLanguage());
     }
 
     /**
@@ -107,7 +109,7 @@ class PageviewTest extends TestCase
             ''
         );
 
-        static::assertSame($crdate, $subject->getCrdate());
+        self::assertSame($crdate, $subject->getCrdate());
     }
 
     /**
@@ -126,7 +128,7 @@ class PageviewTest extends TestCase
             ''
         );
 
-        static::assertSame(999, $subject->getPageType());
+        self::assertSame(999, $subject->getPageType());
     }
 
     /**
@@ -145,7 +147,7 @@ class PageviewTest extends TestCase
             ''
         );
 
-        static::assertSame('https://example.com/path.html', $subject->getUrl());
+        self::assertSame('https://example.com/path.html', $subject->getUrl());
     }
 
     /**
@@ -164,7 +166,7 @@ class PageviewTest extends TestCase
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0'
         );
 
-        static::assertSame(
+        self::assertSame(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
             $subject->getUserAgent()
         );
@@ -186,7 +188,7 @@ class PageviewTest extends TestCase
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0'
         );
 
-        static::assertSame(
+        self::assertSame(
             0,
             $subject->getUid()
         );
@@ -209,31 +211,9 @@ class PageviewTest extends TestCase
             10
         );
 
-        static::assertSame(
+        self::assertSame(
             10,
             $subject->getUid()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function returnsOperatingSystem(): void
-    {
-        $language = $this->prophesize(SiteLanguage::class);
-
-        $subject = new Pageview(
-            0,
-            $language->reveal(),
-            new \DateTimeImmutable(),
-            0,
-            '',
-            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36'
-        );
-
-        static::assertSame(
-            'Linux',
-            $subject->getOperatingSystem()
         );
     }
 }

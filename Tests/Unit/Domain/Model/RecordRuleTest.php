@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,11 +21,13 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  * 02110-1301, USA.
  */
 
+namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
+
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Domain\Model\RecordRule
+ * @covers \DanielSiepmann\Tracking\Domain\Model\RecordRule
  */
 class RecordRuleTest extends TestCase
 {
@@ -40,7 +42,7 @@ class RecordRuleTest extends TestCase
             ''
         );
 
-        static::assertInstanceOf(RecordRule::class, $subject);
+        self::assertInstanceOf(RecordRule::class, $subject);
     }
 
     /**
@@ -55,7 +57,7 @@ class RecordRuleTest extends TestCase
             'tableName' => '',
         ]);
 
-        static::assertInstanceOf(RecordRule::class, $subject);
+        self::assertInstanceOf(RecordRule::class, $subject);
     }
 
     /**
@@ -76,9 +78,9 @@ class RecordRuleTest extends TestCase
             ],
         ]);
 
-        static::assertCount(2, $result);
-        static::assertInstanceOf(RecordRule::class, $result[0]);
-        static::assertInstanceOf(RecordRule::class, $result[1]);
+        self::assertCount(2, $result);
+        self::assertInstanceOf(RecordRule::class, $result[0]);
+        self::assertInstanceOf(RecordRule::class, $result[1]);
     }
 
     /**
@@ -92,7 +94,7 @@ class RecordRuleTest extends TestCase
             ''
         );
 
-        static::assertSame('match expression', $subject->getMatchesExpression());
+        self::assertSame('match expression', $subject->getMatchesExpression());
     }
 
     /**
@@ -106,7 +108,7 @@ class RecordRuleTest extends TestCase
             ''
         );
 
-        static::assertSame('match expression', $subject->getUidExpression());
+        self::assertSame('match expression', $subject->getUidExpression());
     }
 
     /**
@@ -120,6 +122,6 @@ class RecordRuleTest extends TestCase
             'table_name'
         );
 
-        static::assertSame('table_name', $subject->getTableName());
+        self::assertSame('table_name', $subject->getTableName());
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Tests\Functional;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2021 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -20,6 +20,8 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
+
+namespace DanielSiepmann\Tracking\Tests\Functional;
 
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
@@ -62,12 +64,68 @@ class PageviewTest extends TestCase
 
         $records = $this->getAllRecords('tx_tracking_pageview');
         self::assertCount(1, $records);
-        self::assertSame('1', (string)$records[0]['pid']);
-        self::assertSame('1', (string)$records[0]['uid']);
+        self::assertSame(1, $records[0]['pid']);
+        self::assertSame(1, $records[0]['uid']);
         self::assertSame('http://localhost/?id=1', $records[0]['url']);
         self::assertSame('Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0', $records[0]['user_agent']);
-        self::assertSame('Macintosh', $records[0]['operating_system']);
         self::assertSame('0', (string)$records[0]['type']);
+
+        $records = $this->getAllRecords('tx_tracking_tag');
+        self::assertCount(2, $records);
+
+        self::assertSame(1, $records[0]['pid']);
+        self::assertSame(1, $records[0]['record_uid']);
+        self::assertSame('tx_tracking_pageview', $records[0]['record_table_name']);
+        self::assertSame('bot', $records[0]['name']);
+        self::assertSame('no', $records[0]['value']);
+
+        self::assertSame(1, $records[1]['pid']);
+        self::assertSame(1, $records[1]['record_uid']);
+        self::assertSame('tx_tracking_pageview', $records[1]['record_table_name']);
+        self::assertSame('os', $records[1]['name']);
+        self::assertSame('Macintosh', $records[1]['value']);
+    }
+
+    /**
+     * @test
+     */
+    public function trackedWithBotResolvedToTags(): void
+    {
+        $request = new InternalRequest();
+        $request = $request->withPageId(1);
+        $request = $request->withHeader('User-Agent', 'Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)');
+        $response = $this->executeFrontendRequest($request);
+
+        self::assertSame(200, $response->getStatusCode());
+
+        $records = $this->getAllRecords('tx_tracking_pageview');
+        self::assertCount(1, $records);
+        self::assertSame(1, $records[0]['pid']);
+        self::assertSame(1, $records[0]['uid']);
+        self::assertSame('http://localhost/?id=1', $records[0]['url']);
+        self::assertSame('Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)', $records[0]['user_agent']);
+        self::assertSame('0', (string)$records[0]['type']);
+
+        $records = $this->getAllRecords('tx_tracking_tag');
+        self::assertCount(3, $records);
+
+        self::assertSame(1, $records[0]['pid']);
+        self::assertSame(1, $records[0]['record_uid']);
+        self::assertSame('tx_tracking_pageview', $records[0]['record_table_name']);
+        self::assertSame('bot', $records[0]['name']);
+        self::assertSame('yes', $records[0]['value']);
+
+        self::assertSame(1, $records[1]['pid']);
+        self::assertSame(1, $records[1]['record_uid']);
+        self::assertSame('tx_tracking_pageview', $records[1]['record_table_name']);
+        self::assertSame('bot_name', $records[1]['name']);
+        self::assertSame('Slackbot', $records[1]['value']);
+
+        self::assertSame(1, $records[2]['pid']);
+        self::assertSame(1, $records[2]['record_uid']);
+        self::assertSame('tx_tracking_pageview', $records[2]['record_table_name']);
+        self::assertSame('os', $records[2]['name']);
+        self::assertSame('Unkown', $records[2]['value']);
     }
 
     /**
@@ -85,7 +143,7 @@ class PageviewTest extends TestCase
 
         self::assertSame(200, $response->getStatusCode());
 
-        $records = $this->getAllRecords('tx_tracking_pageview');
-        self::assertCount(0, $records);
+        self::assertCount(0, $this->getAllRecords('tx_tracking_pageview'));
+        self::assertCount(0, $this->getAllRecords('tx_tracking_tag'));
     }
 }

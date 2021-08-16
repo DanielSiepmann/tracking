@@ -25,7 +25,7 @@ namespace DanielSiepmann\Tracking\Domain\Model;
 
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
-class Pageview implements HasUserAgent
+class Pageview
 {
     /**
      * @var int
@@ -113,10 +113,5 @@ class Pageview implements HasUserAgent
     public function getUserAgent(): string
     {
         return $this->userAgent;
-    }
-
-    public function getOperatingSystem(): string
-    {
-        return Extractor::getOperatingSystem($this);
     }
 }

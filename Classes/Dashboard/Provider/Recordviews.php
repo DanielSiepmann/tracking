@@ -49,24 +49,9 @@ class Recordviews implements ChartDataProviderInterface
     private $queryBuilder;
 
     /**
-     * @var int
+     * @var Demand
      */
-    private $days;
-
-    /**
-     * @var int
-     */
-    private $maxResults;
-
-    /**
-     * @var array<int>
-     */
-    private $pagesToExclude;
-
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
+    private $demand;
 
     /**
      * @var array
@@ -81,19 +66,13 @@ class Recordviews implements ChartDataProviderInterface
     public function __construct(
         PageRepository $pageRepository,
         QueryBuilder $queryBuilder,
-        int $days = 31,
-        int $maxResults = 6,
-        array $pagesToExclude = [],
-        array $languageLimitation = [],
+        Demand $demand,
         array $recordTableLimitation = [],
         array $recordTypeLimitation = []
     ) {
         $this->pageRepository = $pageRepository;
         $this->queryBuilder = $queryBuilder;
-        $this->days = $days;
-        $this->pagesToExclude = $pagesToExclude;
-        $this->languageLimitation = $languageLimitation;
-        $this->maxResults = $maxResults;
+        $this->demand = $demand;
         $this->recordTableLimitation = $recordTableLimitation;
         $this->recordTypeLimitation = $recordTypeLimitation;
     }
@@ -152,29 +131,9 @@ class Recordviews implements ChartDataProviderInterface
         $constraints = [
             $this->queryBuilder->expr()->gte(
                 'tx_tracking_recordview.crdate',
-                strtotime('-' . $this->days . ' day 0:00:00')
+                strtotime('-' . $this->demand->getDays() . ' day 0:00:00')
             )
         ];
-
-        if (count($this->pagesToExclude)) {
-            $constraints[] = $this->queryBuilder->expr()->notIn(
-                'tx_tracking_recordview.pid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->pagesToExclude,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
-
-        if (count($this->languageLimitation)) {
-            $constraints[] = $this->queryBuilder->expr()->in(
-                'tx_tracking_recordview.sys_language_uid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->languageLimitation,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
 
         if (count($this->recordTableLimitation)) {
             $constraints[] = $this->queryBuilder->expr()->in(
@@ -185,6 +144,15 @@ class Recordviews implements ChartDataProviderInterface
                 )
             );
         }
+
+        $constraints = array_merge($constraints, $this->demand->getConstraints(
+            $this->queryBuilder,
+            'tx_tracking_recordview'
+        ));
+        $this->demand->addJoins(
+            $this->queryBuilder,
+            'tx_tracking_recordview'
+        );
 
         $result = $this->queryBuilder
             ->selectLiteral(
@@ -197,7 +165,7 @@ class Recordviews implements ChartDataProviderInterface
             ->groupBy('record', 'record_uid', 'record_table_name')
             ->orderBy('total', 'desc')
             ->addOrderBy('latest', 'desc')
-            ->setMaxResults($this->maxResults)
+            ->setMaxResults($this->demand->getMaxResults())
             ->execute();
 
         while ($row = $result->fetch()) {
@@ -212,8 +180,8 @@ class Recordviews implements ChartDataProviderInterface
         $recordTypeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? '';
 
         $record = BackendUtility::getRecord($table, $uid);
-        if (count($this->languageLimitation) === 1 && $record !== null) {
-            $record = $this->pageRepository->getRecordOverlay($table, $record, $this->languageLimitation[0]);
+        if (count($this->demand->getLanguageLimitation()) === 1 && $record !== null) {
+            $record = $this->pageRepository->getRecordOverlay($table, $record, $this->demand->getLanguageLimitation()[0]);
         }
 
         if (is_array($record) === false) {

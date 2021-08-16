@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <pid>0</pid>
+        <uid>1</uid>
+    </pages>
+
+    <tx_tracking_pageview>
+        <pid>1</pid>
+        <uid>1</uid>
+        <crdate>1630649915</crdate>
+        <tstamp>1630649915</tstamp>
+        <cruser_id>0</cruser_id>
+        <url>https://example.com/path</url>
+        <user_agent>Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36</user_agent>
+    </tx_tracking_pageview>
+    <tx_tracking_tag>
+        <pid>1</pid>
+        <uid>1</uid>
+        <crdate>1630649915</crdate>
+        <tstamp>1630649915</tstamp>
+        <cruser_id>0</cruser_id>
+        <record_uid>1</record_uid>
+        <record_table_name>tx_tracking_pageview</record_table_name>
+        <name>os</name>
+        <value>Linux</value>
+        <compatible_version>2.0.0</compatible_version>
+    </tx_tracking_tag>
+    <tx_tracking_pageview>
+        <pid>1</pid>
+        <uid>2</uid>
+        <crdate>1630649916</crdate>
+        <tstamp>1630649916</tstamp>
+        <cruser_id>0</cruser_id>
+        <url>https://example.com/path</url>
+        <user_agent>Dalvik/2.1.0 (Linux; U; Android 9; ONEPLUS A3003 Build/PKQ1.181203.001)</user_agent>
+    </tx_tracking_pageview>
+    <tx_tracking_tag>
+        <pid>1</pid>
+        <uid>2</uid>
+        <crdate>1630649916</crdate>
+        <tstamp>1630649916</tstamp>
+        <cruser_id>0</cruser_id>
+        <record_uid>2</record_uid>
+        <record_table_name>tx_tracking_pageview</record_table_name>
+        <name>os</name>
+        <value>Android</value>
+        <compatible_version>2.0.0</compatible_version>
+    </tx_tracking_tag>
+</dataset>

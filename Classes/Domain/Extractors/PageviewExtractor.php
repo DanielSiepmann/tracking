@@ -21,22 +21,17 @@ declare(strict_types=1);
  * 02110-1301, USA.
  */
 
-namespace DanielSiepmann\Tracking;
+namespace DanielSiepmann\Tracking\Domain\Extractors;
 
-final class Extension
+use DanielSiepmann\Tracking\Domain\Model\Pageview;
+
+/**
+ * API to extract further info out of an model.
+ */
+interface PageviewExtractor
 {
-    public const EXT_KEY = 'tracking';
-
-    public const LANGUAGE_PATH = 'LLL:EXT:' . self::EXT_KEY . '/Resources/Private/Language/locallang.xlf';
-
-    public static function getCompatibleVersionNow(): string
-    {
-        return 'v2.0.0';
-    }
-
-    public static function getMaximumRowsForUpdate(): int
-    {
-        // TODO: Make configurable
-        return 3500;
-    }
+    /**
+     * @return Tag[]
+     */
+    public function extractTagFromPageview(Pageview $pageview): array;
 }

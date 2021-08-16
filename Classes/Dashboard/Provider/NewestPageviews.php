@@ -35,63 +35,35 @@ class NewestPageviews implements ListDataProviderInterface
     private $queryBuilder;
 
     /**
-     * @var int
+     * @var Demand
      */
-    private $maxResults;
-
-    /**
-     * @var array
-     */
-    private $pagesToExclude;
-
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
+    private $demand;
 
     public function __construct(
         QueryBuilder $queryBuilder,
-        int $maxResults = 6,
-        array $pagesToExclude = [],
-        array $languageLimitation = []
+        Demand $demand
     ) {
         $this->queryBuilder = $queryBuilder;
-        $this->maxResults = $maxResults;
-        $this->pagesToExclude = $pagesToExclude;
-        $this->languageLimitation = $languageLimitation;
+        $this->demand = $demand;
     }
 
     public function getItems(): array
     {
         $preparedItems = [];
 
-        $constraints = [];
-        if (count($this->pagesToExclude)) {
-            $constraints[] = $this->queryBuilder->expr()->notIn(
-                'tx_tracking_pageview.pid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->pagesToExclude,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
+        $constraints = $this->demand->getConstraints(
+            $this->queryBuilder,
+            'tx_tracking_pageview'
+        );
 
-        if (count($this->languageLimitation)) {
-            $constraints[] = $this->queryBuilder->expr()->in(
-                'tx_tracking_pageview.sys_language_uid',
-                $this->queryBuilder->createNamedParameter(
-                    $this->languageLimitation,
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
-        }
+        $this->demand->addJoins($this->queryBuilder, 'tx_tracking_pageview');
 
         $this->queryBuilder
             ->select('url', 'user_agent')
             ->from('tx_tracking_pageview')
             ->orderBy('crdate', 'desc')
             ->addOrderBy('uid', 'desc')
-            ->setMaxResults($this->maxResults);
+            ->setMaxResults($this->demand->getMaxResults());
 
         if ($constraints !== []) {
             $this->queryBuilder->where(...$constraints);

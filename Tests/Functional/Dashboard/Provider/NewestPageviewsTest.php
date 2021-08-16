@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -21,13 +21,16 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
  * 02110-1301, USA.
  */
 
+namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
+
+use DanielSiepmann\Tracking\Dashboard\Provider\Demand;
 use DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews
+ * @covers \DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews
  */
 class NewestPageviewsTest extends TestCase
 {
@@ -51,10 +54,11 @@ class NewestPageviewsTest extends TestCase
         }
 
         $subject = new NewestPageviews(
-            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview')
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
+            new Demand()
         );
 
-        static::assertSame([
+        self::assertSame([
             'Url 10 - User-Agent 10',
             'Url 9 - User-Agent 9',
             'Url 8 - User-Agent 8',
@@ -81,10 +85,10 @@ class NewestPageviewsTest extends TestCase
 
         $subject = new NewestPageviews(
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
-            2
+            new Demand(31, 2)
         );
 
-        static::assertSame([
+        self::assertSame([
             'Url 10 - User-Agent 10',
             'Url 9 - User-Agent 9',
         ], $subject->getItems());
@@ -107,11 +111,10 @@ class NewestPageviewsTest extends TestCase
 
         $subject = new NewestPageviews(
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
-            6,
-            [9]
+            new Demand(31, 6, [9])
         );
 
-        static::assertSame([
+        self::assertSame([
             'Url 10 - User-Agent 10',
             'Url 8 - User-Agent 8',
             'Url 7 - User-Agent 7',
@@ -139,12 +142,10 @@ class NewestPageviewsTest extends TestCase
 
         $subject = new NewestPageviews(
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
-            6,
-            [],
-            [1]
+            new Demand(31, 6, [], [1])
         );
 
-        static::assertSame([
+        self::assertSame([
             'Url 9 - User-Agent 9',
             'Url 7 - User-Agent 7',
             'Url 5 - User-Agent 5',
@@ -152,4 +153,6 @@ class NewestPageviewsTest extends TestCase
             'Url 1 - User-Agent 1',
         ], $subject->getItems());
     }
+
+    // TODO: Add tests for new feature regarding tags
 }
