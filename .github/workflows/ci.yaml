@@ -84,7 +84,7 @@ jobs:
           - '7.4'
           - '8.0'
         typo3-version:
-          - '11.3.*'
+          - '11.4.*'
     steps:
       - uses: actions/checkout@v2
 
@@ -236,7 +236,7 @@ jobs:
           - '7.4'
           - '8.0'
         typo3-version:
-          - '11.3.*'
+          - '11.4.*'
     steps:
       - uses: actions/checkout@v2
 
@@ -391,7 +391,7 @@ jobs:
           - '7.4'
           - '8.0'
         typo3-version:
-          - '11.3.*'
+          - '11.4.*'
     steps:
       - uses: actions/checkout@v2
 
@@ -484,7 +484,7 @@ jobs:
           - '7.4'
           - '8.0'
         typo3-version:
-          - '11.3.*'
+          - '11.4.*'
     steps:
       - uses: actions/checkout@v2
 
