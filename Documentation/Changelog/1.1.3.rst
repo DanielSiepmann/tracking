@@ -1,0 +1,30 @@
+1.1.3
+=====
+
+Breaking
+--------
+
+* No longer support v11.3 but v11.4
+
+  As this is latest release of v11 dev.
+  Only latest public release is supported.
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
