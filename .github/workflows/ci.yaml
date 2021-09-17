@@ -66,14 +66,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-plugins
-
-      - name: Install dependency checker
-        run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "maglnet/composer-require-checker"
-
-      - name: Switch to expected TYPO3 Version
-        run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress --no-plugins "maglnet/composer-require-checker" "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: Missing composer requirements
         run: ./vendor/bin/composer-require-checker check --config-file dependency-checker.json
@@ -111,14 +105,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-plugins
-
-      - name: Install dependency checker
-        run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "maglnet/composer-require-checker"
-
-      - name: Switch to expected TYPO3 Version
-        run: composer require --prefer-dist --no-progress --no-plugins --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress --no-plugins "maglnet/composer-require-checker" "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: Missing composer requirements
         run: ./vendor/bin/composer-require-checker check --config-file dependency-checker.json
@@ -228,11 +216,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Switch to expected TYPO3 Version
-        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --testdox
@@ -271,11 +256,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Switch to expected TYPO3 Version
-        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: PHPUnit Tests
         run: ./vendor/bin/phpunit --testdox
@@ -324,11 +306,8 @@ jobs:
           mysql database: 'typo3'
           mysql root password: 'root'
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Switch to expected TYPO3 Version
-        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: PHPUnit Tests
         run: |-
@@ -381,11 +360,8 @@ jobs:
           mysql database: 'typo3'
           mysql root password: 'root'
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Switch to expected TYPO3 Version
-        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: PHPUnit Tests
         run: |-
@@ -439,11 +415,8 @@ jobs:
           mysql database: 'typo3'
           mysql root password: 'root'
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Switch to expected TYPO3 Version
-        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: PHPUnit Tests
         run: |-
@@ -487,11 +460,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Switch to expected TYPO3 Version
-        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: Code Quality (by PHPStan)
         run: ./vendor/bin/phpstan analyse
@@ -529,11 +499,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Switch to expected TYPO3 Version
-        run: composer require --prefer-dist --no-progress --update-with-all-dependencies "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: Code Quality (by PHPStan)
         run: ./vendor/bin/phpstan analyse
