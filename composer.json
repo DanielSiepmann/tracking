@@ -4,6 +4,12 @@
     "type": "typo3-cms-extension",
     "license": "GPL-2.0-or-later",
     "homepage": "https://daniel-siepmann.de/projects/typo3-extension-tracking.html",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/DanielSiepmann/testing-framework.git"
+        }
+    ],
     "support": {
         "email": "coding@daniel-siepmann.de",
         "source": "https://github.com/DanielSiepmann/tracking/",
@@ -44,7 +50,7 @@
         "phpstan/extension-installer": "^1.0",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "phpspec/prophecy-phpunit": "^2.0",
-        "typo3/testing-framework": "^6.8.2",
+        "typo3/testing-framework": "dev-bugfix/add-missing-composer-dependency-to-sysext-install as 6.11.x-dev",
         "saschaegerer/phpstan-typo3": "^0.13.1",
         "symplify/easy-coding-standard": "^9.3",
         "cweagans/composer-patches": "^1.7"
