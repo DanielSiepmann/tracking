@@ -40,12 +40,12 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
-        "phpstan/phpstan": "^0.12.18",
-        "phpstan/extension-installer": "^1.0",
-        "jangregor/phpstan-prophecy": "^0.8.1",
+        "phpstan/phpstan": "^1.2",
+        "phpstan/extension-installer": "^1.1",
+        "jangregor/phpstan-prophecy": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
         "typo3/testing-framework": "^6.14",
-        "saschaegerer/phpstan-typo3": "^0.13.1",
+        "saschaegerer/phpstan-typo3": "^1.0",
         "symplify/easy-coding-standard": "^9.3",
         "cweagans/composer-patches": "^1.7"
     },

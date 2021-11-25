@@ -24,6 +24,7 @@ namespace DanielSiepmann\Tracking\Domain\Pageview;
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 
 class Factory
@@ -41,10 +42,10 @@ class Factory
     public static function fromRequest(ServerRequestInterface $request): Pageview
     {
         return new Pageview(
-            static::getRouting($request)->getPageId(),
-            $request->getAttribute('language'),
+            self::getRouting($request)->getPageId(),
+            self::getLanguage($request),
             new \DateTimeImmutable(),
-            (int) static::getRouting($request)->getPageType(),
+            (int) self::getRouting($request)->getPageType(),
             (string) $request->getUri(),
             $request->getHeader('User-Agent')[0] ?? ''
         );
@@ -63,8 +64,25 @@ class Factory
         );
     }
 
+    private static function getLanguage(ServerRequestInterface $request): SiteLanguage
+    {
+        $language = $request->getAttribute('language');
+
+        if (!$language instanceof SiteLanguage) {
+            throw new \UnexpectedValueException('Could not fetch SiteLanguage from request attributes.', 1637847002);
+        }
+
+        return $language;
+    }
+
     private static function getRouting(ServerRequestInterface $request): PageArguments
     {
-        return $request->getAttribute('routing');
+        $routing = $request->getAttribute('routing');
+
+        if (!$routing instanceof PageArguments) {
+            throw new \UnexpectedValueException('Could not fetch PageArguments from request attributes.', 1637847002);
+        }
+
+        return $routing;
     }
 }

@@ -47,11 +47,17 @@ class Pageview
 
     public function countAll(): int
     {
-        return $this->connection->createQueryBuilder()
+        $result = $this->connection->createQueryBuilder()
             ->count('uid')
             ->from('tx_tracking_pageview')
             ->execute()
             ->fetchColumn();
+
+        if (is_numeric($result)) {
+            return (int) $result;
+        }
+
+        return 0;
     }
 
     public function findAll(): \Generator
@@ -60,6 +66,10 @@ class Pageview
         $pageViews = $queryBuilder->select('*')->from('tx_tracking_pageview')->execute();
 
         while ($pageView = $pageViews->fetch()) {
+            if (is_array($pageView) === false) {
+                continue;
+            }
+
             yield $this->factory->fromDbRow($pageView);
         }
     }

@@ -36,16 +36,32 @@ class Typo3FeaturesTest extends TestCase
         'typo3conf/ext/tracking',
     ];
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Typo3FeaturesTest/PageWithRecords.xml');
+        $this->setUpBackendUserFromFixture(1);
+        $languageServiceFactory = $this->getContainer()->get(LanguageServiceFactory::class);
+        if (!$languageServiceFactory instanceof LanguageServiceFactory) {
+            throw new \UnexpectedValueException('Did not retrieve LanguageServiceFactory.', 1637847250);
+        }
+        $GLOBALS['LANG'] = $languageServiceFactory->create('default');
+    }
+
+    public function tearDown(): void
+    {
+        unset($GLOBALS['LANG']);
+
+        parent::tearDown();
+    }
+
     /**
      * @test
      * @testdox Copy pages. Tracking records will not be copied.
      */
     public function copyContainingRecords(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Typo3FeaturesTest/PageWithRecords.xml');
-        $this->setUpBackendUserFromFixture(1);
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
-
         $dataHandler = new DataHandler();
         $dataHandler->start([], [
             'pages' => [
@@ -68,10 +84,6 @@ class Typo3FeaturesTest extends TestCase
      */
     public function copyCustomTablesViaDataHandler(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Typo3FeaturesTest/PageWithRecords.xml');
-        $this->setUpBackendUserFromFixture(1);
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
-
         $dataHandler = new DataHandler();
         $dataHandler->copyWhichTables = 'pages,tx_tracking_pageview,tx_tracking_recordview';
         $dataHandler->start([], [

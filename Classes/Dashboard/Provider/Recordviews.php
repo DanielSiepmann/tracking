@@ -26,7 +26,6 @@ use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Statement;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
@@ -37,11 +36,6 @@ use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
 class Recordviews implements ChartDataProviderInterface
 {
-    /**
-     * @var ConnectionPool
-     */
-    private $connectionPool;
-
     /**
      * @var PageRepository
      */
@@ -83,7 +77,6 @@ class Recordviews implements ChartDataProviderInterface
     private $recordTypeLimitation;
 
     public function __construct(
-        ConnectionPool $connectionPool,
         PageRepository $pageRepository,
         QueryBuilder $queryBuilder,
         int $days = 31,
@@ -93,7 +86,6 @@ class Recordviews implements ChartDataProviderInterface
         array $recordTableLimitation = [],
         array $recordTypeLimitation = []
     ) {
-        $this->connectionPool = $connectionPool;
         $this->pageRepository = $pageRepository;
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
@@ -131,8 +123,11 @@ class Recordviews implements ChartDataProviderInterface
             );
 
             if (
-                $this->recordTypeLimitation !== []
-                && in_array($record['type'], $this->recordTypeLimitation) === false
+                $record === null
+                || (
+                    $this->recordTypeLimitation !== []
+                    && in_array($record['type'], $this->recordTypeLimitation) === false
+                )
             ) {
                 continue;
             }
@@ -208,12 +203,16 @@ class Recordviews implements ChartDataProviderInterface
     private function getRecord(
         int $uid,
         string $table
-    ): array {
+    ): ?array {
         $recordTypeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? '';
 
         $record = BackendUtility::getRecord($table, $uid);
         if (count($this->languageLimitation) === 1 && $record !== null) {
             $record = $this->pageRepository->getRecordOverlay($table, $record, $this->languageLimitation[0]);
+        }
+
+        if (is_array($record) === false) {
+            return null;
         }
 
         return [
