@@ -1,0 +1,30 @@
+1.1.4
+=====
+
+Breaking
+--------
+
+* No longer support v11.4 but v11.5
+
+  As this is now LTS version of v11.
+  Only LTS public release is supported.
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing

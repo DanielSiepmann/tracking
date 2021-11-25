@@ -52,9 +52,9 @@ jobs:
           - php-version: '7.4'
             typo3-version: '^10.4'
           - php-version: '7.4'
-            typo3-version: '11.4.*'
+            typo3-version: '^11.5'
           - php-version: '8.0'
-            typo3-version: '11.4.*'
+            typo3-version: '^11.5'
     steps:
       - uses: actions/checkout@v2
 
@@ -137,9 +137,9 @@ jobs:
           - php-version: '7.4'
             typo3-version: '^10.4'
           - php-version: '7.4'
-            typo3-version: '11.4.*'
+            typo3-version: '^11.5'
           - php-version: '8.0'
-            typo3-version: '11.4.*'
+            typo3-version: '^11.5'
     steps:
       - uses: actions/checkout@v2
 
@@ -183,10 +183,10 @@ jobs:
             typo3-version: '^10.4'
           - db-version: '8'
             php-version: '7.4'
-            typo3-version: '11.4.*'
+            typo3-version: '^11.5'
           - db-version: '8'
             php-version: '8.0'
-            typo3-version: '11.4.*'
+            typo3-version: '^11.5'
     steps:
       - uses: actions/checkout@v2
 
@@ -230,9 +230,9 @@ jobs:
           - php-version: '7.4'
             typo3-version: '^10.4'
           - php-version: '7.4'
-            typo3-version: '11.4.*'
+            typo3-version: '^11.5'
           - php-version: '8.0'
-            typo3-version: '11.4.*'
+            typo3-version: '^11.5'
     steps:
       - uses: actions/checkout@v2
 
