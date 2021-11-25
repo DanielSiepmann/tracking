@@ -43,7 +43,7 @@ class FactoryTest extends TestCase
     public function returnsRecordviewFromRequest(): void
     {
         $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"] > 0');
+        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
         $rule->getTableName()->willReturn('sys_category');
 
         $routing = $this->prophesize(PageArguments::class);
@@ -70,7 +70,7 @@ class FactoryTest extends TestCase
     public function returnedRecordviewContainsUserAgent(): void
     {
         $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"] > 0');
+        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
         $rule->getTableName()->willReturn('sys_category');
 
         $routing = $this->prophesize(PageArguments::class);
@@ -97,7 +97,7 @@ class FactoryTest extends TestCase
     public function returnedRecordviewContainsUri(): void
     {
         $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"] > 0');
+        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
         $rule->getTableName()->willReturn('sys_category');
 
         $routing = $this->prophesize(PageArguments::class);
@@ -124,7 +124,7 @@ class FactoryTest extends TestCase
     public function returnedRecordviewContainsDateTime(): void
     {
         $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"] > 0');
+        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
         $rule->getTableName()->willReturn('sys_category');
 
         $routing = $this->prophesize(PageArguments::class);
@@ -151,7 +151,7 @@ class FactoryTest extends TestCase
     public function returnedRecordviewContainsLanguage(): void
     {
         $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"] > 0');
+        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
         $rule->getTableName()->willReturn('sys_category');
 
         $routing = $this->prophesize(PageArguments::class);
@@ -178,7 +178,7 @@ class FactoryTest extends TestCase
     public function returnedRecordviewContainsPageId(): void
     {
         $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"] > 0');
+        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
         $rule->getTableName()->willReturn('sys_category');
 
         $routing = $this->prophesize(PageArguments::class);
@@ -232,7 +232,7 @@ class FactoryTest extends TestCase
     public function returnedRecordviewContainsTableName(): void
     {
         $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"] > 0');
+        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
         $rule->getTableName()->willReturn('sys_category');
 
         $routing = $this->prophesize(PageArguments::class);

@@ -26,6 +26,7 @@ use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 class Factory
 {
@@ -39,19 +40,47 @@ class Factory
             ['request' => $request]
         );
 
+        if (is_numeric($recordUid) === false) {
+            throw new \UnexpectedValueException(
+                sprintf(
+                    'Could not determine record uid based on expression: "%1$s", got type "%2$s".',
+                    $rule->getUidExpression(),
+                    gettype($recordUid)
+                ),
+                1637846881
+            );
+        }
+
         return new Recordview(
-            static::getRouting($request)->getPageId(),
-            $request->getAttribute('language'),
+            self::getRouting($request)->getPageId(),
+            self::getLanguage($request),
             new \DateTimeImmutable(),
             (string) $request->getUri(),
             $request->getHeader('User-Agent')[0] ?? '',
-            $recordUid,
+            (int) $recordUid,
             $rule->getTableName()
         );
     }
 
+    private static function getLanguage(ServerRequestInterface $request): SiteLanguage
+    {
+        $language = $request->getAttribute('language');
+
+        if (!$language instanceof SiteLanguage) {
+            throw new \UnexpectedValueException('Could not fetch SiteLanguage from request attributes.', 1637847002);
+        }
+
+        return $language;
+    }
+
     private static function getRouting(ServerRequestInterface $request): PageArguments
     {
-        return $request->getAttribute('routing');
+        $routing = $request->getAttribute('routing');
+
+        if (!$routing instanceof PageArguments) {
+            throw new \UnexpectedValueException('Could not fetch PageArguments from request attributes.', 1637847002);
+        }
+
+        return $routing;
     }
 }

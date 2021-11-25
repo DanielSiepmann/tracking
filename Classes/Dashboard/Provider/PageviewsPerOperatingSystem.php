@@ -114,6 +114,10 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
             ->fetchAll();
 
         foreach ($result as $row) {
+            if (is_array($row) === false) {
+                continue;
+            }
+
             $labels[] = mb_strimwidth($row['operating_system'], 0, 50, '…');
             $data[] = $row['total'];
         }

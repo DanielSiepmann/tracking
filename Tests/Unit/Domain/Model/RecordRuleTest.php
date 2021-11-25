@@ -37,7 +37,6 @@ class RecordRuleTest extends TestCase
         $subject = new RecordRule(
             '',
             '',
-            '',
             ''
         );
 
@@ -88,7 +87,6 @@ class RecordRuleTest extends TestCase
     public function returnsMatchExpression(): void
     {
         $subject = new RecordRule(
-            '',
             'match expression',
             '',
             ''
@@ -104,7 +102,6 @@ class RecordRuleTest extends TestCase
     {
         $subject = new RecordRule(
             '',
-            '',
             'match expression',
             ''
         );
@@ -118,7 +115,6 @@ class RecordRuleTest extends TestCase
     public function returnsTableName(): void
     {
         $subject = new RecordRule(
-            '',
             '',
             '',
             'table_name'

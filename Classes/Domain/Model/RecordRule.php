@@ -26,11 +26,6 @@ class RecordRule
     /**
      * @var string
      */
-    private $identifier;
-
-    /**
-     * @var string
-     */
     private $matches;
 
     /**
@@ -44,12 +39,10 @@ class RecordRule
     private $tableName;
 
     public function __construct(
-        string $identifier,
         string $matches,
         string $recordUid,
         string $tableName
     ) {
-        $this->identifier = $identifier;
         $this->matches = $matches;
         $this->recordUid = $recordUid;
         $this->tableName = $tableName;
@@ -58,7 +51,6 @@ class RecordRule
     public static function fromArray(array $config): self
     {
         return new RecordRule(
-            $config['identifier'],
             $config['matches'],
             $config['recordUid'],
             $config['tableName']
@@ -68,13 +60,8 @@ class RecordRule
     public static function multipleFromArray(array $configs): array
     {
         $rules = [];
-        foreach ($configs as $identifier => $config) {
-            $rules[] = static::fromArray(array_merge(
-                [
-                    'identifier' => $identifier,
-                ],
-                $config
-            ));
+        foreach ($configs as $config) {
+            $rules[] = static::fromArray($config);
         }
         return $rules;
     }

@@ -140,6 +140,10 @@ class PageviewsPerPage implements ChartDataProviderInterface
             ->fetchAll();
 
         foreach ($result as $row) {
+            if (is_array($row) === false) {
+                continue;
+            }
+
             $labels[] = $this->getRecordTitle($row['pid']);
             $data[] = $row['total'];
         }
@@ -155,6 +159,10 @@ class PageviewsPerPage implements ChartDataProviderInterface
         $record = BackendUtility::getRecord('pages', $uid);
         if (count($this->languageLimitation) === 1 && $record !== null) {
             $record = $this->pageRepository->getRecordOverlay('pages', $record, $this->languageLimitation[0]);
+        }
+
+        if (is_array($record) === false) {
+            return 'Unkown';
         }
 
         return strip_tags(BackendUtility::getRecordTitle('pages', $record, true));

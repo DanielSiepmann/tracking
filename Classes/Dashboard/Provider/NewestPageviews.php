@@ -97,6 +97,10 @@ class NewestPageviews implements ListDataProviderInterface
 
         $items = $this->queryBuilder->execute()->fetchAll();
         foreach ($items as $item) {
+            if (is_array($item) === false) {
+                continue;
+            }
+
             $preparedItems[] = sprintf(
                 '%s - %s',
                 $item['url'],

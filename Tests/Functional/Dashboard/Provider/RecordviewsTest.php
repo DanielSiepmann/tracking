@@ -22,7 +22,6 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
  */
 
 use DanielSiepmann\Tracking\Dashboard\Provider\Recordviews;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
@@ -52,13 +51,9 @@ class RecordviewsTest extends TestCase
             ]);
         }
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /* @var ConnectionPool $connectionPool */
-
         $subject = new Recordviews(
-            $connectionPool,
             GeneralUtility::makeInstance(PageRepository::class),
-            $connectionPool->getQueryBuilderForTable('tx_tracking_recordview')
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview')
         );
 
         $result = $subject->getChartData();
@@ -105,13 +100,9 @@ class RecordviewsTest extends TestCase
             'record_table_name' => 'sys_category',
         ]);
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /* @var ConnectionPool $connectionPool */
-
         $subject = new Recordviews(
-            $connectionPool,
             GeneralUtility::makeInstance(PageRepository::class),
-            $connectionPool->getQueryBuilderForTable('tx_tracking_recordview'),
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
             2
         );
 
@@ -150,13 +141,9 @@ class RecordviewsTest extends TestCase
             'record_table_name' => 'sys_category',
         ]);
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /* @var ConnectionPool $connectionPool */
-
         $subject = new Recordviews(
-            $connectionPool,
             GeneralUtility::makeInstance(PageRepository::class),
-            $connectionPool->getQueryBuilderForTable('tx_tracking_recordview'),
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
             2
         );
 
@@ -184,13 +171,9 @@ class RecordviewsTest extends TestCase
             ]);
         }
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /* @var ConnectionPool $connectionPool */
-
         $subject = new Recordviews(
-            $connectionPool,
             GeneralUtility::makeInstance(PageRepository::class),
-            $connectionPool->getQueryBuilderForTable('tx_tracking_recordview'),
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
             31,
             2
         );
@@ -220,13 +203,9 @@ class RecordviewsTest extends TestCase
             ]);
         }
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /* @var ConnectionPool $connectionPool */
-
         $subject = new Recordviews(
-            $connectionPool,
             GeneralUtility::makeInstance(PageRepository::class),
-            $connectionPool->getQueryBuilderForTable('tx_tracking_recordview'),
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
             31,
             6,
             [1, 2, 3, 4, 5]
@@ -265,13 +244,9 @@ class RecordviewsTest extends TestCase
             'record_table_name' => 'tt_content',
         ]);
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /* @var ConnectionPool $connectionPool */
-
         $subject = new Recordviews(
-            $connectionPool,
             GeneralUtility::makeInstance(PageRepository::class),
-            $connectionPool->getQueryBuilderForTable('tx_tracking_recordview'),
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
             31,
             6,
             [],
@@ -308,13 +283,9 @@ class RecordviewsTest extends TestCase
             ]);
         }
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /* @var ConnectionPool $connectionPool */
-
         $subject = new Recordviews(
-            $connectionPool,
             GeneralUtility::makeInstance(PageRepository::class),
-            $connectionPool->getQueryBuilderForTable('tx_tracking_recordview'),
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
             31,
             6,
             [],
@@ -360,13 +331,9 @@ class RecordviewsTest extends TestCase
             'record_table_name' => 'sys_category',
         ]);
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /* @var ConnectionPool $connectionPool */
-
         $subject = new Recordviews(
-            $connectionPool,
             GeneralUtility::makeInstance(PageRepository::class),
-            $connectionPool->getQueryBuilderForTable('tx_tracking_recordview'),
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
             31,
             6,
             [],
@@ -412,13 +379,9 @@ class RecordviewsTest extends TestCase
             'record_table_name' => 'sys_category',
         ]);
 
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        /* @var ConnectionPool $connectionPool */
-
         $subject = new Recordviews(
-            $connectionPool,
             GeneralUtility::makeInstance(PageRepository::class),
-            $connectionPool->getQueryBuilderForTable('tx_tracking_recordview'),
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
             31,
             6,
             [],
