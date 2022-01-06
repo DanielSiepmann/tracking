@@ -69,5 +69,13 @@
         "branch-alias": {
             "dev-main": "1.0.x-dev"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true,
+            "cweagans/composer-patches": true,
+            "phpstan/extension-installer": true
+        }
     }
 }
