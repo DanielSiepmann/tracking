@@ -68,7 +68,7 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies with expected TYPO3 version
-        run: composer require --prefer-dist --no-progress --no-plugins "maglnet/composer-require-checker" "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+        run: composer require --prefer-dist --no-progress --no-plugins "maglnet/composer-require-checker:^3.8" "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
       - name: Missing composer requirements
         run: ./vendor/bin/composer-require-checker check --config-file dependency-checker.json
