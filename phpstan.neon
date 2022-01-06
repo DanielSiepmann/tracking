@@ -6,11 +6,14 @@ parameters:
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        # Ignore error for TYPO3 10 (ResultStatement) and TYPO3 11 (Statement)
+        # Ignore error for TYPO3 10 and TYPO3 11
         - '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
         - '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
+        - '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Result\|int\.#'
         - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
         - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
+        - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Result\|int\.#'
         - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
         - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
+        - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.#'
         - '#^Variable \$_EXTKEY might not be defined\.$#'
