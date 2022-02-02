@@ -1,0 +1,30 @@
+1.1.5
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+* Fix broken performance of list module.
+  TYPO3 queries information of translations.
+  The fix adds database indices which are also applied for tt_content by TYPO3 itself.
+  This fixes slow loading times of the list module.
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
