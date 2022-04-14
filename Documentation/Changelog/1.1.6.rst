@@ -1,0 +1,40 @@
+1.1.6
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+* Do not break Symfony Expression Language in case no user agent is provided.
+  Some requests might ommit the user agent header.
+  The default configuration for tracking pageviews would result in an error raised
+  from Symfony Expression Language.
+
+  This got fixed as the existence is checked first, before comparing against agents
+  that should not be tracked.
+
+  You should check your own rules if you defined any, see: :ref:`pageview` as well as
+  :ref:`recordview`.
+
+  The raised error looks like this on my own website:
+
+   Core: Exception handler (WEB): Uncaught TYPO3 Exception: Argument 2 passed to Symfony\Component\ExpressionLanguage\Node\BinaryNode::evaluateMatches() must be of the type string, null given, called in vendor/symfony/expression-language/Node/BinaryNode.php on line 167 | TypeError thrown in file vendor/symfony/expression-language/Node/BinaryNode.php in line 176. Requested URL: https://daniel-siepmann.localhost/
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
