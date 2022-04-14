@@ -18,3 +18,6 @@ parameters:
         - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.#'
         - "#^Parameter \\#[0-9] \\.\\.\\.\\$predicates of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\:\\:where\\(\\) expects array\\<int, mixed\\>\\|Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\CompositeExpression, string given\\.$#"
         - '#^Variable \$_EXTKEY might not be defined\.$#'
+        - "#^Cannot access offset '.*' on mixed.$#"
+        - "#^Parameter .* expects .*, mixed given.$#"
+        - "#^Cannot call method .* on mixed.$#"
