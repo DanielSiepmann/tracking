@@ -64,6 +64,7 @@ services:
           and not (request.getHeader("User-Agent")[0] matches "/Wget|curl|Go-http-client/")
           and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|NextCloud-News|Feedly|XING FeedReader|CCBot|SemrushBot|SEOkicks|Twitterbot|Seekport Crawler|SemanticScholarBot|ia_archiver|PaperLiBot|TrendsmapResolver|AhrefsBot|Nuzzel/")
           and not (request.getHeader("User-Agent")[0] matches "/mattermost|Slackbot|WhatsApp/")
+          and not (request.getHeader("User-Agent")[0] matches "/UptimeRobot|Pingdom/")
 
   DanielSiepmann\Tracking\Middleware\Recordview:
     public: true
