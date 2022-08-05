@@ -1,0 +1,29 @@
+1.2.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+* Ignore UptimeRobot and Pingdom requests by default.
+  Those requests were added to the :file:`Services.yaml` file,
+  preventing default installations from being spammed by those requests.
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
