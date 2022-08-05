@@ -1,5 +1,11 @@
 name: CI
-on: [push]
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
 jobs:
   check-composer:
     runs-on: ubuntu-latest
