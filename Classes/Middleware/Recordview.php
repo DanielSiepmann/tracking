@@ -47,6 +47,11 @@ class Recordview implements MiddlewareInterface
     private $context;
 
     /**
+     * @var Factory
+     */
+    private $factory;
+
+    /**
      * @var ExpressionFactory
      */
     private $expressionFactory;
@@ -59,11 +64,13 @@ class Recordview implements MiddlewareInterface
     public function __construct(
         Repository $repository,
         Context $context,
+        Factory $factory,
         ExpressionFactory $expressionFactory,
         array $rules
     ) {
         $this->repository = $repository;
         $this->context = $context;
+        $this->factory = $factory;
         $this->expressionFactory = $expressionFactory;
 
         $this->rules = RecordRule::multipleFromArray($rules);
@@ -75,7 +82,7 @@ class Recordview implements MiddlewareInterface
     ): ResponseInterface {
         foreach ($this->rules as $rule) {
             if ($this->shouldTrack($request, $this->context, $rule)) {
-                $this->repository->add(Factory::fromRequest($request, $rule));
+                $this->repository->add($this->factory->fromRequest($request, $rule));
             }
         }
 
@@ -89,8 +96,10 @@ class Recordview implements MiddlewareInterface
     ): bool {
         return (bool) $this->expressionFactory->create(
             $rule->getMatchesExpression(),
-            $request,
-            $context
+            [
+                'request' => $request,
+                'context' => $context,
+            ]
         )->evaluate();
     }
 }

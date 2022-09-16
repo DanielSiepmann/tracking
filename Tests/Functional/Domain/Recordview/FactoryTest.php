@@ -28,14 +28,18 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * @covers DanielSiepmann\Tracking\Domain\Recordview\Factory
  */
-class FactoryTest extends TestCase
+class FactoryTest extends FunctionalTestCase
 {
     use ProphecyTrait;
+
+    protected $testExtensionsToLoad = [
+        'typo3conf/ext/tracking',
+    ];
 
     /**
      * @test
@@ -60,7 +64,9 @@ class FactoryTest extends TestCase
             'category' => 10,
         ]);
 
-        $result = Factory::fromRequest($request->reveal(), $rule->reveal());
+        $subject = $this->get(Factory::class);
+
+        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
         static::assertInstanceOf(Recordview::class, $result);
     }
 
@@ -87,7 +93,9 @@ class FactoryTest extends TestCase
             'category' => 10,
         ]);
 
-        $result = Factory::fromRequest($request->reveal(), $rule->reveal());
+        $subject = $this->get(Factory::class);
+
+        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
         static::assertSame('Some User Agent', $result->getUserAgent());
     }
 
@@ -114,7 +122,9 @@ class FactoryTest extends TestCase
             'category' => 10,
         ]);
 
-        $result = Factory::fromRequest($request->reveal(), $rule->reveal());
+        $subject = $this->get(Factory::class);
+
+        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
         static::assertSame('https://example.com', $result->getUrl());
     }
 
@@ -141,7 +151,9 @@ class FactoryTest extends TestCase
             'category' => 10,
         ]);
 
-        $result = Factory::fromRequest($request->reveal(), $rule->reveal());
+        $subject = $this->get(Factory::class);
+
+        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
         static::assertInstanceOf(\DateTimeImmutable::class, $result->getCrdate());
     }
 
@@ -168,7 +180,9 @@ class FactoryTest extends TestCase
             'category' => 10,
         ]);
 
-        $result = Factory::fromRequest($request->reveal(), $rule->reveal());
+        $subject = $this->get(Factory::class);
+
+        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
         static::assertSame($language->reveal(), $result->getLanguage());
     }
 
@@ -195,7 +209,9 @@ class FactoryTest extends TestCase
             'category' => 10,
         ]);
 
-        $result = Factory::fromRequest($request->reveal(), $rule->reveal());
+        $subject = $this->get(Factory::class);
+
+        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
         static::assertSame(10, $result->getPageUid());
     }
 
@@ -222,7 +238,9 @@ class FactoryTest extends TestCase
             'category' => 20,
         ]);
 
-        $result = Factory::fromRequest($request->reveal(), $rule->reveal());
+        $subject = $this->get(Factory::class);
+
+        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
         static::assertSame(20, $result->getRecordUid());
     }
 
@@ -249,7 +267,9 @@ class FactoryTest extends TestCase
             'category' => 20,
         ]);
 
-        $result = Factory::fromRequest($request->reveal(), $rule->reveal());
+        $subject = $this->get(Factory::class);
+
+        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
         static::assertSame('sys_category', $result->getTableName());
     }
 }

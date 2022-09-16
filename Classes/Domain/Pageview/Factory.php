@@ -41,13 +41,13 @@ class Factory
         $this->siteFinder = $siteFinder;
     }
 
-    public static function fromRequest(ServerRequestInterface $request): Pageview
+    public function fromRequest(ServerRequestInterface $request): Pageview
     {
         return new Pageview(
-            self::getRouting($request)->getPageId(),
-            self::getLanguage($request),
+            $this->getRouting($request)->getPageId(),
+            $this->getLanguage($request),
             new \DateTimeImmutable(),
-            (int) self::getRouting($request)->getPageType(),
+            (int) $this->getRouting($request)->getPageType(),
             (string) $request->getUri(),
             $request->getHeader('User-Agent')[0] ?? ''
         );
@@ -66,7 +66,7 @@ class Factory
         );
     }
 
-    private static function getLanguage(ServerRequestInterface $request): SiteLanguage
+    private function getLanguage(ServerRequestInterface $request): SiteLanguage
     {
         $language = $request->getAttribute('language');
 
@@ -77,7 +77,7 @@ class Factory
         return $language;
     }
 
-    private static function getRouting(ServerRequestInterface $request): PageArguments
+    private function getRouting(ServerRequestInterface $request): PageArguments
     {
         $routing = $request->getAttribute('routing');
 

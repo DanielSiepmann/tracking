@@ -45,6 +45,11 @@ class Pageview implements MiddlewareInterface
     private $context;
 
     /**
+     * @var Factory
+     */
+    private $factory;
+
+    /**
      * @var ExpressionFactory
      */
     private $expressionFactory;
@@ -57,11 +62,13 @@ class Pageview implements MiddlewareInterface
     public function __construct(
         Repository $repository,
         Context $context,
+        Factory $factory,
         ExpressionFactory $expressionFactory,
         string $rule
     ) {
         $this->repository = $repository;
         $this->context = $context;
+        $this->factory = $factory;
         $this->expressionFactory = $expressionFactory;
         $this->rule = $rule;
     }
@@ -71,7 +78,7 @@ class Pageview implements MiddlewareInterface
         RequestHandlerInterface $handler
     ): ResponseInterface {
         if ($this->shouldTrack($request, $this->context)) {
-            $this->repository->add(Factory::fromRequest($request));
+            $this->repository->add($this->factory->fromRequest($request));
         }
 
         return $handler->handle($request);
@@ -83,8 +90,10 @@ class Pageview implements MiddlewareInterface
     ): bool {
         return (bool) $this->expressionFactory->create(
             $this->rule,
-            $request,
-            $context
+            [
+                'request' => $request,
+                'context' => $context,
+            ]
         )->evaluate();
     }
 }

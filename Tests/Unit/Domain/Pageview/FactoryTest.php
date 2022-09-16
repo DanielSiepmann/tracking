@@ -56,7 +56,9 @@ class FactoryTest extends TestCase
         $request->getUri()->willReturn('');
         $request->getHeader('User-Agent')->willReturn([]);
 
-        $result = Factory::fromRequest($request->reveal());
+        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+
+        $result = $subject->fromRequest($request->reveal());
         static::assertInstanceOf(Pageview::class, $result);
     }
 
@@ -79,7 +81,9 @@ class FactoryTest extends TestCase
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0'
         ]);
 
-        $result = Factory::fromRequest($request->reveal());
+        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+
+        $result = $subject->fromRequest($request->reveal());
         static::assertSame(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
             $result->getUserAgent()
@@ -103,7 +107,9 @@ class FactoryTest extends TestCase
         $request->getUri()->willReturn('https://example.com/path?query=params&some=more#anchor');
         $request->getHeader('User-Agent')->willReturn([]);
 
-        $result = Factory::fromRequest($request->reveal());
+        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+
+        $result = $subject->fromRequest($request->reveal());
         static::assertSame(
             'https://example.com/path?query=params&some=more#anchor',
             $result->getUrl()
@@ -127,7 +133,9 @@ class FactoryTest extends TestCase
         $request->getUri()->willReturn('');
         $request->getHeader('User-Agent')->willReturn([]);
 
-        $result = Factory::fromRequest($request->reveal());
+        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+
+        $result = $subject->fromRequest($request->reveal());
         static::assertSame(
             50,
             $result->getPageType()
@@ -151,7 +159,9 @@ class FactoryTest extends TestCase
         $request->getUri()->willReturn('');
         $request->getHeader('User-Agent')->willReturn([]);
 
-        $result = Factory::fromRequest($request->reveal());
+        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+
+        $result = $subject->fromRequest($request->reveal());
         static::assertInstanceOf(\DateTimeImmutable::class, $result->getCrdate());
     }
 
@@ -172,7 +182,9 @@ class FactoryTest extends TestCase
         $request->getUri()->willReturn('');
         $request->getHeader('User-Agent')->willReturn([]);
 
-        $result = Factory::fromRequest($request->reveal());
+        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+
+        $result = $subject->fromRequest($request->reveal());
         static::assertInstanceOf(SiteLanguage::class, $result->getLanguage());
     }
 
@@ -193,7 +205,9 @@ class FactoryTest extends TestCase
         $request->getUri()->willReturn('');
         $request->getHeader('User-Agent')->willReturn([]);
 
-        $result = Factory::fromRequest($request->reveal());
+        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+
+        $result = $subject->fromRequest($request->reveal());
         static::assertSame(
             10,
             $result->getPageUid()

@@ -36,18 +36,14 @@ class SymfonyExpressionLanguage implements Factory
 {
     public function create(
         string $expression,
-        ServerRequestInterface $request,
-        Context $context
+        array $variables
     ): Expression {
         $language = new ExpressionLanguage();
         $this->registerTraverseFunction($language);
 
         return new SymfonyExpression(
             $expression,
-            [
-                'context' => $context,
-                'request' => $request,
-            ],
+            $variables,
             $language
         );
     }
