@@ -23,13 +23,13 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Middleware;
 
+use DanielSiepmann\Tracking\Domain\ExpressionLanguage\Factory as ExpressionFactory;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
 use DanielSiepmann\Tracking\Domain\Repository\Pageview as Repository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TYPO3\CMS\Core\Context\Context;
 
 class Pageview implements MiddlewareInterface
@@ -45,14 +45,24 @@ class Pageview implements MiddlewareInterface
     private $context;
 
     /**
+     * @var ExpressionFactory
+     */
+    private $expressionFactory;
+
+    /**
      * @var string
      */
     private $rule = '';
 
-    public function __construct(Repository $repository, Context $context, string $rule)
-    {
+    public function __construct(
+        Repository $repository,
+        Context $context,
+        ExpressionFactory $expressionFactory,
+        string $rule
+    ) {
         $this->repository = $repository;
         $this->context = $context;
+        $this->expressionFactory = $expressionFactory;
         $this->rule = $rule;
     }
 
@@ -71,9 +81,10 @@ class Pageview implements MiddlewareInterface
         ServerRequestInterface $request,
         Context $context
     ): bool {
-        return (bool) (new ExpressionLanguage())->evaluate($this->rule, [
-            'request' => $request,
-            'context' => $context,
-        ]);
+        return (bool) $this->expressionFactory->create(
+            $this->rule,
+            $request,
+            $context
+        )->evaluate();
     }
 }

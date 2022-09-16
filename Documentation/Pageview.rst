@@ -43,6 +43,7 @@ Let us examine an concrete example::
          $rule: >
              not (context.getAspect("backend.user").isLoggedIn())
              and not (context.getAspect("frontend.preview").isPreview())
+             and traverse(request.getHeader("User-Agent"), '0')
              and not (request.getHeader("User-Agent")[0] matches "/^TYPO3|TYPO3 linkvalidator/")
              and not (request.getHeader("User-Agent")[0] matches "/^Codeception Testing/")
              and not (request.getHeader("User-Agent")[0] matches "/Wget|curl|Go-http-client/")

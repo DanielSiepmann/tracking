@@ -1,0 +1,54 @@
+1.3.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+* Introduce new ``traverse()`` function for rules.
+  The function is taken from TYPO3, documentation can be found here: https://docs.typo3.org/m/typo3/reference-typoscript/11.5/en-us/Conditions/Index.html#traverse
+  Rules provided by extension are adjusted.
+
+  The new function allows for save array access in order to prevent issues in recent
+  PHP versions with undefined array keys.
+
+  The important change was:
+
+  .. code-block:: diff
+
+     diff --git a/Configuration/Services.yaml b/Configuration/Services.yaml
+     index 1aaec24..df8bb13 100644
+     --- a/Configuration/Services.yaml
+     +++ b/Configuration/Services.yaml
+     @@ -59,7 +59,7 @@ services:
+            $rule: >
+                not (context.getAspect("backend.user").isLoggedIn())
+                and not (context.getAspect("frontend.preview").isPreview())
+     -          and request.getHeader("User-Agent")[0]
+     +          and traverse(request.getHeader("User-Agent"), '0')
+                and not (request.getHeader("User-Agent")[0] matches "/^TYPO3|TYPO3 linkvalidator/")
+                and not (request.getHeader("User-Agent")[0] matches "/Wget|curl|Go-http-client/")
+                and not (request.getHeader("User-Agent")[0] matches "/Googlebot|Bingbot|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|NextCloud-News|Feedly|XING FeedReader|CCBot|SemrushBot|SEOkicks|Twitterbot|Seekport Crawler|SemanticScholarBot|ia_archiver|PaperLiBot|TrendsmapResolver|AhrefsBot|Nuzzel/")
+
+  Same for other array accesses, e.g recordUid of ``Recordview``::
+
+     recordUid: 'traverse(request.getQueryParams(), "tx_news_pi1", "news")'
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
