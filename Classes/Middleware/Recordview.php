@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Middleware;
 
+use DanielSiepmann\Tracking\Domain\ExpressionLanguage\Factory as ExpressionFactory;
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
 use DanielSiepmann\Tracking\Domain\Recordview\Factory;
 use DanielSiepmann\Tracking\Domain\Repository\Recordview as Repository;
@@ -46,6 +47,11 @@ class Recordview implements MiddlewareInterface
     private $context;
 
     /**
+     * @var ExpressionFactory
+     */
+    private $expressionFactory;
+
+    /**
      * @var array<RecordRule>
      */
     private $rules = [];
@@ -53,10 +59,12 @@ class Recordview implements MiddlewareInterface
     public function __construct(
         Repository $repository,
         Context $context,
+        ExpressionFactory $expressionFactory,
         array $rules
     ) {
         $this->repository = $repository;
         $this->context = $context;
+        $this->expressionFactory = $expressionFactory;
 
         $this->rules = RecordRule::multipleFromArray($rules);
     }
@@ -79,13 +87,10 @@ class Recordview implements MiddlewareInterface
         Context $context,
         RecordRule $rule
     ): bool {
-        // Need silent, as expression language doens't provide a way to check for array keys
-        return @(bool) (new ExpressionLanguage())->evaluate(
+        return (bool) $this->expressionFactory->create(
             $rule->getMatchesExpression(),
-            [
-                'request' => $request,
-                'context' => $context,
-            ]
-        );
+            $request,
+            $context
+        )->evaluate();
     }
 }
