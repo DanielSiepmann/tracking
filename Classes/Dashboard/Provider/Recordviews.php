@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Dashboard\Provider;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -20,6 +20,8 @@ namespace DanielSiepmann\Tracking\Dashboard\Provider;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
+
+namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
 use DanielSiepmann\Tracking\Extension;
 use Doctrine\DBAL\ParameterType;
@@ -117,8 +119,11 @@ class Recordviews implements ChartDataProviderInterface
         $data = [];
 
         foreach ($this->getRecordviewsRecords() as $recordview) {
+            if (is_numeric($recordview['record_uid']) === false) {
+                continue;
+            }
             $record = $this->getRecord(
-                $recordview['record_uid'],
+                (int) $recordview['record_uid'],
                 $recordview['record_table_name']
             );
 

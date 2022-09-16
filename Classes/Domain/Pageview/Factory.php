@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Domain\Pageview;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -20,6 +20,8 @@ namespace DanielSiepmann\Tracking\Domain\Pageview;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
+
+namespace DanielSiepmann\Tracking\Domain\Pageview;
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use Psr\Http\Message\ServerRequestInterface;
@@ -54,13 +56,13 @@ class Factory
     public function fromDbRow(array $dbRow): Pageview
     {
         return new Pageview(
-            $dbRow['pid'],
-            $this->siteFinder->getSiteByPageId($dbRow['pid'])->getLanguageById($dbRow['sys_language_uid']),
+            (int) $dbRow['pid'],
+            $this->siteFinder->getSiteByPageId((int) $dbRow['pid'])->getLanguageById((int) $dbRow['sys_language_uid']),
             new \DateTimeImmutable('@' . $dbRow['crdate']),
-            $dbRow['type'],
+            (int) $dbRow['type'],
             $dbRow['url'],
             $dbRow['user_agent'],
-            $dbRow['uid']
+            (int) $dbRow['uid']
         );
     }
 

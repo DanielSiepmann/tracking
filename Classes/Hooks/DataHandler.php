@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Hooks;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2021 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -20,6 +20,8 @@ namespace DanielSiepmann\Tracking\Hooks;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
+
+namespace DanielSiepmann\Tracking\Hooks;
 
 use TYPO3\CMS\Core\DataHandling\DataHandler as Typo3DataHandler;
 use TYPO3\CMS\Core\Utility\ArrayUtility;

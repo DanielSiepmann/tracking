@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Domain\Model;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -20,6 +20,8 @@ namespace DanielSiepmann\Tracking\Domain\Model;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
+
+namespace DanielSiepmann\Tracking\Domain\Model;
 
 class RecordRule
 {
