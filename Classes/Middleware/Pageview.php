@@ -1,6 +1,6 @@
 <?php
 
-namespace DanielSiepmann\Tracking\Middleware;
+declare(strict_types=1);
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -20,6 +20,8 @@ namespace DanielSiepmann\Tracking\Middleware;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
+
+namespace DanielSiepmann\Tracking\Middleware;
 
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
 use DanielSiepmann\Tracking\Domain\Repository\Pageview as Repository;
