@@ -9,6 +9,6 @@ services:
     arguments:
       $rules:
         topics:
-          matches: 'request.getQueryParams()["topic_id"] > 0'
-          recordUid: 'request.getQueryParams()["topic_id"]'
+          matches: 'traverse(request.getQueryParams(), "topic_id") > 0'
+          recordUid: 'traverse(request.getQueryParams(), "topic_id")'
           tableName: 'sys_category'

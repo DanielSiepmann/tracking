@@ -24,14 +24,11 @@ declare(strict_types=1);
 namespace DanielSiepmann\Tracking\Domain\ExpressionLanguage;
 
 use DanielSiepmann\Tracking\Domain\Model\Expression;
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Context\Context;
 
 interface Factory
 {
     public function create(
         string $expression,
-        ServerRequestInterface $request,
-        Context $context
+        array $variables
     ): Expression;
 }

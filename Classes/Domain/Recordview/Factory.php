@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Domain\Recordview;
 
+use DanielSiepmann\Tracking\Domain\ExpressionLanguage\Factory as ExpressionFactory;
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
 use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use Psr\Http\Message\ServerRequestInterface;
@@ -32,15 +33,25 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 class Factory
 {
-    public static function fromRequest(
+    /**
+     * @var ExpressionFactory
+     */
+    private $expressionFactory;
+
+    public function __construct(
+        ExpressionFactory $expressionFactory
+    ) {
+        $this->expressionFactory = $expressionFactory;
+    }
+
+    public function fromRequest(
         ServerRequestInterface $request,
         RecordRule $rule
     ): Recordview {
-        // Need silent, as expression language doens't provide a way to check for array keys
-        $recordUid = @(new ExpressionLanguage())->evaluate(
+        $recordUid = $this->expressionFactory->create(
             $rule->getUidExpression(),
             ['request' => $request]
-        );
+        )->evaluate();
 
         if (is_numeric($recordUid) === false) {
             throw new \UnexpectedValueException(
