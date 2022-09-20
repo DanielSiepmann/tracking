@@ -36,7 +36,7 @@ Features
 
   Same for other array accesses, e.g recordUid of ``Recordview``::
 
-     recordUid: 'traverse(request.getQueryParams(), "tx_news_pi1", "news")'
+     recordUid: 'traverse(request.getQueryParams(), "tx_news_pi1/news")'
 
 Fixes
 -----
