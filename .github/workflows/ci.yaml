@@ -32,6 +32,7 @@ jobs:
           - 7.3
           - 7.4
           - 8.0
+          - 8.1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -57,6 +58,8 @@ jobs:
           - php-version: '7.4'
             typo3-version: '^11.5'
           - php-version: '8.0'
+            typo3-version: '^11.5'
+          - php-version: '8.1'
             typo3-version: '^11.5'
     steps:
       - uses: actions/checkout@v2
@@ -143,6 +146,8 @@ jobs:
             typo3-version: '^11.5'
           - php-version: '8.0'
             typo3-version: '^11.5'
+          - php-version: '8.1'
+            typo3-version: '^11.5'
     steps:
       - uses: actions/checkout@v2
 
@@ -190,6 +195,9 @@ jobs:
           - db-version: '8'
             php-version: '8.0'
             typo3-version: '^11.5'
+          - db-version: '8'
+            php-version: '8.1'
+            typo3-version: '^11.5'
     steps:
       - uses: actions/checkout@v2
 
@@ -235,6 +243,8 @@ jobs:
           - php-version: '7.4'
             typo3-version: '^11.5'
           - php-version: '8.0'
+            typo3-version: '^11.5'
+          - php-version: '8.1'
             typo3-version: '^11.5'
     steps:
       - uses: actions/checkout@v2
