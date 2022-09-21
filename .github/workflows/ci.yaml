@@ -41,9 +41,6 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           coverage: none
-          tools: composer:v2
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: PHP lint
         run: "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l"
