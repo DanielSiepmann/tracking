@@ -1,0 +1,35 @@
+1.4.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+* Prevent unnecessary files from distribution
+
+  Use ``.gitattributes`` to tell git what to ignore during exports.
+  This will prevent GitHub from adding those files to an archive.
+
+  Composer will use the GitHub archive as distribution while downloading.
+
+  This prevents none necessary files on production systems.
+  This also reduces file size of archive and should save disk space and other resources.
+
+Deprecation
+-----------
+
+Nothing
