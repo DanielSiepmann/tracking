@@ -91,7 +91,8 @@ class NewestPageviews implements ListDataProviderInterface
             ->from('tx_tracking_pageview')
             ->orderBy('crdate', 'desc')
             ->addOrderBy('uid', 'desc')
-            ->setMaxResults($this->maxResults);
+            ->setMaxResults($this->maxResults)
+        ;
 
         if ($constraints !== []) {
             $this->queryBuilder->where(...$constraints);

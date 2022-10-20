@@ -27,15 +27,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Command\UpdateDataCommand
+ * @covers \DanielSiepmann\Tracking\Command\UpdateDataCommand
  */
 class UpdateDataCommandTest extends TestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
 
-    protected $pathsToLinkInTestInstance = [
+    protected array $pathsToLinkInTestInstance = [
         'typo3conf/ext/tracking/Tests/Functional/Fixtures/sites' => 'typo3conf/sites',
     ];
 
@@ -50,12 +50,12 @@ class UpdateDataCommandTest extends TestCase
         $tester = new CommandTester($subject);
         $tester->execute([], ['capture_stderr_separately' => true]);
 
-        static::assertSame(0, $tester->getStatusCode());
+        self::assertSame(0, $tester->getStatusCode());
 
         $records = $this->getAllRecords('tx_tracking_pageview');
-        static::assertCount(2, $records);
-        static::assertSame('Linux', $records[0]['operating_system']);
-        static::assertSame('Android', $records[1]['operating_system']);
+        self::assertCount(2, $records);
+        self::assertSame('Linux', $records[0]['operating_system']);
+        self::assertSame('Android', $records[1]['operating_system']);
     }
 
     /**
@@ -69,12 +69,12 @@ class UpdateDataCommandTest extends TestCase
         $tester = new CommandTester($subject);
         $tester->execute([], ['capture_stderr_separately' => true]);
 
-        static::assertSame(0, $tester->getStatusCode());
+        self::assertSame(0, $tester->getStatusCode());
 
         $records = $this->getAllRecords('tx_tracking_pageview');
-        static::assertCount(2, $records);
-        static::assertSame('Linux', $records[0]['operating_system']);
-        static::assertSame('Android', $records[1]['operating_system']);
+        self::assertCount(2, $records);
+        self::assertSame('Linux', $records[0]['operating_system']);
+        self::assertSame('Android', $records[1]['operating_system']);
     }
 
     /**
@@ -88,9 +88,9 @@ class UpdateDataCommandTest extends TestCase
         $tester = new CommandTester($subject);
         $tester->execute([], ['capture_stderr_separately' => true]);
 
-        static::assertSame(0, $tester->getStatusCode());
+        self::assertSame(0, $tester->getStatusCode());
 
         $records = $this->getAllRecords('tx_tracking_pageview');
-        static::assertCount(0, $records);
+        self::assertCount(0, $records);
     }
 }

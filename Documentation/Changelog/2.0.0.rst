@@ -1,0 +1,30 @@
+2.0.0
+=====
+
+Breaking
+--------
+
+* Support TYPO3 v12.0, drop v10.
+  We only support last two TYPO3 versions.
+  Bugfixes and Security will be available for v10 and v11.
+  New features and breaking changes will only be available for v12.0 and v11.5 from now on.
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing

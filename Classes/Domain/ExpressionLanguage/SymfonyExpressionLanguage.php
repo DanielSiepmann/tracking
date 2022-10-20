@@ -25,10 +25,7 @@ namespace DanielSiepmann\Tracking\Domain\ExpressionLanguage;
 
 use DanielSiepmann\Tracking\Domain\Model\Expression;
 use DanielSiepmann\Tracking\Domain\Model\SymfonyExpression;
-use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionFunction;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 

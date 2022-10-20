@@ -25,6 +25,8 @@ namespace DanielSiepmann\Tracking\Domain\Repository;
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview as Model;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
+use Generator;
+use InvalidArgumentException;
 use TYPO3\CMS\Core\Database\Connection;
 
 class Pageview
@@ -53,7 +55,8 @@ class Pageview
             ->count('uid')
             ->from('tx_tracking_pageview')
             ->execute()
-            ->fetchColumn();
+            ->fetchColumn()
+        ;
 
         if (is_numeric($result)) {
             return (int) $result;
@@ -62,7 +65,7 @@ class Pageview
         return 0;
     }
 
-    public function findAll(): \Generator
+    public function findAll(): Generator
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $pageViews = $queryBuilder->select('*')->from('tx_tracking_pageview')->execute();
@@ -79,7 +82,7 @@ class Pageview
     public function update(Model $pageview): void
     {
         if ($pageview->getUid() === 0) {
-            throw new \InvalidArgumentException('Can not update pageview if uid is 0.', 1585770573);
+            throw new InvalidArgumentException('Can not update pageview if uid is 0.', 1585770573);
         }
 
         $this->connection->update(

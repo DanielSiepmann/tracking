@@ -52,7 +52,7 @@ class RecordRule
 
     public static function fromArray(array $config): self
     {
-        return new RecordRule(
+        return new self(
             $config['matches'],
             $config['recordUid'],
             $config['tableName']

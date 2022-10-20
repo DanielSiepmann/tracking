@@ -27,14 +27,16 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
  * @testdox Pageviews are
+ *
+ * @coversNothing
  */
 class PageviewTest extends TestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
 
-    protected $pathsToLinkInTestInstance = [
+    protected array $pathsToLinkInTestInstance = [
         'typo3conf/ext/tracking/Tests/Functional/Fixtures/sites' => 'typo3conf/sites',
     ];
 
@@ -62,12 +64,12 @@ class PageviewTest extends TestCase
 
         $records = $this->getAllRecords('tx_tracking_pageview');
         self::assertCount(1, $records);
-        self::assertSame('1', (string)$records[0]['pid']);
-        self::assertSame('1', (string)$records[0]['uid']);
+        self::assertSame('1', (string) $records[0]['pid']);
+        self::assertSame('1', (string) $records[0]['uid']);
         self::assertSame('http://localhost/?id=1', $records[0]['url']);
         self::assertSame('Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0', $records[0]['user_agent']);
         self::assertSame('Macintosh', $records[0]['operating_system']);
-        self::assertSame('0', (string)$records[0]['type']);
+        self::assertSame('0', (string) $records[0]['type']);
     }
 
     /**

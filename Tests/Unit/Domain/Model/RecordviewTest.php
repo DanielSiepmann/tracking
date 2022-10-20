@@ -22,12 +22,13 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  */
 
 use DanielSiepmann\Tracking\Domain\Model\Recordview;
+use DateTimeImmutable;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Domain\Model\Recordview
+ * @covers \DanielSiepmann\Tracking\Domain\Model\Recordview
  */
 class RecordviewTest extends TestCase
 {
@@ -43,14 +44,14 @@ class RecordviewTest extends TestCase
         $subject = new Recordview(
             0,
             $language->reveal(),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             '',
             '',
             10,
             'sys_category'
         );
 
-        static::assertInstanceOf(Recordview::class, $subject);
+        self::assertInstanceOf(Recordview::class, $subject);
     }
 
     /**
@@ -63,14 +64,14 @@ class RecordviewTest extends TestCase
         $subject = new Recordview(
             500,
             $language->reveal(),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             '',
             '',
             10,
             'sys_category'
         );
 
-        static::assertSame(500, $subject->getPageUid());
+        self::assertSame(500, $subject->getPageUid());
     }
 
     /**
@@ -83,14 +84,14 @@ class RecordviewTest extends TestCase
         $subject = new Recordview(
             0,
             $language->reveal(),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             '',
             '',
             10,
             'sys_category'
         );
 
-        static::assertSame($language->reveal(), $subject->getLanguage());
+        self::assertSame($language->reveal(), $subject->getLanguage());
     }
 
     /**
@@ -99,7 +100,7 @@ class RecordviewTest extends TestCase
     public function returnsCrdate(): void
     {
         $language = $this->prophesize(SiteLanguage::class);
-        $crdate = new \DateTimeImmutable();
+        $crdate = new DateTimeImmutable();
 
         $subject = new Recordview(
             0,
@@ -111,7 +112,7 @@ class RecordviewTest extends TestCase
             'sys_category'
         );
 
-        static::assertSame($crdate, $subject->getCrdate());
+        self::assertSame($crdate, $subject->getCrdate());
     }
 
     /**
@@ -124,14 +125,14 @@ class RecordviewTest extends TestCase
         $subject = new Recordview(
             0,
             $language->reveal(),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             'https://example.com/path.html',
             '',
             10,
             'sys_category'
         );
 
-        static::assertSame('https://example.com/path.html', $subject->getUrl());
+        self::assertSame('https://example.com/path.html', $subject->getUrl());
     }
 
     /**
@@ -144,14 +145,14 @@ class RecordviewTest extends TestCase
         $subject = new Recordview(
             0,
             $language->reveal(),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             '',
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
             10,
             'sys_category'
         );
 
-        static::assertSame(
+        self::assertSame(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
             $subject->getUserAgent()
         );
@@ -167,14 +168,14 @@ class RecordviewTest extends TestCase
         $subject = new Recordview(
             0,
             $language->reveal(),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             '',
             '',
             10,
             'sys_category'
         );
 
-        static::assertSame(
+        self::assertSame(
             10,
             $subject->getRecordUid()
         );
@@ -190,14 +191,14 @@ class RecordviewTest extends TestCase
         $subject = new Recordview(
             0,
             $language->reveal(),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             '',
             '',
             10,
             'sys_category'
         );
 
-        static::assertSame(
+        self::assertSame(
             'sys_category',
             $subject->getTableName()
         );
@@ -213,14 +214,14 @@ class RecordviewTest extends TestCase
         $subject = new Recordview(
             0,
             $language->reveal(),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             '',
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36',
             10,
             'sys_category'
         );
 
-        static::assertSame(
+        self::assertSame(
             'Linux',
             $subject->getOperatingSystem()
         );

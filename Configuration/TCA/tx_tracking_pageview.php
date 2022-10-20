@@ -35,19 +35,12 @@ return [
             'config' => [
                 'type' => 'input',
                 'eval' => 'datetime',
+                'renderType' => 'inputDateTime',
             ],
         ],
         'sys_language_uid' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.sys_language',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'foreign_table' => 'sys_language',
-                'items' => [
-                    ['LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.sys_language.0', 0],
-                ],
-                'readOnly' => true,
-            ]
+            'config' => ['type' => 'language']
         ],
         'user_agent' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.user_agent',

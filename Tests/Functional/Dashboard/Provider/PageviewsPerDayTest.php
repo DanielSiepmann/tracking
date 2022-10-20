@@ -28,11 +28,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerDay
+ * @covers \DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerDay
  */
 class PageviewsPerDayTest extends TestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
 
@@ -55,8 +55,8 @@ class PageviewsPerDayTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertCount(32, $result['labels']);
-        static::assertCount(32, $result['datasets'][0]['data']);
+        self::assertCount(32, $result['labels']);
+        self::assertCount(32, $result['datasets'][0]['data']);
     }
 
     /**
@@ -80,8 +80,8 @@ class PageviewsPerDayTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertCount(4, $result['labels']);
-        static::assertSame([
+        self::assertCount(4, $result['labels']);
+        self::assertSame([
             1,
             1,
             1,
@@ -111,8 +111,8 @@ class PageviewsPerDayTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertCount(4, $result['labels']);
-        static::assertSame([
+        self::assertCount(4, $result['labels']);
+        self::assertSame([
             1,
             0,
             1,
@@ -138,11 +138,11 @@ class PageviewsPerDayTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             date('d.m.Y', strtotime('-1 day')),
             date('d.m.Y'),
         ], $result['labels']);
-        static::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, $result['datasets'][0]['data']);
     }
 
     /**
@@ -168,7 +168,7 @@ class PageviewsPerDayTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             0 => 0,
             1 => 0,
             2 => 1,

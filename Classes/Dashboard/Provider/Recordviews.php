@@ -23,15 +23,10 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
-use DanielSiepmann\Tracking\Extension;
-use Doctrine\DBAL\ParameterType;
-use Doctrine\DBAL\Statement;
+use Generator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
@@ -100,7 +95,7 @@ class Recordviews implements ChartDataProviderInterface
 
     public function getChartData(): array
     {
-        list($labels, $data) = $this->getRecordviews();
+        [$labels, $data] = $this->getRecordviews();
 
         return [
             'labels' => $labels,
@@ -108,7 +103,7 @@ class Recordviews implements ChartDataProviderInterface
                 [
                     'backgroundColor' => WidgetApi::getDefaultChartColors(),
                     'data' => $data,
-                ]
+                ],
             ],
         ];
     }
@@ -147,13 +142,13 @@ class Recordviews implements ChartDataProviderInterface
         ];
     }
 
-    private function getRecordviewsRecords(): \Generator
+    private function getRecordviewsRecords(): Generator
     {
         $constraints = [
             $this->queryBuilder->expr()->gte(
                 'tx_tracking_recordview.crdate',
                 strtotime('-' . $this->days . ' day 0:00:00')
-            )
+            ),
         ];
 
         if (count($this->pagesToExclude)) {
@@ -198,7 +193,8 @@ class Recordviews implements ChartDataProviderInterface
             ->orderBy('total', 'desc')
             ->addOrderBy('latest', 'desc')
             ->setMaxResults($this->maxResults)
-            ->execute();
+            ->execute()
+        ;
 
         while ($row = $result->fetch()) {
             yield $row;

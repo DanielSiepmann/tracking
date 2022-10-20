@@ -26,10 +26,11 @@ namespace DanielSiepmann\Tracking\Domain\Recordview;
 use DanielSiepmann\Tracking\Domain\ExpressionLanguage\Factory as ExpressionFactory;
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
 use DanielSiepmann\Tracking\Domain\Model\Recordview;
+use DateTimeImmutable;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use UnexpectedValueException;
 
 class Factory
 {
@@ -54,7 +55,7 @@ class Factory
         )->evaluate();
 
         if (is_numeric($recordUid) === false) {
-            throw new \UnexpectedValueException(
+            throw new UnexpectedValueException(
                 sprintf(
                     'Could not determine record uid based on expression: "%1$s", got type "%2$s".',
                     $rule->getUidExpression(),
@@ -67,7 +68,7 @@ class Factory
         return new Recordview(
             self::getRouting($request)->getPageId(),
             self::getLanguage($request),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             (string) $request->getUri(),
             $request->getHeader('User-Agent')[0] ?? '',
             (int) $recordUid,
@@ -80,7 +81,7 @@ class Factory
         $language = $request->getAttribute('language');
 
         if (!$language instanceof SiteLanguage) {
-            throw new \UnexpectedValueException('Could not fetch SiteLanguage from request attributes.', 1637847002);
+            throw new UnexpectedValueException('Could not fetch SiteLanguage from request attributes.', 1637847002);
         }
 
         return $language;
@@ -91,7 +92,7 @@ class Factory
         $routing = $request->getAttribute('routing');
 
         if (!$routing instanceof PageArguments) {
-            throw new \UnexpectedValueException('Could not fetch PageArguments from request attributes.', 1637847002);
+            throw new UnexpectedValueException('Could not fetch PageArguments from request attributes.', 1637847002);
         }
 
         return $routing;

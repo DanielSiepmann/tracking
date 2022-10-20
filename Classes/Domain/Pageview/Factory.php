@@ -24,10 +24,12 @@ declare(strict_types=1);
 namespace DanielSiepmann\Tracking\Domain\Pageview;
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
+use DateTimeImmutable;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use UnexpectedValueException;
 
 class Factory
 {
@@ -46,7 +48,7 @@ class Factory
         return new Pageview(
             $this->getRouting($request)->getPageId(),
             $this->getLanguage($request),
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
             (int) $this->getRouting($request)->getPageType(),
             (string) $request->getUri(),
             $request->getHeader('User-Agent')[0] ?? ''
@@ -58,7 +60,7 @@ class Factory
         return new Pageview(
             (int) $dbRow['pid'],
             $this->siteFinder->getSiteByPageId((int) $dbRow['pid'])->getLanguageById((int) $dbRow['sys_language_uid']),
-            new \DateTimeImmutable('@' . $dbRow['crdate']),
+            new DateTimeImmutable('@' . $dbRow['crdate']),
             (int) $dbRow['type'],
             $dbRow['url'],
             $dbRow['user_agent'],
@@ -71,7 +73,7 @@ class Factory
         $language = $request->getAttribute('language');
 
         if (!$language instanceof SiteLanguage) {
-            throw new \UnexpectedValueException('Could not fetch SiteLanguage from request attributes.', 1637847002);
+            throw new UnexpectedValueException('Could not fetch SiteLanguage from request attributes.', 1637847002);
         }
 
         return $language;
@@ -82,7 +84,7 @@ class Factory
         $routing = $request->getAttribute('routing');
 
         if (!$routing instanceof PageArguments) {
-            throw new \UnexpectedValueException('Could not fetch PageArguments from request attributes.', 1637847002);
+            throw new UnexpectedValueException('Could not fetch PageArguments from request attributes.', 1637847002);
         }
 
         return $routing;

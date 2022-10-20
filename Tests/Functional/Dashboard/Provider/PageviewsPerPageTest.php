@@ -28,11 +28,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerPage
+ * @covers \DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerPage
  */
 class PageviewsPerPageTest extends TestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
 
@@ -56,7 +56,7 @@ class PageviewsPerPageTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Page 10',
             'Page 9',
             'Page 8',
@@ -64,7 +64,7 @@ class PageviewsPerPageTest extends TestCase
             'Page 6',
             'Page 5',
         ], $result['labels']);
-        static::assertCount(6, $result['datasets'][0]['data']);
+        self::assertCount(6, $result['datasets'][0]['data']);
     }
 
     /**
@@ -97,12 +97,12 @@ class PageviewsPerPageTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Page 2',
             'Page 3',
             'Page 1',
         ], $result['labels']);
-        static::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, $result['datasets'][0]['data']);
     }
 
     /**
@@ -132,11 +132,11 @@ class PageviewsPerPageTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Page 3',
             'Page 2',
         ], $result['labels']);
-        static::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, $result['datasets'][0]['data']);
     }
 
     /**
@@ -161,13 +161,13 @@ class PageviewsPerPageTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Page 10',
             'Page 9',
             'Page 8',
             'Page 7',
         ], $result['labels']);
-        static::assertCount(4, $result['datasets'][0]['data']);
+        self::assertCount(4, $result['datasets'][0]['data']);
     }
 
     /**
@@ -193,13 +193,13 @@ class PageviewsPerPageTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Page 10',
             'Page 9',
             'Page 8',
             'Page 7',
         ], $result['labels']);
-        static::assertCount(4, $result['datasets'][0]['data']);
+        self::assertCount(4, $result['datasets'][0]['data']);
     }
 
     /**
@@ -242,11 +242,11 @@ class PageviewsPerPageTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Page 2',
             'Page 1',
         ], $result['labels']);
-        static::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, $result['datasets'][0]['data']);
     }
 
     /**
@@ -289,11 +289,11 @@ class PageviewsPerPageTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'Page 2',
             'Page 1',
             'Page 3',
         ], $result['labels']);
-        static::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, $result['datasets'][0]['data']);
     }
 }
