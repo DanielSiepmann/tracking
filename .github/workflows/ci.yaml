@@ -10,7 +10,7 @@ jobs:
   check-composer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -35,7 +35,7 @@ jobs:
           - 8.1
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -62,7 +62,7 @@ jobs:
           - php-version: '8.1'
             typo3-version: '^11.5'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -84,7 +84,7 @@ jobs:
     needs:
       - check-composer
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -113,7 +113,7 @@ jobs:
   coding-guideline:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -149,7 +149,7 @@ jobs:
           - php-version: '8.1'
             typo3-version: '^11.5'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -199,7 +199,7 @@ jobs:
             php-version: '8.1'
             typo3-version: '^11.5'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -247,7 +247,7 @@ jobs:
           - php-version: '8.1'
             typo3-version: '^11.5'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
