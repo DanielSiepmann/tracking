@@ -47,7 +47,8 @@
         "typo3/testing-framework": "~7.0@dev",
         "symplify/easy-coding-standard": "^11.1",
         "cweagans/composer-patches": "^1.7",
-        "ssch/typo3-rector": "^1.0"
+        "ssch/typo3-rector": "^1.0",
+        "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "^0.1"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -75,7 +76,8 @@
             "typo3/class-alias-loader": true,
             "typo3/cms-composer-installers": true,
             "cweagans/composer-patches": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": true
         }
     }
 }
