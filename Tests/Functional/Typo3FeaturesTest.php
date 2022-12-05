@@ -41,8 +41,9 @@ class Typo3FeaturesTest extends TestCase
     {
         parent::setUp();
 
+        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/BackendUser.xml');
         $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Typo3FeaturesTest/PageWithRecords.xml');
-        $this->setUpBackendUserFromFixture(1);
+        $this->setUpBackendUser(1);
         $languageServiceFactory = $this->getContainer()->get(LanguageServiceFactory::class);
         if (!$languageServiceFactory instanceof LanguageServiceFactory) {
             throw new UnexpectedValueException('Did not retrieve LanguageServiceFactory.', 1637847250);

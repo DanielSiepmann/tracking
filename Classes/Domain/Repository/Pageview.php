@@ -55,7 +55,7 @@ class Pageview
             ->count('uid')
             ->from('tx_tracking_pageview')
             ->execute()
-            ->fetchColumn()
+            ->fetchOne()
         ;
 
         if (is_numeric($result)) {

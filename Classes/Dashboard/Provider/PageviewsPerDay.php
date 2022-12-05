@@ -63,14 +63,13 @@ class PageviewsPerDay implements ChartDataProviderInterface
     private $languageLimitation;
 
     public function __construct(
-        LanguageService $languageService,
         QueryBuilder $queryBuilder,
         int $days = 31,
         array $pagesToExclude = [],
         array $languageLimitation = [],
         string $dateFormat = 'Y-m-d'
     ) {
-        $this->languageService = $languageService;
+        $this->languageService = $GLOBALS['LANG'];
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
         $this->pagesToExclude = $pagesToExclude;

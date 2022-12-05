@@ -23,7 +23,7 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
 
 use DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerDay;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
@@ -35,6 +35,18 @@ class PageviewsPerDayTest extends TestCase
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['LANG']);
+        parent::tearDown();
+    }
 
     /**
      * @test
@@ -50,8 +62,7 @@ class PageviewsPerDayTest extends TestCase
         }
 
         $subject = new PageviewsPerDay(
-            GeneralUtility::makeInstance(LanguageService::class),
-            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview')
+            GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
         );
 
         $result = $subject->getChartData();
@@ -74,7 +85,6 @@ class PageviewsPerDayTest extends TestCase
         }
 
         $subject = new PageviewsPerDay(
-            GeneralUtility::makeInstance(LanguageService::class),
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
             3
         );
@@ -104,7 +114,6 @@ class PageviewsPerDayTest extends TestCase
         }
 
         $subject = new PageviewsPerDay(
-            GeneralUtility::makeInstance(LanguageService::class),
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
             3,
             [2]
@@ -129,7 +138,6 @@ class PageviewsPerDayTest extends TestCase
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
 
         $subject = new PageviewsPerDay(
-            GeneralUtility::makeInstance(LanguageService::class),
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
             1,
             [],
@@ -160,7 +168,6 @@ class PageviewsPerDayTest extends TestCase
         }
 
         $subject = new PageviewsPerDay(
-            GeneralUtility::makeInstance(LanguageService::class),
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview'),
             11,
             [],

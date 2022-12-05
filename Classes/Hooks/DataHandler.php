@@ -49,7 +49,7 @@ class DataHandler
 
     private function preventCopyOfTrackingTables(Typo3DataHandler $dataHandler): void
     {
-        $copyWhichTables = $dataHandler->compileAdminTables();
+        $copyWhichTables = array_keys($GLOBALS['TCA']);
 
         if ($dataHandler->copyWhichTables !== '*') {
             $copyWhichTables = GeneralUtility::trimExplode(',', $dataHandler->copyWhichTables, true);

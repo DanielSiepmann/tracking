@@ -1,3 +1,5 @@
+includes:
+  - phpstan-baseline.neon
 parameters:
     level: max
     paths:
@@ -6,16 +8,11 @@ parameters:
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        # Ignore error for TYPO3 10 and TYPO3 11
-        - '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
-        - '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
+        # Ignore error for TYPO3 11 and TYPO3 12
         - '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Result\|int\.#'
-        - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
-        - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
         - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Result\|int\.#'
-        - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Driver\\Statement\|int\.#'
-        - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Driver\\ResultStatement\|int\.#'
         - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.#'
+        - '#Cannot call method fetchOne\(\) on Doctrine\\DBAL\\Result\|int\.#'
         - "#^Parameter \\#[0-9] \\.\\.\\.\\$predicates of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\:\\:where\\(\\) expects array\\<int, mixed\\>\\|Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\CompositeExpression, string given\\.$#"
         - '#^Variable \$_EXTKEY might not be defined\.$#'
         - "#^Cannot access offset '.*' on mixed.$#"

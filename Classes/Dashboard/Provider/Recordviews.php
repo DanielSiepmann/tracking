@@ -25,6 +25,7 @@ namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
 use Generator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -209,7 +210,11 @@ class Recordviews implements ChartDataProviderInterface
 
         $record = BackendUtility::getRecord($table, $uid);
         if (count($this->languageLimitation) === 1 && $record !== null) {
-            $record = $this->pageRepository->getRecordOverlay($table, $record, $this->languageLimitation[0]);
+            $record = $this->pageRepository->getRecordOverlay(
+                $table,
+                $record,
+                $this->createLanguageAspect($this->languageLimitation[0])
+            );
         }
 
         if (is_array($record) === false) {
@@ -220,5 +225,14 @@ class Recordviews implements ChartDataProviderInterface
             'title' => strip_tags(BackendUtility::getRecordTitle($table, $record, true)),
             'type' => $record[$recordTypeField] ?? '',
         ];
+    }
+
+    private function createLanguageAspect(int $languageUid): LanguageAspect
+    {
+        return new LanguageAspect(
+            $languageUid,
+            null,
+            LanguageAspect::OVERLAYS_MIXED
+        );
     }
 }

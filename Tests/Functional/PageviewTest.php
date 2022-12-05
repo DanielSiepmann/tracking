@@ -77,7 +77,8 @@ class PageviewTest extends TestCase
      */
     public function notTrackedWhenDisallowed(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/BackendUser.xml');
+        $this->setUpBackendUser(1);
 
         $request = new InternalRequest();
         $request = $request->withPageId(1);

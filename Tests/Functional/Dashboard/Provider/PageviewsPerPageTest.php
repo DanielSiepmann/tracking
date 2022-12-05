@@ -24,6 +24,7 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
 use DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerPage;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
@@ -35,6 +36,18 @@ class PageviewsPerPageTest extends TestCase
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+    }
+
+    protected function tearDown(): void
+    {
+        unset($GLOBALS['LANG']);
+        parent::tearDown();
+    }
 
     /**
      * @test
