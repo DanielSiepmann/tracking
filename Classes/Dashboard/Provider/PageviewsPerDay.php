@@ -86,7 +86,7 @@ class PageviewsPerDay implements ChartDataProviderInterface
             'datasets' => [
                 [
                     'label' => $this->languageService->sL(
-                        Extension::LANGUAGE_PATH . 'widgets.pageViewsBar.chart.dataSet.0'
+                        Extension::LANGUAGE_PATH . ':dashboard.widgets.pageViewsBar.chart.dataSet.0'
                     ),
                     'backgroundColor' => WidgetApi::getDefaultChartColors()[0],
                     'border' => 0,
