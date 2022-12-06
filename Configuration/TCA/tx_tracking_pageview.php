@@ -12,7 +12,6 @@ return [
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'title' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview',
-        'searchFields' => 'uid, url',
         'iconfile' => 'EXT:tracking/Resources/Public/Icons/Record/Pageview.svg',
     ],
     'types' => [

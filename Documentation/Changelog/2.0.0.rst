@@ -9,6 +9,10 @@ Breaking
   Bugfixes and Security will be available for v10 and v11.
   New features and breaking changes will only be available for v12.1 and v11.5 from now on.
 
+* searchFields for records got removed.
+  This should speed up your instance TYPO3 backend search.
+  Feel free to add necessary fields by overwriting TCA yourself.
+
 Features
 --------
 
