@@ -64,7 +64,7 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
 
     public function getChartData(): array
     {
-        list($labels, $data) = $this->getPageViewsPerPage();
+        [$labels, $data] = $this->getPageViewsPerPage();
 
         return [
             'labels' => $labels,
@@ -72,7 +72,7 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
                 [
                     'backgroundColor' => WidgetApi::getDefaultChartColors(),
                     'data' => $data,
-                ]
+                ],
             ],
         ];
     }
@@ -113,7 +113,8 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
             ->addOrderBy('operating_system', 'asc')
             ->setMaxResults($this->maxResults)
             ->execute()
-            ->fetchAll();
+            ->fetchAll()
+        ;
 
         foreach ($result as $row) {
             if (is_array($row) === false) {

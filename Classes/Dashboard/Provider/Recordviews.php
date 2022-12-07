@@ -23,15 +23,11 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
-use DanielSiepmann\Tracking\Extension;
-use Doctrine\DBAL\ParameterType;
-use Doctrine\DBAL\Statement;
+use Generator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
@@ -100,7 +96,7 @@ class Recordviews implements ChartDataProviderInterface
 
     public function getChartData(): array
     {
-        list($labels, $data) = $this->getRecordviews();
+        [$labels, $data] = $this->getRecordviews();
 
         return [
             'labels' => $labels,
@@ -108,7 +104,7 @@ class Recordviews implements ChartDataProviderInterface
                 [
                     'backgroundColor' => WidgetApi::getDefaultChartColors(),
                     'data' => $data,
-                ]
+                ],
             ],
         ];
     }
@@ -147,13 +143,13 @@ class Recordviews implements ChartDataProviderInterface
         ];
     }
 
-    private function getRecordviewsRecords(): \Generator
+    private function getRecordviewsRecords(): Generator
     {
         $constraints = [
             $this->queryBuilder->expr()->gte(
                 'tx_tracking_recordview.crdate',
                 strtotime('-' . $this->days . ' day 0:00:00')
-            )
+            ),
         ];
 
         if (count($this->pagesToExclude)) {
@@ -198,7 +194,8 @@ class Recordviews implements ChartDataProviderInterface
             ->orderBy('total', 'desc')
             ->addOrderBy('latest', 'desc')
             ->setMaxResults($this->maxResults)
-            ->execute();
+            ->execute()
+        ;
 
         while ($row = $result->fetch()) {
             yield $row;
@@ -213,7 +210,11 @@ class Recordviews implements ChartDataProviderInterface
 
         $record = BackendUtility::getRecord($table, $uid);
         if (count($this->languageLimitation) === 1 && $record !== null) {
-            $record = $this->pageRepository->getRecordOverlay($table, $record, $this->languageLimitation[0]);
+            $record = $this->pageRepository->getRecordOverlay(
+                $table,
+                $record,
+                $this->createLanguageAspect($this->languageLimitation[0])
+            );
         }
 
         if (is_array($record) === false) {
@@ -224,5 +225,14 @@ class Recordviews implements ChartDataProviderInterface
             'title' => strip_tags(BackendUtility::getRecordTitle($table, $record, true)),
             'type' => $record[$recordTypeField] ?? '',
         ];
+    }
+
+    private function createLanguageAspect(int $languageUid): LanguageAspect
+    {
+        return new LanguageAspect(
+            $languageUid,
+            null,
+            LanguageAspect::OVERLAYS_MIXED
+        );
     }
 }

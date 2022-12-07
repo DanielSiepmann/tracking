@@ -27,7 +27,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Domain\Model\Extractor
+ * @covers \DanielSiepmann\Tracking\Domain\Model\Extractor
  */
 class ExtractorTest extends TestCase
 {
@@ -35,7 +35,9 @@ class ExtractorTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider possibleUserStringWithOperatingSystems
+     *
      * @testdox Operating system $expectedOperatingSystem is extracted from UserAgent string: $userAgent
      */
     public function returnsOperatingSystem(string $userAgent, string $expectedOperatingSystem): void
@@ -43,7 +45,7 @@ class ExtractorTest extends TestCase
         $model = $this->prophesize(HasUserAgent::class);
         $model->getUserAgent()->willReturn($userAgent);
 
-        static::assertSame(
+        self::assertSame(
             $expectedOperatingSystem,
             Extractor::getOperatingSystem($model->reveal())
         );

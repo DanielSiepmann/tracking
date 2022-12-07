@@ -27,11 +27,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews
+ * @covers \DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews
  */
 class NewestPageviewsTest extends TestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
 
@@ -54,7 +54,7 @@ class NewestPageviewsTest extends TestCase
             GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_tracking_pageview')
         );
 
-        static::assertSame([
+        self::assertSame([
             'Url 10 - User-Agent 10',
             'Url 9 - User-Agent 9',
             'Url 8 - User-Agent 8',
@@ -84,7 +84,7 @@ class NewestPageviewsTest extends TestCase
             2
         );
 
-        static::assertSame([
+        self::assertSame([
             'Url 10 - User-Agent 10',
             'Url 9 - User-Agent 9',
         ], $subject->getItems());
@@ -111,7 +111,7 @@ class NewestPageviewsTest extends TestCase
             [9]
         );
 
-        static::assertSame([
+        self::assertSame([
             'Url 10 - User-Agent 10',
             'Url 8 - User-Agent 8',
             'Url 7 - User-Agent 7',
@@ -144,7 +144,7 @@ class NewestPageviewsTest extends TestCase
             [1]
         );
 
-        static::assertSame([
+        self::assertSame([
             'Url 9 - User-Agent 9',
             'Url 7 - User-Agent 7',
             'Url 5 - User-Agent 5',

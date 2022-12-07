@@ -23,13 +23,14 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Repository;
 
 use DanielSiepmann\Tracking\Domain\Model\Recordview as Model;
 use DanielSiepmann\Tracking\Domain\Repository\Recordview;
+use DateTimeImmutable;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Domain\Repository\Recordview
+ * @covers \DanielSiepmann\Tracking\Domain\Repository\Recordview
  */
 class RecordviewTest extends TestCase
 {
@@ -42,7 +43,7 @@ class RecordviewTest extends TestCase
     {
         $connection = $this->prophesize(Connection::class);
 
-        $dateTime = $this->prophesize(\DateTimeImmutable::class);
+        $dateTime = $this->prophesize(DateTimeImmutable::class);
         $dateTime->format('U')->willReturn(1582660189);
 
         $language = $this->prophesize(SiteLanguage::class);

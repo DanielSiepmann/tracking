@@ -27,11 +27,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem
+ * @covers \DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem
  */
 class PageviewsPerOperatingSystemTest extends TestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
 
@@ -54,7 +54,7 @@ class PageviewsPerOperatingSystemTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'System 1',
             'System 10',
             'System 2',
@@ -62,7 +62,7 @@ class PageviewsPerOperatingSystemTest extends TestCase
             'System 4',
             'System 5',
         ], $result['labels']);
-        static::assertCount(6, $result['datasets'][0]['data']);
+        self::assertCount(6, $result['datasets'][0]['data']);
     }
 
     /**
@@ -98,12 +98,12 @@ class PageviewsPerOperatingSystemTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'System 2',
             'System 1',
             'System 3',
         ], $result['labels']);
-        static::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, $result['datasets'][0]['data']);
     }
 
     /**
@@ -135,11 +135,11 @@ class PageviewsPerOperatingSystemTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'System 2',
             'System 3',
         ], $result['labels']);
-        static::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, $result['datasets'][0]['data']);
     }
 
     /**
@@ -164,13 +164,13 @@ class PageviewsPerOperatingSystemTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'System 1',
             'System 10',
             'System 2',
             'System 3',
         ], $result['labels']);
-        static::assertCount(4, $result['datasets'][0]['data']);
+        self::assertCount(4, $result['datasets'][0]['data']);
     }
 
     /**
@@ -197,13 +197,13 @@ class PageviewsPerOperatingSystemTest extends TestCase
         );
 
         $result = $subject->getChartData();
-        static::assertSame([
+        self::assertSame([
             'System 1',
             'System 3',
             'System 5',
             'System 7',
             'System 9',
         ], $result['labels']);
-        static::assertCount(5, $result['datasets'][0]['data']);
+        self::assertCount(5, $result['datasets'][0]['data']);
     }
 }

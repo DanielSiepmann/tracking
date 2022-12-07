@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Domain\Model;
 
+use DateTimeImmutable;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 class Recordview implements HasUserAgent
@@ -38,7 +39,7 @@ class Recordview implements HasUserAgent
     private $language;
 
     /**
-     * @var \DateTimeImmutable
+     * @var DateTimeImmutable
      */
     private $crdate;
 
@@ -65,7 +66,7 @@ class Recordview implements HasUserAgent
     public function __construct(
         int $pageUid,
         SiteLanguage $language,
-        \DateTimeImmutable $crdate,
+        DateTimeImmutable $crdate,
         string $url,
         string $userAgent,
         int $recordUid,
@@ -90,7 +91,7 @@ class Recordview implements HasUserAgent
         return $this->language;
     }
 
-    public function getCrdate(): \DateTimeImmutable
+    public function getCrdate(): DateTimeImmutable
     {
         return $this->crdate;
     }

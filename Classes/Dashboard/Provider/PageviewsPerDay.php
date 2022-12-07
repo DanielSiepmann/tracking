@@ -63,14 +63,13 @@ class PageviewsPerDay implements ChartDataProviderInterface
     private $languageLimitation;
 
     public function __construct(
-        LanguageService $languageService,
         QueryBuilder $queryBuilder,
         int $days = 31,
         array $pagesToExclude = [],
         array $languageLimitation = [],
         string $dateFormat = 'Y-m-d'
     ) {
-        $this->languageService = $languageService;
+        $this->languageService = $GLOBALS['LANG'];
         $this->queryBuilder = $queryBuilder;
         $this->days = $days;
         $this->pagesToExclude = $pagesToExclude;
@@ -80,20 +79,20 @@ class PageviewsPerDay implements ChartDataProviderInterface
 
     public function getChartData(): array
     {
-        list($labels, $data) = $this->calculateData();
+        [$labels, $data] = $this->calculateData();
 
         return [
             'labels' => $labels,
             'datasets' => [
                 [
                     'label' => $this->languageService->sL(
-                        Extension::LANGUAGE_PATH . 'widgets.pageViewsBar.chart.dataSet.0'
+                        Extension::LANGUAGE_PATH . ':dashboard.widgets.pageViewsBar.chart.dataSet.0'
                     ),
                     'backgroundColor' => WidgetApi::getDefaultChartColors()[0],
                     'border' => 0,
-                    'data' => $data
-                ]
-            ]
+                    'data' => $data,
+                ],
+            ],
         ];
     }
 
@@ -110,7 +109,6 @@ class PageviewsPerDay implements ChartDataProviderInterface
 
         $start = (int) strtotime('-' . $this->days . ' day 0:00:00');
         $end = (int) strtotime('tomorrow midnight');
-
 
         foreach ($this->getPageviewsInPeriod($start, $end) as $day) {
             $data[$day['label']] = (int) $day['count'];
@@ -155,7 +153,7 @@ class PageviewsPerDay implements ChartDataProviderInterface
             ->where(...$constraints)
             ->groupBy('label')
             ->orderBy('label', 'ASC')
-            ;
+        ;
 
         if ($this->queryBuilder->getConnection()->getDatabasePlatform()->getName() === 'sqlite') {
             $this->queryBuilder->addSelectLiteral('date(crdate, "unixepoch") as "label"');

@@ -21,35 +21,37 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * 02110-1301, USA.
  */
 
-use DanielSiepmann\Tracking\Functional\CopyingPageWithRecordsWorks;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
+use UnexpectedValueException;
 
 /**
  * @covers \DanielSiepmann\Tracking\Functional\CopyingPageWithRecordsWorks
+ *
  * @testdox This extension works with TYPO3 feature:
  */
 class Typo3FeaturesTest extends TestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
+        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/BackendUser.xml');
         $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Typo3FeaturesTest/PageWithRecords.xml');
-        $this->setUpBackendUserFromFixture(1);
+        $this->setUpBackendUser(1);
         $languageServiceFactory = $this->getContainer()->get(LanguageServiceFactory::class);
         if (!$languageServiceFactory instanceof LanguageServiceFactory) {
-            throw new \UnexpectedValueException('Did not retrieve LanguageServiceFactory.', 1637847250);
+            throw new UnexpectedValueException('Did not retrieve LanguageServiceFactory.', 1637847250);
         }
         $GLOBALS['LANG'] = $languageServiceFactory->create('default');
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         unset($GLOBALS['LANG']);
 
@@ -58,6 +60,7 @@ class Typo3FeaturesTest extends TestCase
 
     /**
      * @test
+     *
      * @testdox Copy pages. Tracking records will not be copied.
      */
     public function copyContainingRecords(): void
@@ -80,6 +83,7 @@ class Typo3FeaturesTest extends TestCase
 
     /**
      * @test
+     *
      * @testdox Copy individual tables, but always exclude tracking tables.
      */
     public function copyCustomTablesViaDataHandler(): void

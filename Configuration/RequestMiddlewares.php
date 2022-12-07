@@ -1,9 +1,11 @@
 <?php
 
+use DanielSiepmann\Tracking\Middleware\Pageview;
+use DanielSiepmann\Tracking\Middleware\Recordview;
 return [
     'frontend' => [
         'danielsiepmann/tracking/pageview' => [
-            'target' => \DanielSiepmann\Tracking\Middleware\Pageview::class,
+            'target' => Pageview::class,
             'before' => [
                 'typo3/cms-frontend/content-length-headers',
             ],
@@ -12,7 +14,7 @@ return [
             ],
         ],
         'danielsiepmann/tracking/recordview' => [
-            'target' => \DanielSiepmann\Tracking\Middleware\Recordview::class,
+            'target' => Recordview::class,
             'before' => [
                 'typo3/cms-frontend/content-length-headers',
             ],

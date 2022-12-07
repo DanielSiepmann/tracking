@@ -22,20 +22,21 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  */
 
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
 
 /**
  * @testdox Recordviews are
+ *
+ * @coversNothing
  */
 class RecordviewTest extends TestCase
 {
-    protected $testExtensionsToLoad = [
+    protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
         'typo3conf/ext/tracking/Tests/Functional/Fixtures/Extensions/recordview',
     ];
 
-    protected $pathsToLinkInTestInstance = [
+    protected array $pathsToLinkInTestInstance = [
         'typo3conf/ext/tracking/Tests/Functional/Fixtures/sites' => 'typo3conf/sites',
     ];
 
@@ -64,13 +65,13 @@ class RecordviewTest extends TestCase
 
         $records = $this->getAllRecords('tx_tracking_recordview');
         self::assertCount(1, $records);
-        self::assertSame('1', (string)$records[0]['pid']);
-        self::assertSame('1', (string)$records[0]['uid']);
+        self::assertSame('1', (string) $records[0]['pid']);
+        self::assertSame('1', (string) $records[0]['uid']);
         self::assertSame('http://localhost/?id=1&topic_id=1', $records[0]['url']);
         self::assertSame('Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0', $records[0]['user_agent']);
         self::assertSame('Macintosh', $records[0]['operating_system']);
         self::assertSame('sys_category_1', $records[0]['record']);
-        self::assertSame('1', (string)$records[0]['record_uid']);
+        self::assertSame('1', (string) $records[0]['record_uid']);
         self::assertSame('sys_category', $records[0]['record_table_name']);
     }
 

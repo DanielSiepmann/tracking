@@ -26,7 +26,6 @@ namespace DanielSiepmann\Tracking\Hooks;
 use TYPO3\CMS\Core\DataHandling\DataHandler as Typo3DataHandler;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 class DataHandler
 {
@@ -50,14 +49,14 @@ class DataHandler
 
     private function preventCopyOfTrackingTables(Typo3DataHandler $dataHandler): void
     {
-        $copyWhichTables = $dataHandler->compileAdminTables();
+        $copyWhichTables = array_keys($GLOBALS['TCA']);
 
         if ($dataHandler->copyWhichTables !== '*') {
             $copyWhichTables = GeneralUtility::trimExplode(',', $dataHandler->copyWhichTables, true);
         }
 
-        $copyWhichTables = array_filter($copyWhichTables, function (string $tableName) {
-            return StringUtility::beginsWith($tableName, 'tx_tracking_') === false;
+        $copyWhichTables = array_filter($copyWhichTables, static function (string $tableName) {
+            return \str_starts_with($tableName, 'tx_tracking_') === false;
         });
 
         $dataHandler->copyWhichTables = implode(',', $copyWhichTables);

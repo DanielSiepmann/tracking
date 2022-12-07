@@ -23,8 +23,8 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Pageview;
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
+use DateTimeImmutable;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophet;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
 
 /**
- * @covers DanielSiepmann\Tracking\Domain\Pageview\Factory
+ * @covers \DanielSiepmann\Tracking\Domain\Pageview\Factory
  */
 class FactoryTest extends TestCase
 {
@@ -59,7 +59,7 @@ class FactoryTest extends TestCase
         $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
 
         $result = $subject->fromRequest($request->reveal());
-        static::assertInstanceOf(Pageview::class, $result);
+        self::assertInstanceOf(Pageview::class, $result);
     }
 
     /**
@@ -78,13 +78,13 @@ class FactoryTest extends TestCase
         $request->getAttribute('language')->willReturn($language->reveal());
         $request->getUri()->willReturn('');
         $request->getHeader('User-Agent')->willReturn([
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0'
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
         ]);
 
         $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
 
         $result = $subject->fromRequest($request->reveal());
-        static::assertSame(
+        self::assertSame(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
             $result->getUserAgent()
         );
@@ -110,7 +110,7 @@ class FactoryTest extends TestCase
         $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
 
         $result = $subject->fromRequest($request->reveal());
-        static::assertSame(
+        self::assertSame(
             'https://example.com/path?query=params&some=more#anchor',
             $result->getUrl()
         );
@@ -136,7 +136,7 @@ class FactoryTest extends TestCase
         $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
 
         $result = $subject->fromRequest($request->reveal());
-        static::assertSame(
+        self::assertSame(
             50,
             $result->getPageType()
         );
@@ -162,7 +162,7 @@ class FactoryTest extends TestCase
         $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
 
         $result = $subject->fromRequest($request->reveal());
-        static::assertInstanceOf(\DateTimeImmutable::class, $result->getCrdate());
+        self::assertInstanceOf(DateTimeImmutable::class, $result->getCrdate());
     }
 
     /**
@@ -185,7 +185,7 @@ class FactoryTest extends TestCase
         $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
 
         $result = $subject->fromRequest($request->reveal());
-        static::assertInstanceOf(SiteLanguage::class, $result->getLanguage());
+        self::assertInstanceOf(SiteLanguage::class, $result->getLanguage());
     }
 
     /**
@@ -208,7 +208,7 @@ class FactoryTest extends TestCase
         $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
 
         $result = $subject->fromRequest($request->reveal());
-        static::assertSame(
+        self::assertSame(
             10,
             $result->getPageUid()
         );
@@ -237,13 +237,13 @@ class FactoryTest extends TestCase
             'user_agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36',
         ]);
 
-        static::assertInstanceOf(Pageview::class, $result);
-        static::assertSame(1, $result->getUid());
-        static::assertSame(2, $result->getPageUid());
-        static::assertSame($siteLanguage->reveal(), $result->getLanguage());
-        static::assertSame('1533906435', $result->getCrdate()->format('U'));
-        static::assertSame(0, $result->getPageType());
-        static::assertSame('https://example.com/path', $result->getUrl());
-        static::assertSame('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', $result->getUserAgent());
+        self::assertInstanceOf(Pageview::class, $result);
+        self::assertSame(1, $result->getUid());
+        self::assertSame(2, $result->getPageUid());
+        self::assertSame($siteLanguage->reveal(), $result->getLanguage());
+        self::assertSame('1533906435', $result->getCrdate()->format('U'));
+        self::assertSame(0, $result->getPageType());
+        self::assertSame('https://example.com/path', $result->getUrl());
+        self::assertSame('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36', $result->getUserAgent());
     }
 }

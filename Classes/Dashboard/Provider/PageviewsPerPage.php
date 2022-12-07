@@ -23,8 +23,6 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
-use DanielSiepmann\Tracking\Extension;
-use Doctrine\DBAL\ParameterType;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -82,7 +80,7 @@ class PageviewsPerPage implements ChartDataProviderInterface
 
     public function getChartData(): array
     {
-        list($labels, $data) = $this->getPageviewsPerPage();
+        [$labels, $data] = $this->getPageviewsPerPage();
 
         return [
             'labels' => $labels,
@@ -90,7 +88,7 @@ class PageviewsPerPage implements ChartDataProviderInterface
                 [
                     'backgroundColor' => WidgetApi::getDefaultChartColors(),
                     'data' => $data,
-                ]
+                ],
             ],
         ];
     }
@@ -139,7 +137,8 @@ class PageviewsPerPage implements ChartDataProviderInterface
             ->addOrderBy('latest', 'desc')
             ->setMaxResults($this->maxResults)
             ->execute()
-            ->fetchAll();
+            ->fetchAll()
+        ;
 
         foreach ($result as $row) {
             if (is_array($row) === false) {
