@@ -1,8 +1,0 @@
-{
-    "scan-files": [
-        "ext_*.php",
-        "Configuration/*php",
-        "Configuration/Backend/*.php",
-        "Configuration/TCA/*.php"
-    ]
-}
