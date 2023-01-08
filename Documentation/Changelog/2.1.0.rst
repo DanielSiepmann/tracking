@@ -9,7 +9,7 @@ Nothing
 Features
 --------
 
-Nothing
+* Support PHP 8.2
 
 Fixes
 -----
