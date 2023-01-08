@@ -1,0 +1,27 @@
+2.1.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+* Remove further files from distribution to not clutter target systems.
+
+Deprecation
+-----------
+
+Nothing
