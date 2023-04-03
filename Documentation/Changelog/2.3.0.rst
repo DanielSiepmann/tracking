@@ -1,0 +1,27 @@
+2.3.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+* Support TYPO3 12.3.
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
