@@ -63,7 +63,7 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install xmllint
-        run: sudo apt-get install libxml2-utils
+        run: sudo apt update && sudo apt install libxml2-utils
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
@@ -118,10 +118,10 @@ jobs:
             typo3-version: '^11.5'
           - db-version: '8'
             php-version: '8.1'
-            typo3-version: '~12.3.0'
+            typo3-version: '^12.4'
           - db-version: '8'
             php-version: '8.2'
-            typo3-version: '~12.3.0'
+            typo3-version: '^12.4'
     steps:
       - uses: actions/checkout@v3
 
@@ -167,9 +167,9 @@ jobs:
           - php-version: '8.2'
             typo3-version: '^11.5'
           - php-version: '8.1'
-            typo3-version: '~12.3.0'
+            typo3-version: '^12.4'
           - php-version: '8.2'
-            typo3-version: '~12.3.0'
+            typo3-version: '^12.4'
     steps:
       - uses: actions/checkout@v3
 
