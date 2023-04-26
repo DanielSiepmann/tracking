@@ -23,6 +23,10 @@ Tasks
 
 * Add `shell.nix` to ease local development.
 
+* Streamline composer.json
+  Ensure packages are sorted.
+  Ensure no composer.lock is created.
+
 Deprecation
 -----------
 
