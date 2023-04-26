@@ -1,0 +1,29 @@
+2.5.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+* Ignore Uptime-Kuma bot by default.
+  Thanks to `Kay Strobach <https://github.com/kaystrobach>`_.
+  Add tests to cover default ignores.
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
