@@ -45,7 +45,6 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.8.7",
         "phpunit/phpunit": "^9.0",
-        "ssch/typo3-rector": "^1.0",
         "symplify/easy-coding-standard": "^11.1",
         "typo3/testing-framework": "^7.0"
     },
