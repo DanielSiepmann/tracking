@@ -93,7 +93,7 @@ class Recordview implements MiddlewareInterface
         Context $context,
         RecordRule $rule
     ): bool {
-        return (bool) $this->expressionFactory->create(
+        return (bool)$this->expressionFactory->create(
             $rule->getMatchesExpression(),
             [
                 'request' => $request,

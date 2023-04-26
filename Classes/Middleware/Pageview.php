@@ -88,7 +88,7 @@ class Pageview implements MiddlewareInterface
         ServerRequestInterface $request,
         Context $context
     ): bool {
-        return (bool) $this->expressionFactory->create(
+        return (bool)$this->expressionFactory->create(
             $this->rule,
             [
                 'request' => $request,

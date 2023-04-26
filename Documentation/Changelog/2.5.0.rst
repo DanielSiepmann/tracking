@@ -30,6 +30,9 @@ Tasks
 * Remove leftovers of rector
   We don't need to carry those files if we don't use them right now.
 
+* Migrate to php-cs-fixer
+  That way this projects follows best practices and is streamlined to other projects.
+
 Deprecation
 -----------
 

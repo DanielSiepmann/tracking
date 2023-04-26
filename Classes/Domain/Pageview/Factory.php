@@ -49,8 +49,8 @@ class Factory
             $this->getRouting($request)->getPageId(),
             $this->getLanguage($request),
             new DateTimeImmutable(),
-            (int) $this->getRouting($request)->getPageType(),
-            (string) $request->getUri(),
+            (int)$this->getRouting($request)->getPageType(),
+            (string)$request->getUri(),
             $request->getHeader('User-Agent')[0] ?? ''
         );
     }
@@ -58,13 +58,13 @@ class Factory
     public function fromDbRow(array $dbRow): Pageview
     {
         return new Pageview(
-            (int) $dbRow['pid'],
-            $this->siteFinder->getSiteByPageId((int) $dbRow['pid'])->getLanguageById((int) $dbRow['sys_language_uid']),
+            (int)$dbRow['pid'],
+            $this->siteFinder->getSiteByPageId((int)$dbRow['pid'])->getLanguageById((int)$dbRow['sys_language_uid']),
             new DateTimeImmutable('@' . $dbRow['crdate']),
-            (int) $dbRow['type'],
+            (int)$dbRow['type'],
             $dbRow['url'],
             $dbRow['user_agent'],
-            (int) $dbRow['uid']
+            (int)$dbRow['uid']
         );
     }
 

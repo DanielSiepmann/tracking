@@ -85,7 +85,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4"
+          php-version: "8.2"
           coverage: none
           tools: composer:v2
         env:
@@ -95,7 +95,7 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Coding Guideline
-        run: ./vendor/bin/ecs check
+        run: ./vendor/bin/php-cs-fixer fix --dry-run --diff
 
   tests-mysql:
     runs-on: ubuntu-latest

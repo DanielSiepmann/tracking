@@ -145,7 +145,7 @@ class PageviewsPerPage implements ChartDataProviderInterface
                 continue;
             }
 
-            $labels[] = $this->getRecordTitle((int) $row['pid']);
+            $labels[] = $this->getRecordTitle((int)$row['pid']);
             $data[] = $row['total'];
         }
 

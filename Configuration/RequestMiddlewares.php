@@ -2,6 +2,7 @@
 
 use DanielSiepmann\Tracking\Middleware\Pageview;
 use DanielSiepmann\Tracking\Middleware\Recordview;
+
 return [
     'frontend' => [
         'danielsiepmann/tracking/pageview' => [
