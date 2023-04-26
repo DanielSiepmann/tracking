@@ -91,4 +91,29 @@ class PageviewTest extends TestCase
         $records = $this->getAllRecords('tx_tracking_pageview');
         self::assertCount(0, $records);
     }
+
+    /**
+     * @test
+     *
+     * @dataProvider possibleDeniedUserAgents
+     */
+    public function preventsTrackingOfUserAgents(string $userAgent): void
+    {
+        $request = new InternalRequest();
+        $request = $request->withPageId(1);
+        $request = $request->withHeader('User-Agent', $userAgent);
+        $response = $this->executeFrontendRequest($request);
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertCount(0, $this->getAllRecords('tx_tracking_pageview'));
+    }
+
+    public static function possibleDeniedUserAgents(): array
+    {
+        return [
+            'Uptime-Kuma' => [
+                'userAgent' => 'Uptime-Kuma/1.21.2',
+            ],
+        ];
+    }
 }
