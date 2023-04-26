@@ -27,6 +27,9 @@ Tasks
   Ensure packages are sorted.
   Ensure no composer.lock is created.
 
+* Remove leftovers of rector
+  We don't need to carry those files if we don't use them right now.
+
 Deprecation
 -----------
 
