@@ -21,7 +21,7 @@ Nothing
 Tasks
 -----
 
-Nothing
+* Add `shell.nix` to ease local development.
 
 Deprecation
 -----------
