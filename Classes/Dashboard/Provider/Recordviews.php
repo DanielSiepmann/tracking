@@ -119,7 +119,7 @@ class Recordviews implements ChartDataProviderInterface
                 continue;
             }
             $record = $this->getRecord(
-                (int) $recordview['record_uid'],
+                (int)$recordview['record_uid'],
                 $recordview['record_table_name']
             );
 

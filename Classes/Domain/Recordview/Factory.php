@@ -69,9 +69,9 @@ class Factory
             self::getRouting($request)->getPageId(),
             self::getLanguage($request),
             new DateTimeImmutable(),
-            (string) $request->getUri(),
+            (string)$request->getUri(),
             $request->getHeader('User-Agent')[0] ?? '',
-            (int) $recordUid,
+            (int)$recordUid,
             $rule->getTableName()
         );
     }

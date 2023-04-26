@@ -102,16 +102,16 @@ class PageviewsPerDay implements ChartDataProviderInterface
         $data = [];
 
         for ($daysBefore = $this->days; $daysBefore >= 0; $daysBefore--) {
-            $label = date($this->dateFormat, (int) strtotime('-' . $daysBefore . ' day'));
+            $label = date($this->dateFormat, (int)strtotime('-' . $daysBefore . ' day'));
             $labels[$label] = $label;
             $data[$label] = 0;
         }
 
-        $start = (int) strtotime('-' . $this->days . ' day 0:00:00');
-        $end = (int) strtotime('tomorrow midnight');
+        $start = (int)strtotime('-' . $this->days . ' day 0:00:00');
+        $end = (int)strtotime('tomorrow midnight');
 
         foreach ($this->getPageviewsInPeriod($start, $end) as $day) {
-            $data[$day['label']] = (int) $day['count'];
+            $data[$day['label']] = (int)$day['count'];
         }
 
         return [

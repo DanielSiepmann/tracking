@@ -39,7 +39,7 @@ return [
         ],
         'sys_language_uid' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.sys_language',
-            'config' => ['type' => 'language']
+            'config' => ['type' => 'language'],
         ],
         'user_agent' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.user_agent',

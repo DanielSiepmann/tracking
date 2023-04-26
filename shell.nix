@@ -55,7 +55,7 @@ let
       php
     ];
     text = ''
-      ./vendor/bin/ecs check
+      ./vendor/bin/php-cs-fixer fix --dry-run --diff
     '';
   };
   projectCglFix = pkgs.writeShellApplication {
@@ -64,7 +64,7 @@ let
       php
     ];
     text = ''
-      ./vendor/bin/ecs check --fix
+      ./vendor/bin/php-cs-fixer fix --diff
     '';
   };
 

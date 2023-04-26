@@ -59,7 +59,7 @@ class Pageview
         ;
 
         if (is_numeric($result)) {
-            return (int) $result;
+            return (int)$result;
         }
 
         return 0;
