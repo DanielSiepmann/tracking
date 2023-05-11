@@ -1,6 +1,6 @@
 <?php
 
-return [
+$tca = [
     'ctrl' => [
         'label' => 'record',
         'label_alt' => 'crdate',
@@ -8,7 +8,6 @@ return [
         'default_sortby' => 'crdate DESC',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'title' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.recordview',
@@ -32,9 +31,7 @@ return [
         'crdate' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.recordview.crdate',
             'config' => [
-                'type' => 'input',
-                'eval' => 'datetime',
-                'renderType' => 'inputDateTime',
+                'type' => 'inputDateTime',
             ],
         ],
         'sys_language_uid' => [
@@ -75,3 +72,13 @@ return [
         ],
     ],
 ];
+
+if ((new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() < 12) {
+    $tca['ctrl']['cruser_id'] = 'cruser_id';
+
+    $tca['columns']['crdate']['config']['type'] = 'input';
+    $tca['columns']['crdate']['config']['renderType'] = 'inputDateTime';
+    $tca['columns']['crdate']['config']['eval'] = 'datetime';
+}
+
+return $tca;

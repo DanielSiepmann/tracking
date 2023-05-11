@@ -1,0 +1,8 @@
+V11
+===
+
+Remove TCA fallback wrapped in version constraint in:
+
+- ``Configuration/TCA/tx_tracking_pageview.php``
+
+- ``Configuration/TCA/tx_tracking_recordview.php``

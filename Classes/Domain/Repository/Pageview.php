@@ -107,6 +107,7 @@ class Pageview
             'crdate' => $pageview->getCrdate()->format('U'),
             'tstamp' => $pageview->getCrdate()->format('U'),
             'type' => $pageview->getPageType(),
+            // @extensionScannerIgnoreLine
             'sys_language_uid' => $pageview->getLanguage()->getLanguageId(),
             'url' => $pageview->getUrl(),
             'user_agent' => $pageview->getUserAgent(),

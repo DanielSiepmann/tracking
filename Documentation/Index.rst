@@ -90,4 +90,5 @@ in order to extract further information from them with future updates.
    Installation
    Pageview
    Recordview
+   Maintenance
    Changelog

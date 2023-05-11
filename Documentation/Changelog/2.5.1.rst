@@ -1,4 +1,4 @@
-2.6.0
+2.5.1
 =====
 
 Breaking
@@ -8,8 +8,6 @@ Nothing
 
 Features
 --------
-
-Nothing
 
 Fixes
 -----
@@ -26,6 +24,11 @@ Tasks
   Wait until server has started before executing tests.
 
 * Migrate test fixtures to PHP Data Sets using `codappix/typo3-php-datasets <https://packagist.org/packages/codappix/typo3-php-datasets>`_
+
+* Remove false positives of extension scanner in v12.
+
+* Remove TCA migrations in v12.
+  Stay compatible with v11 via condition within code.
 
 Deprecation
 -----------

@@ -1,6 +1,6 @@
 <?php
 
-return [
+$tca = [
     'ctrl' => [
         'label' => 'url',
         'label_alt' => 'crdate',
@@ -8,7 +8,6 @@ return [
         'default_sortby' => 'crdate DESC',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'title' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview',
@@ -32,9 +31,7 @@ return [
         'crdate' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.crdate',
             'config' => [
-                'type' => 'input',
-                'eval' => 'datetime',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
             ],
         ],
         'sys_language_uid' => [
@@ -58,9 +55,8 @@ return [
         'type' => [
             'label' => 'LLL:EXT:tracking/Resources/Private/Language/locallang_tca.xlf:table.pageview.type',
             'config' => [
-                'type' => 'input',
+                'type' => 'number',
                 'readOnly' => true,
-                'eval' => 'int',
             ],
         ],
         'url' => [
@@ -73,3 +69,16 @@ return [
         ],
     ],
 ];
+
+if ((new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() < 12) {
+    $tca['ctrl']['cruser_id'] = 'cruser_id';
+
+    $tca['columns']['crdate']['config']['type'] = 'input';
+    $tca['columns']['crdate']['config']['renderType'] = 'inputDateTime';
+    $tca['columns']['crdate']['config']['eval'] = 'datetime';
+
+    $tca['columns']['type']['config']['type'] = 'input';
+    $tca['columns']['type']['config']['eval'] = 'int';
+}
+
+return $tca;
