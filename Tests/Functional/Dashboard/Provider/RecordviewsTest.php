@@ -21,17 +21,20 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
  * 02110-1301, USA.
  */
 
+use Codappix\Typo3PhpDatasets\TestingFramework;
 use DanielSiepmann\Tracking\Dashboard\Provider\Recordviews;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * @covers \DanielSiepmann\Tracking\Dashboard\Provider\Recordviews
  */
-class RecordviewsTest extends TestCase
+class RecordviewsTest extends FunctionalTestCase
 {
+    use TestingFramework;
+
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
@@ -53,7 +56,7 @@ class RecordviewsTest extends TestCase
      */
     public function listsSixResultsForLast31DaysByDefault(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/SysCategories.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview');
         for ($i = 1; $i <= 10; $i++) {
             $connection->insert('tx_tracking_recordview', [
@@ -86,7 +89,7 @@ class RecordviewsTest extends TestCase
      */
     public function respectedOrdering(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/SysCategories.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview');
         $connection->insert('tx_tracking_recordview', [
             'crdate' => time(),
@@ -133,7 +136,7 @@ class RecordviewsTest extends TestCase
      */
     public function respectedNumberOfDays(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/SysCategories.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview');
         $connection->insert('tx_tracking_recordview', [
             'crdate' => strtotime('-3 days'),
@@ -173,7 +176,7 @@ class RecordviewsTest extends TestCase
      */
     public function respectedMaxResults(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/SysCategories.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview');
         for ($i = 1; $i <= 10; $i++) {
             $connection->insert('tx_tracking_recordview', [
@@ -204,7 +207,7 @@ class RecordviewsTest extends TestCase
      */
     public function respectedExcludedPages(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/SysCategories.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview');
         for ($i = 1; $i <= 10; $i++) {
             $connection->insert('tx_tracking_recordview', [
@@ -240,7 +243,7 @@ class RecordviewsTest extends TestCase
      */
     public function respectLimitesTables(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/SysCategories.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview');
         for ($i = 1; $i <= 3; $i++) {
             $connection->insert('tx_tracking_recordview', [
@@ -320,7 +323,7 @@ class RecordviewsTest extends TestCase
      */
     public function localizedRecordTitlesIfLimitedToSingleLanguage(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/SysCategories.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview');
         $connection->insert('tx_tracking_recordview', [
             'crdate' => time(),
@@ -368,7 +371,7 @@ class RecordviewsTest extends TestCase
      */
     public function defaultLanguageTitleIsUsedIfMultipleLanguagesAreAllowed(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/SysCategories.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview');
         $connection->insert('tx_tracking_recordview', [
             'crdate' => time(),

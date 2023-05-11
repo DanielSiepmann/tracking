@@ -22,12 +22,12 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  */
 
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * @covers \DanielSiepmann\Tracking\Domain\Model\RecordRule
  */
-class RecordRuleTest extends TestCase
+class RecordRuleTest extends UnitTestCase
 {
     /**
      * @test

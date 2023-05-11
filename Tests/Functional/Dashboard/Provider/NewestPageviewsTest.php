@@ -24,12 +24,12 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
 use DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * @covers \DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews
  */
-class NewestPageviewsTest extends TestCase
+class NewestPageviewsTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',

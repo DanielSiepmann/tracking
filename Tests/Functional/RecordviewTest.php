@@ -21,16 +21,19 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * 02110-1301, USA.
  */
 
+use Codappix\Typo3PhpDatasets\TestingFramework;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * @testdox Recordviews are
  *
  * @coversNothing
  */
-class RecordviewTest extends TestCase
+class RecordviewTest extends FunctionalTestCase
 {
+    use TestingFramework;
+
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
         'typo3conf/ext/tracking/Tests/Functional/Fixtures/Extensions/recordview',
@@ -52,7 +55,7 @@ class RecordviewTest extends TestCase
     {
         parent::setUp();
 
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Pages.xml');
+        $this->importPHPDataSet(__DIR__ . '/Fixtures/Pages.php');
         $this->setUpFrontendRootPage(1, [
             'EXT:tracking/Tests/Functional/Fixtures/Rendering.typoscript',
         ]);

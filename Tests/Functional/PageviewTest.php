@@ -21,17 +21,20 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * 02110-1301, USA.
  */
 
+use Codappix\Typo3PhpDatasets\TestingFramework;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * @testdox Pageviews are
  *
  * @coversNothing
  */
-class PageviewTest extends TestCase
+class PageviewTest extends FunctionalTestCase
 {
+    use TestingFramework;
+
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
@@ -44,7 +47,7 @@ class PageviewTest extends TestCase
     {
         parent::setUp();
 
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Pages.xml');
+        $this->importPHPDataSet(__DIR__ . '/Fixtures/Pages.php');
         $this->setUpFrontendRootPage(1, [
             'EXT:tracking/Tests/Functional/Fixtures/Rendering.typoscript',
         ]);
@@ -77,7 +80,7 @@ class PageviewTest extends TestCase
      */
     public function notTrackedWhenDisallowed(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/BackendUser.xml');
+        $this->importPHPDataSet(__DIR__ . '/Fixtures/BackendUser.php');
         $this->setUpBackendUser(1);
 
         $request = new InternalRequest();

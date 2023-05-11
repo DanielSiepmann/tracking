@@ -25,6 +25,8 @@ Tasks
 * Make sql within tests on CI more robust.
   Wait until server has started before executing tests.
 
+* Migrate test fixtures to PHP Data Sets using `codappix/typo3-php-datasets <https://packagist.org/packages/codappix/typo3-php-datasets>`_
+
 Deprecation
 -----------
 

@@ -21,16 +21,19 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Command;
  * 02110-1301, USA.
  */
 
+use Codappix\Typo3PhpDatasets\TestingFramework;
 use DanielSiepmann\Tracking\Command\UpdateDataCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * @covers \DanielSiepmann\Tracking\Command\UpdateDataCommand
  */
-class UpdateDataCommandTest extends TestCase
+class UpdateDataCommandTest extends FunctionalTestCase
 {
+    use TestingFramework;
+
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
@@ -44,7 +47,7 @@ class UpdateDataCommandTest extends TestCase
      */
     public function updatesAllEntriesWithMissingOperatingSystem(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/UpdateDataCommandTest/PageviewsWithMissingOperatingSystem.xml');
+        $this->importPHPDataSet(__DIR__ . '/../Fixtures/UpdateDataCommandTest/PageviewsWithMissingOperatingSystem.php');
 
         $subject = GeneralUtility::makeInstance(UpdateDataCommand::class);
         $tester = new CommandTester($subject);
@@ -63,7 +66,7 @@ class UpdateDataCommandTest extends TestCase
      */
     public function doesNotChangeExistingOperatingSystem(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/UpdateDataCommandTest/PageviewsWithOperatingSystem.xml');
+        $this->importPHPDataSet(__DIR__ . '/../Fixtures/UpdateDataCommandTest/PageviewsWithOperatingSystem.php');
 
         $subject = GeneralUtility::makeInstance(UpdateDataCommand::class);
         $tester = new CommandTester($subject);
@@ -82,7 +85,7 @@ class UpdateDataCommandTest extends TestCase
      */
     public function doesNothingIfNoRecordExists(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Pages.xml');
+        $this->importPHPDataSet(__DIR__ . '/../Fixtures/Pages.php');
 
         $subject = GeneralUtility::makeInstance(UpdateDataCommand::class);
         $tester = new CommandTester($subject);
