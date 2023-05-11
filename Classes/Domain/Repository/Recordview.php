@@ -53,6 +53,7 @@ class Recordview
             'pid' => $recordview->getPageUid(),
             'crdate' => $recordview->getCrdate()->format('U'),
             'tstamp' => $recordview->getCrdate()->format('U'),
+            // @extensionScannerIgnoreLine
             'sys_language_uid' => $recordview->getLanguage()->getLanguageId(),
             'url' => $recordview->getUrl(),
             'user_agent' => $recordview->getUserAgent(),
