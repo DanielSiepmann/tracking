@@ -1,0 +1,28 @@
+2.6.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+* Ignore PHP version when executing cs fixer.
+  As cs fixer officially does not seem to support PHP 8.2 yet.
+
+Deprecation
+-----------
+
+Nothing

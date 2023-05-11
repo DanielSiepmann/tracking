@@ -55,7 +55,7 @@ let
       php
     ];
     text = ''
-      ./vendor/bin/php-cs-fixer fix --dry-run --diff
+    PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --dry-run --diff
     '';
   };
   projectCglFix = pkgs.writeShellApplication {
@@ -64,7 +64,7 @@ let
       php
     ];
     text = ''
-      ./vendor/bin/php-cs-fixer fix --diff
+      PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --diff
     '';
   };
 
