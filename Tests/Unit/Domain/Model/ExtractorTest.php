@@ -24,12 +24,12 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
 use DanielSiepmann\Tracking\Domain\Model\Extractor;
 use DanielSiepmann\Tracking\Domain\Model\HasUserAgent;
 use Prophecy\PhpUnit\ProphecyTrait;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * @covers \DanielSiepmann\Tracking\Domain\Model\Extractor
  */
-class ExtractorTest extends TestCase
+class ExtractorTest extends UnitTestCase
 {
     use ProphecyTrait;
 

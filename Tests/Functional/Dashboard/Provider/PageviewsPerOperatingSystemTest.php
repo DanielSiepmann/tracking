@@ -21,16 +21,19 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
  * 02110-1301, USA.
  */
 
+use Codappix\Typo3PhpDatasets\TestingFramework;
 use DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * @covers \DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem
  */
-class PageviewsPerOperatingSystemTest extends TestCase
+class PageviewsPerOperatingSystemTest extends FunctionalTestCase
 {
+    use TestingFramework;
+
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
@@ -70,7 +73,7 @@ class PageviewsPerOperatingSystemTest extends TestCase
      */
     public function respectedOrdering(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Pages.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
         $connection->insert('tx_tracking_pageview', [
             'pid' => 1,
@@ -111,7 +114,7 @@ class PageviewsPerOperatingSystemTest extends TestCase
      */
     public function respectedNumberOfDays(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Pages.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
         $connection->insert('tx_tracking_pageview', [
             'pid' => 1,
@@ -147,7 +150,7 @@ class PageviewsPerOperatingSystemTest extends TestCase
      */
     public function respectedMaxResults(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Pages.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
         for ($i = 1; $i <= 10; $i++) {
             $connection->insert('tx_tracking_pageview', [
@@ -178,7 +181,7 @@ class PageviewsPerOperatingSystemTest extends TestCase
      */
     public function respectsLimitToLanguages(): void
     {
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Pages.xml');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
         for ($i = 1; $i <= 10; $i++) {
             $connection->insert('tx_tracking_pageview', [

@@ -21,9 +21,10 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * 02110-1301, USA.
  */
 
+use Codappix\Typo3PhpDatasets\TestingFramework;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use UnexpectedValueException;
 
 /**
@@ -31,8 +32,10 @@ use UnexpectedValueException;
  *
  * @testdox This extension works with TYPO3 feature:
  */
-class Typo3FeaturesTest extends TestCase
+class Typo3FeaturesTest extends FunctionalTestCase
 {
+    use TestingFramework;
+
     protected array $testExtensionsToLoad = [
         'typo3conf/ext/tracking',
     ];
@@ -41,8 +44,8 @@ class Typo3FeaturesTest extends TestCase
     {
         parent::setUp();
 
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/BackendUser.xml');
-        $this->importDataSet('EXT:tracking/Tests/Functional/Fixtures/Typo3FeaturesTest/PageWithRecords.xml');
+        $this->importPHPDataSet(__DIR__ . '/Fixtures/BackendUser.php');
+        $this->importPHPDataSet(__DIR__ . '/Fixtures/Typo3FeaturesTest/PageWithRecords.php');
         $this->setUpBackendUser(1);
         $languageServiceFactory = $this->getContainer()->get(LanguageServiceFactory::class);
         if (!$languageServiceFactory instanceof LanguageServiceFactory) {

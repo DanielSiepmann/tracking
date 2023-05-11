@@ -25,12 +25,12 @@ use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use DateTimeImmutable;
 use Prophecy\PhpUnit\ProphecyTrait;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase as TestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * @covers \DanielSiepmann\Tracking\Domain\Model\Recordview
  */
-class RecordviewTest extends TestCase
+class RecordviewTest extends UnitTestCase
 {
     use ProphecyTrait;
 
