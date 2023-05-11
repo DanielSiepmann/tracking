@@ -22,6 +22,9 @@ Tasks
 * Ignore PHP version when executing cs fixer.
   As cs fixer officially does not seem to support PHP 8.2 yet.
 
+* Make sql within tests on CI more robust.
+  Wait until server has started before executing tests.
+
 Deprecation
 -----------
 
