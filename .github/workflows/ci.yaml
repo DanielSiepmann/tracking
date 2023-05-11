@@ -141,6 +141,12 @@ jobs:
           mysql database: 'typo3'
           mysql root password: 'root'
 
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping --host=127.0.0.1 --password=root --silent; do
+          sleep 1
+          done
+
       - name: Install dependencies with expected TYPO3 version
         run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
 
