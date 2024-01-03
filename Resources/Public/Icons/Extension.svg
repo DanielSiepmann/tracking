@@ -1,7 +1,1 @@
-<svg id="tracking1" data-name="tracking1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.96197 16">
-  <g>
-    <path d="M14.05714,10.95863,7.9827,7.6253,1.90825,4.292a6.92892,6.92892,0,1,1,12.14889,6.66666Z" fill="#59f"/>
-    <path d="M7.97928,7.62907,4.648,13.70466A6.92893,6.92893,0,0,1,1.90369,4.29782Z" fill="#79a548"/>
-    <path d="M7.98624,7.63424l6.07442,3.33337a6.92891,6.92891,0,0,1-9.40779,2.74106Z" fill="#ffc857"/>
-  </g>
-</svg>
+<?xml version="1.0" encoding="UTF-8"?><svg id="b" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><g id="c"><path d="m64,64H0V0h64v64Z" fill="#343a40"/><path d="m23.5,52h-11v-15h11v15Zm14-40h-11v40h11V12Zm14,10h-11v30h11v-30Z" fill="#fff"/></g></svg>
