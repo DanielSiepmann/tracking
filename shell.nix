@@ -1,8 +1,8 @@
 { pkgs ? import <nixpkgs> { } }:
 
 let
-  php = pkgs.php82;
-  inherit(pkgs.php82Packages) composer;
+  php = pkgs.php83;
+  inherit(pkgs.php83Packages) composer;
 
   projectInstall = pkgs.writeShellApplication {
     name = "project-install";
