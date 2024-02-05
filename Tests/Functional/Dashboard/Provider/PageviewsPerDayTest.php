@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
 
 /*
@@ -21,28 +23,21 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
  * 02110-1301, USA.
  */
 
-use Codappix\Typo3PhpDatasets\TestingFramework;
 use DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerDay;
+use DanielSiepmann\Tracking\Tests\Functional\AbstractFunctionalTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerDay
- */
-class PageviewsPerDayTest extends FunctionalTestCase
+#[CoversClass(PageviewsPerDay::class)]
+final class PageviewsPerDayTest extends AbstractFunctionalTestCase
 {
-    use TestingFramework;
-
-    protected array $testExtensionsToLoad = [
-        'typo3conf/ext/tracking',
-    ];
-
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
     protected function tearDown(): void
@@ -51,9 +46,7 @@ class PageviewsPerDayTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listsResultsForLast31DaysByDefault(): void
     {
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
@@ -73,9 +66,7 @@ class PageviewsPerDayTest extends FunctionalTestCase
         self::assertCount(32, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedNumberOfDays(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
@@ -102,9 +93,7 @@ class PageviewsPerDayTest extends FunctionalTestCase
         ], $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedExcludedPages(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
@@ -132,9 +121,7 @@ class PageviewsPerDayTest extends FunctionalTestCase
         ], $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedDateFormat(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
@@ -156,9 +143,7 @@ class PageviewsPerDayTest extends FunctionalTestCase
         self::assertCount(2, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectsLimitToLanguages(): void
     {
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');

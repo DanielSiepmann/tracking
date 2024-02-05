@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Recordview;
 
 /*
@@ -24,253 +26,246 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Recordview;
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
 use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use DanielSiepmann\Tracking\Domain\Recordview\Factory;
+use DanielSiepmann\Tracking\Tests\Functional\AbstractFunctionalTestCase;
 use DateTimeImmutable;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Domain\Recordview\Factory
- */
-class FactoryTest extends FunctionalTestCase
+#[CoversClass(Factory::class)]
+final class FactoryTest extends AbstractFunctionalTestCase
 {
-    use ProphecyTrait;
-
-    protected array $testExtensionsToLoad = [
-        'typo3conf/ext/tracking',
-    ];
-
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsRecordviewFromRequest(): void
     {
-        $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
-        $rule->getTableName()->willReturn('sys_category');
+        $rule = $this->createStub(RecordRule::class);
+        $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
+        $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('');
-        $request->getHeader('User-Agent')->willReturn([]);
-        $request->getQueryParams()->willReturn([
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('');
+        $request->method('getHeader')->willReturn([]);
+        $request->method('getQueryParams')->willReturn([
             'category' => 10,
         ]);
 
         $subject = $this->get(Factory::class);
 
-        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
+        $result = $subject->fromRequest($request, $rule);
         self::assertInstanceOf(Recordview::class, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedRecordviewContainsUserAgent(): void
     {
-        $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
-        $rule->getTableName()->willReturn('sys_category');
+        $rule = $this->createStub(RecordRule::class);
+        $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
+        $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('');
-        $request->getHeader('User-Agent')->willReturn(['Some User Agent']);
-        $request->getQueryParams()->willReturn([
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('');
+        $request->method('getHeader')->willReturn(['Some User Agent']);
+        $request->method('getQueryParams')->willReturn([
             'category' => 10,
         ]);
 
         $subject = $this->get(Factory::class);
 
-        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
+        $result = $subject->fromRequest($request, $rule);
         self::assertSame('Some User Agent', $result->getUserAgent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedRecordviewContainsUri(): void
     {
-        $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
-        $rule->getTableName()->willReturn('sys_category');
+        $rule = $this->createStub(RecordRule::class);
+        $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
+        $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('https://example.com');
-        $request->getHeader('User-Agent')->willReturn(['']);
-        $request->getQueryParams()->willReturn([
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getHeader')->willReturn(['']);
+        $request->method('getQueryParams')->willReturn([
             'category' => 10,
         ]);
 
         $subject = $this->get(Factory::class);
 
-        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
+        $result = $subject->fromRequest($request, $rule);
         self::assertSame('https://example.com', $result->getUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedRecordviewContainsDateTime(): void
     {
-        $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
-        $rule->getTableName()->willReturn('sys_category');
+        $rule = $this->createStub(RecordRule::class);
+        $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
+        $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('https://example.com');
-        $request->getHeader('User-Agent')->willReturn(['']);
-        $request->getQueryParams()->willReturn([
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getHeader')->willReturn(['']);
+        $request->method('getQueryParams')->willReturn([
             'category' => 10,
         ]);
 
         $subject = $this->get(Factory::class);
 
-        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
+        $result = $subject->fromRequest($request, $rule);
         self::assertInstanceOf(DateTimeImmutable::class, $result->getCrdate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedRecordviewContainsLanguage(): void
     {
-        $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
-        $rule->getTableName()->willReturn('sys_category');
+        $rule = $this->createStub(RecordRule::class);
+        $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
+        $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('https://example.com');
-        $request->getHeader('User-Agent')->willReturn(['']);
-        $request->getQueryParams()->willReturn([
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getHeader')->willReturn(['']);
+        $request->method('getQueryParams')->willReturn([
             'category' => 10,
         ]);
 
         $subject = $this->get(Factory::class);
 
-        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
-        self::assertSame($language->reveal(), $result->getLanguage());
+        $result = $subject->fromRequest($request, $rule);
+        self::assertSame($language, $result->getLanguage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedRecordviewContainsPageId(): void
     {
-        $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
-        $rule->getTableName()->willReturn('sys_category');
+        $rule = $this->createStub(RecordRule::class);
+        $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
+        $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('https://example.com');
-        $request->getHeader('User-Agent')->willReturn(['']);
-        $request->getQueryParams()->willReturn([
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getHeader')->willReturn(['']);
+        $request->method('getQueryParams')->willReturn([
             'category' => 10,
         ]);
 
         $subject = $this->get(Factory::class);
 
-        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
+        $result = $subject->fromRequest($request, $rule);
         self::assertSame(10, $result->getPageUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedRecordviewContainsRecordUid(): void
     {
-        $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
-        $rule->getTableName()->willReturn('sys_category');
+        $rule = $this->createStub(RecordRule::class);
+        $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
+        $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('https://example.com');
-        $request->getHeader('User-Agent')->willReturn(['']);
-        $request->getQueryParams()->willReturn([
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getHeader')->willReturn(['']);
+        $request->method('getQueryParams')->willReturn([
             'category' => 20,
         ]);
 
         $subject = $this->get(Factory::class);
 
-        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
+        $result = $subject->fromRequest($request, $rule);
         self::assertSame(20, $result->getRecordUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedRecordviewContainsTableName(): void
     {
-        $rule = $this->prophesize(RecordRule::class);
-        $rule->getUidExpression()->willReturn('request.getQueryParams()["category"]');
-        $rule->getTableName()->willReturn('sys_category');
+        $rule = $this->createStub(RecordRule::class);
+        $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
+        $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('https://example.com');
-        $request->getHeader('User-Agent')->willReturn(['']);
-        $request->getQueryParams()->willReturn([
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getHeader')->willReturn(['']);
+        $request->method('getQueryParams')->willReturn([
             'category' => 20,
         ]);
 
         $subject = $this->get(Factory::class);
 
-        $result = $subject->fromRequest($request->reveal(), $rule->reveal());
+        $result = $subject->fromRequest($request, $rule);
         self::assertSame('sys_category', $result->getTableName());
     }
 }

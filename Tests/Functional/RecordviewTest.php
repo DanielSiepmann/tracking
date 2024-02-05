@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Functional;
 
 /*
@@ -21,24 +23,15 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * 02110-1301, USA.
  */
 
-use Codappix\Typo3PhpDatasets\TestingFramework;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestDox;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @testdox Recordviews are
- *
- * @coversNothing
- */
-class RecordviewTest extends FunctionalTestCase
+#[TestDox('Recordviews are')]
+#[CoversNothing]
+final class RecordviewTest extends AbstractFunctionalTestCase
 {
-    use TestingFramework;
-
-    protected array $testExtensionsToLoad = [
-        'typo3conf/ext/tracking',
-        'typo3conf/ext/tracking/Tests/Functional/Fixtures/Extensions/recordview',
-    ];
-
     protected array $pathsToLinkInTestInstance = [
         'typo3conf/ext/tracking/Tests/Functional/Fixtures/sites' => 'typo3conf/sites',
     ];
@@ -53,6 +46,7 @@ class RecordviewTest extends FunctionalTestCase
 
     protected function setUp(): void
     {
+        $this->testExtensionsToLoad[] = 'typo3conf/ext/tracking/Tests/Functional/Fixtures/Extensions/recordview';
         parent::setUp();
 
         $this->importPHPDataSet(__DIR__ . '/Fixtures/Pages.php');
@@ -61,39 +55,35 @@ class RecordviewTest extends FunctionalTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trackedWhenAllowed(): void
     {
         $request = new InternalRequest();
         $request = $request->withPageId(1);
         $request = $request->withQueryParameter('topic_id', 1);
         $request = $request->withHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0');
-        $response = $this->executeFrontendRequest($request);
+        $response = $this->executeFrontendSubRequest($request);
 
         self::assertSame(200, $response->getStatusCode());
 
         $records = $this->getAllRecords('tx_tracking_recordview');
         self::assertCount(1, $records);
-        self::assertSame('1', (string)$records[0]['pid']);
-        self::assertSame('1', (string)$records[0]['uid']);
+        self::assertSame('1', (string) $records[0]['pid']);
+        self::assertSame('1', (string) $records[0]['uid']);
         self::assertSame('http://localhost/?id=1&topic_id=1', $records[0]['url']);
         self::assertSame('Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0', $records[0]['user_agent']);
         self::assertSame('Macintosh', $records[0]['operating_system']);
         self::assertSame('sys_category_1', $records[0]['record']);
-        self::assertSame('1', (string)$records[0]['record_uid']);
+        self::assertSame('1', (string) $records[0]['record_uid']);
         self::assertSame('sys_category', $records[0]['record_table_name']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notTrackedWhenNotDetected(): void
     {
         $request = new InternalRequest();
         $request = $request->withPageId(1);
-        $response = $this->executeFrontendRequest($request);
+        $response = $this->executeFrontendSubRequest($request);
 
         self::assertSame(200, $response->getStatusCode());
 

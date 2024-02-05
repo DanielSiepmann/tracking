@@ -55,9 +55,10 @@ class DataHandler
             $copyWhichTables = GeneralUtility::trimExplode(',', $dataHandler->copyWhichTables, true);
         }
 
-        $copyWhichTables = array_filter($copyWhichTables, static function (string $tableName) {
-            return \str_starts_with($tableName, 'tx_tracking_') === false;
-        });
+        $copyWhichTables = array_filter(
+            $copyWhichTables,
+            static fn (int|string $tableName): bool => \str_starts_with((string) $tableName, 'tx_tracking_') === false
+        );
 
         $dataHandler->copyWhichTables = implode(',', $copyWhichTables);
     }

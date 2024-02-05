@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
 
 /*
@@ -20,30 +22,24 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-
 use DanielSiepmann\Tracking\Domain\Model\Recordview;
 use DateTimeImmutable;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Domain\Model\Recordview
- */
+#[CoversClass(Recordview::class)]
 class RecordviewTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeCreated(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             '',
             '',
@@ -54,16 +50,14 @@ class RecordviewTest extends UnitTestCase
         self::assertInstanceOf(Recordview::class, $subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsPageUid(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             500,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             '',
             '',
@@ -74,16 +68,14 @@ class RecordviewTest extends UnitTestCase
         self::assertSame(500, $subject->getPageUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsLanguage(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             '',
             '',
@@ -91,20 +83,18 @@ class RecordviewTest extends UnitTestCase
             'sys_category'
         );
 
-        self::assertSame($language->reveal(), $subject->getLanguage());
+        self::assertSame($language, $subject->getLanguage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsCrdate(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
         $crdate = new DateTimeImmutable();
 
         $subject = new Recordview(
             0,
-            $language->reveal(),
+            $language,
             $crdate,
             '',
             '',
@@ -115,16 +105,14 @@ class RecordviewTest extends UnitTestCase
         self::assertSame($crdate, $subject->getCrdate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsUrl(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             'https://example.com/path.html',
             '',
@@ -135,16 +123,14 @@ class RecordviewTest extends UnitTestCase
         self::assertSame('https://example.com/path.html', $subject->getUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsUserAgent(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             '',
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
@@ -158,16 +144,14 @@ class RecordviewTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsRecordUid(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             '',
             '',
@@ -181,16 +165,14 @@ class RecordviewTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsTableName(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             '',
             '',
@@ -204,16 +186,14 @@ class RecordviewTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsOperatingSystem(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             '',
             'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36',

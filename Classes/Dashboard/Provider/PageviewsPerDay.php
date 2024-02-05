@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
 use DanielSiepmann\Tracking\Extension;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -32,49 +33,20 @@ use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
 class PageviewsPerDay implements ChartDataProviderInterface
 {
-    /**
-     * @var LanguageService
-     */
-    private $languageService;
+    private LanguageService $languageService;
 
     /**
-     * @var QueryBuilder
+     * @param int[] $pagesToExclude
+     * @param int[] $languageLimitation
      */
-    private $queryBuilder;
-
-    /**
-     * @var int
-     */
-    private $days;
-
-    /**
-     * @var array<int>
-     */
-    private $pagesToExclude;
-
-    /**
-     * @var string
-     */
-    private $dateFormat;
-
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
-
     public function __construct(
-        QueryBuilder $queryBuilder,
-        int $days = 31,
-        array $pagesToExclude = [],
-        array $languageLimitation = [],
-        string $dateFormat = 'Y-m-d'
+        private readonly QueryBuilder $queryBuilder,
+        private readonly int $days = 31,
+        private readonly array $pagesToExclude = [],
+        private readonly array $languageLimitation = [],
+        private readonly string $dateFormat = 'Y-m-d'
     ) {
         $this->languageService = $GLOBALS['LANG'];
-        $this->queryBuilder = $queryBuilder;
-        $this->days = $days;
-        $this->pagesToExclude = $pagesToExclude;
-        $this->languageLimitation = $languageLimitation;
-        $this->dateFormat = $dateFormat;
     }
 
     public function getChartData(): array
@@ -102,16 +74,16 @@ class PageviewsPerDay implements ChartDataProviderInterface
         $data = [];
 
         for ($daysBefore = $this->days; $daysBefore >= 0; $daysBefore--) {
-            $label = date($this->dateFormat, (int)strtotime('-' . $daysBefore . ' day'));
+            $label = date($this->dateFormat, (int) strtotime('-' . $daysBefore . ' day'));
             $labels[$label] = $label;
             $data[$label] = 0;
         }
 
-        $start = (int)strtotime('-' . $this->days . ' day 0:00:00');
-        $end = (int)strtotime('tomorrow midnight');
+        $start = (int) strtotime('-' . $this->days . ' day 0:00:00');
+        $end = (int) strtotime('tomorrow midnight');
 
         foreach ($this->getPageviewsInPeriod($start, $end) as $day) {
-            $data[$day['label']] = (int)$day['count'];
+            $data[$day['label']] = (int) $day['count'];
         }
 
         return [
@@ -154,13 +126,15 @@ class PageviewsPerDay implements ChartDataProviderInterface
             ->groupBy('label')
             ->orderBy('label', 'ASC')
         ;
-
-        if ($this->queryBuilder->getConnection()->getDatabasePlatform()->getName() === 'sqlite') {
+        if (
+            (class_exists(SqlitePlatform::class) && $this->queryBuilder->getConnection()->getDatabasePlatform() instanceof SqlitePlatform)
+            || (method_exists($this->queryBuilder->getConnection()->getDatabasePlatform(), 'getName') && $this->queryBuilder->getConnection()->getDatabasePlatform()->getName() === 'sqlite')
+        ) {
             $this->queryBuilder->addSelectLiteral('date(crdate, "unixepoch") as "label"');
         } else {
             $this->queryBuilder->addSelectLiteral('FROM_UNIXTIME(crdate, "%Y-%m-%d") as "label"');
         }
 
-        return $this->queryBuilder->execute()->fetchAll();
+        return $this->queryBuilder->executeQuery()->fetchAllAssociative();
     }
 }

@@ -28,7 +28,7 @@
     "require": {
         "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
         "ext-mbstring": "*",
-        "doctrine/dbal": "^2.12 || ^3.3 || 4.0.0-RC2@rc",
+        "doctrine/dbal": "^2.12 || ^3.3 || 4.0.0-RC2",
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0",
@@ -39,14 +39,13 @@
         "typo3/cms-dashboard": "^12.4 || ^13.0"
     },
     "require-dev": {
-        "codappix/typo3-php-datasets": "^1.3",
+        "codappix/typo3-php-datasets": "^1.5",
         "cweagans/composer-patches": "^1.7",
         "friendsofphp/php-cs-fixer": "^3.14",
-        "jangregor/phpstan-prophecy": "^1.0",
-        "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10.1",
+        "saschaegerer/phpstan-typo3": "^1.10",
         "typo3/testing-framework": "^8.0"
     },
     "minimum-stability": "dev",

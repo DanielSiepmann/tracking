@@ -34,43 +34,13 @@ use TYPO3\CMS\Core\Context\Context;
 
 class Pageview implements MiddlewareInterface
 {
-    /**
-     * @var Repository
-     */
-    private $repository;
-
-    /**
-     * @var Context
-     */
-    private $context;
-
-    /**
-     * @var Factory
-     */
-    private $factory;
-
-    /**
-     * @var ExpressionFactory
-     */
-    private $expressionFactory;
-
-    /**
-     * @var string
-     */
-    private $rule = '';
-
     public function __construct(
-        Repository $repository,
-        Context $context,
-        Factory $factory,
-        ExpressionFactory $expressionFactory,
-        string $rule
+        private readonly Repository $repository,
+        private readonly Context $context,
+        private readonly Factory $factory,
+        private readonly ExpressionFactory $expressionFactory,
+        private readonly string $rule
     ) {
-        $this->repository = $repository;
-        $this->context = $context;
-        $this->factory = $factory;
-        $this->expressionFactory = $expressionFactory;
-        $this->rule = $rule;
     }
 
     public function process(
@@ -88,7 +58,7 @@ class Pageview implements MiddlewareInterface
         ServerRequestInterface $request,
         Context $context
     ): bool {
-        return (bool)$this->expressionFactory->create(
+        return (bool) $this->expressionFactory->create(
             $this->rule,
             [
                 'request' => $request,

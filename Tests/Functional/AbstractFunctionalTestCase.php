@@ -21,21 +21,16 @@ declare(strict_types=1);
  * 02110-1301, USA.
  */
 
-namespace DanielSiepmann\Tests\Functional;
+namespace DanielSiepmann\Tracking\Tests\Functional;
 
 use Codappix\Typo3PhpDatasets\TestingFramework;
-use DanielSiepmann\AbstractFunctional;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-abstract class AbstractFunctionalTest extends FunctionalTestCase
+abstract class AbstractFunctionalTestCase extends FunctionalTestCase
 {
     use TestingFramework;
 
-    protected array $testExtensionsToLoad = [
-        'danielsiepmann/tracking',
-    ];
+    protected array $testExtensionsToLoad = ['danielsiepmann/tracking'];
 
-    protected array $coreExtensionsToLoad = [
-        'typo3/cms-dashboard',
-    ];
+    protected array $coreExtensionsToLoad = ['typo3/cms-dashboard'];
 }

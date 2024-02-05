@@ -1,6 +1,8 @@
 <?php
 
-$tca = [
+declare(strict_types=1);
+
+return [
     'ctrl' => [
         'label' => 'url',
         'label_alt' => 'crdate',
@@ -69,16 +71,3 @@ $tca = [
         ],
     ],
 ];
-
-if ((new \TYPO3\CMS\Core\Information\Typo3Version())->getMajorVersion() < 12) {
-    $tca['ctrl']['cruser_id'] = 'cruser_id';
-
-    $tca['columns']['crdate']['config']['type'] = 'input';
-    $tca['columns']['crdate']['config']['renderType'] = 'inputDateTime';
-    $tca['columns']['crdate']['config']['eval'] = 'datetime';
-
-    $tca['columns']['type']['config']['type'] = 'input';
-    $tca['columns']['type']['config']['eval'] = 'int';
-}
-
-return $tca;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
 
 /*
@@ -21,26 +23,17 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
  * 02110-1301, USA.
  */
 
-use Codappix\Typo3PhpDatasets\TestingFramework;
 use DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem;
+use DanielSiepmann\Tracking\Tests\Functional\AbstractFunctionalTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem
- */
-class PageviewsPerOperatingSystemTest extends FunctionalTestCase
+#[CoversClass(PageviewsPerOperatingSystem::class)]
+final class PageviewsPerOperatingSystemTest extends AbstractFunctionalTestCase
 {
-    use TestingFramework;
-
-    protected array $testExtensionsToLoad = [
-        'typo3conf/ext/tracking',
-    ];
-
-    /**
-     * @test
-     */
+    #[Test]
     public function listsSixResultsForLast31DaysByDefault(): void
     {
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
@@ -68,9 +61,7 @@ class PageviewsPerOperatingSystemTest extends FunctionalTestCase
         self::assertCount(6, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedOrdering(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
@@ -109,9 +100,7 @@ class PageviewsPerOperatingSystemTest extends FunctionalTestCase
         self::assertCount(3, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedNumberOfDays(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
@@ -145,9 +134,7 @@ class PageviewsPerOperatingSystemTest extends FunctionalTestCase
         self::assertCount(2, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedMaxResults(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
@@ -176,9 +163,7 @@ class PageviewsPerOperatingSystemTest extends FunctionalTestCase
         self::assertCount(4, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectsLimitToLanguages(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/Pages.php');
