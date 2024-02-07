@@ -28,57 +28,15 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 class Recordview implements HasUserAgent
 {
-    /**
-     * @var int
-     */
-    private $pageUid;
-
-    /**
-     * @var SiteLanguage
-     */
-    private $language;
-
-    /**
-     * @var DateTimeImmutable
-     */
-    private $crdate;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var string
-     */
-    private $userAgent;
-
-    /**
-     * @var int
-     */
-    private $recordUid;
-
-    /**
-     * @var string
-     */
-    private $tableName;
-
     public function __construct(
-        int $pageUid,
-        SiteLanguage $language,
-        DateTimeImmutable $crdate,
-        string $url,
-        string $userAgent,
-        int $recordUid,
-        string $tableName
+        private readonly int $pageUid,
+        private readonly SiteLanguage $language,
+        private readonly DateTimeImmutable $crdate,
+        private readonly string $url,
+        private readonly string $userAgent,
+        private readonly int $recordUid,
+        private readonly string $tableName
     ) {
-        $this->pageUid = $pageUid;
-        $this->language = $language;
-        $this->crdate = $crdate;
-        $this->url = $url;
-        $this->userAgent = $userAgent;
-        $this->recordUid = $recordUid;
-        $this->tableName = $tableName;
     }
 
     public function getPageUid(): int

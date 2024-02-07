@@ -23,9 +23,10 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
+use DanielSiepmann\Tracking\LanguageAspectFactory;
+use Exception;
 use Generator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -35,63 +36,20 @@ use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 class Recordviews implements ChartDataProviderInterface
 {
     /**
-     * @var PageRepository
+     * @param int[] $pagesToExclude
+     * @param int[] $languageLimitation
      */
-    private $pageRepository;
-
-    /**
-     * @var QueryBuilder
-     */
-    private $queryBuilder;
-
-    /**
-     * @var int
-     */
-    private $days;
-
-    /**
-     * @var int
-     */
-    private $maxResults;
-
-    /**
-     * @var array<int>
-     */
-    private $pagesToExclude;
-
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
-
-    /**
-     * @var array
-     */
-    private $recordTableLimitation;
-
-    /**
-     * @var array
-     */
-    private $recordTypeLimitation;
-
     public function __construct(
-        PageRepository $pageRepository,
-        QueryBuilder $queryBuilder,
-        int $days = 31,
-        int $maxResults = 6,
-        array $pagesToExclude = [],
-        array $languageLimitation = [],
-        array $recordTableLimitation = [],
-        array $recordTypeLimitation = []
+        private readonly PageRepository $pageRepository,
+        private readonly QueryBuilder $queryBuilder,
+        private readonly LanguageAspectFactory $languageAspectFactory,
+        private readonly int $days = 31,
+        private readonly int $maxResults = 6,
+        private readonly array $pagesToExclude = [],
+        private readonly array $languageLimitation = [],
+        private readonly array $recordTableLimitation = [],
+        private readonly array $recordTypeLimitation = []
     ) {
-        $this->pageRepository = $pageRepository;
-        $this->queryBuilder = $queryBuilder;
-        $this->days = $days;
-        $this->pagesToExclude = $pagesToExclude;
-        $this->languageLimitation = $languageLimitation;
-        $this->maxResults = $maxResults;
-        $this->recordTableLimitation = $recordTableLimitation;
-        $this->recordTypeLimitation = $recordTypeLimitation;
     }
 
     public function getChartData(): array
@@ -118,8 +76,13 @@ class Recordviews implements ChartDataProviderInterface
             if (is_numeric($recordview['record_uid']) === false) {
                 continue;
             }
+
+            if (is_string($recordview['record_table_name']) === false) {
+                throw new Exception('record_table_name of recordview was not string: ' . var_export($recordview['record_table_name'], true), 1707327404);
+            }
+
             $record = $this->getRecord(
-                (int)$recordview['record_uid'],
+                (int) $recordview['record_uid'],
                 $recordview['record_table_name']
             );
 
@@ -133,7 +96,7 @@ class Recordviews implements ChartDataProviderInterface
                 continue;
             }
 
-            $labels[] = mb_strimwidth($record['title'], 0, 25, '…');
+            $labels[] = mb_strimwidth((string) $record['title'], 0, 25, '…');
             $data[] = $recordview['total'];
         }
 
@@ -143,6 +106,9 @@ class Recordviews implements ChartDataProviderInterface
         ];
     }
 
+    /**
+     * @return Generator<array>
+     */
     private function getRecordviewsRecords(): Generator
     {
         $constraints = [
@@ -194,10 +160,10 @@ class Recordviews implements ChartDataProviderInterface
             ->orderBy('total', 'desc')
             ->addOrderBy('latest', 'desc')
             ->setMaxResults($this->maxResults)
-            ->execute()
+            ->executeQuery()
         ;
 
-        while ($row = $result->fetch()) {
+        while ($row = $result->fetchAssociative()) {
             yield $row;
         }
     }
@@ -210,10 +176,10 @@ class Recordviews implements ChartDataProviderInterface
 
         $record = BackendUtility::getRecord($table, $uid);
         if (count($this->languageLimitation) === 1 && $record !== null) {
-            $record = $this->pageRepository->getRecordOverlay(
+            $record = $this->pageRepository->getLanguageOverlay(
                 $table,
                 $record,
-                $this->createLanguageAspect($this->languageLimitation[0])
+                $this->languageAspectFactory->createFromLanguageUid($this->languageLimitation[0])
             );
         }
 
@@ -222,17 +188,8 @@ class Recordviews implements ChartDataProviderInterface
         }
 
         return [
-            'title' => strip_tags(BackendUtility::getRecordTitle($table, $record, true)),
+            'title' => strip_tags((string) BackendUtility::getRecordTitle($table, $record, true)),
             'type' => $record[$recordTypeField] ?? '',
         ];
-    }
-
-    private function createLanguageAspect(int $languageUid): LanguageAspect
-    {
-        return new LanguageAspect(
-            $languageUid,
-            null,
-            LanguageAspect::OVERLAYS_MIXED
-        );
     }
 }

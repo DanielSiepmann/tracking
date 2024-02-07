@@ -34,15 +34,9 @@ use UnexpectedValueException;
 
 class Factory
 {
-    /**
-     * @var ExpressionFactory
-     */
-    private $expressionFactory;
-
     public function __construct(
-        ExpressionFactory $expressionFactory
+        private readonly ExpressionFactory $expressionFactory
     ) {
-        $this->expressionFactory = $expressionFactory;
     }
 
     public function fromRequest(
@@ -69,9 +63,9 @@ class Factory
             self::getRouting($request)->getPageId(),
             self::getLanguage($request),
             new DateTimeImmutable(),
-            (string)$request->getUri(),
+            (string) $request->getUri(),
             $request->getHeader('User-Agent')[0] ?? '',
-            (int)$recordUid,
+            (int) $recordUid,
             $rule->getTableName()
         );
     }

@@ -31,15 +31,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class UpdateDataCommand extends Command
 {
-    /**
-     * @var Pageview
-     */
-    private $repository;
-
-    public function __construct(Pageview $repository)
-    {
-        $this->repository = $repository;
-
+    public function __construct(
+        private readonly Pageview $repository
+    ) {
         parent::__construct();
     }
 

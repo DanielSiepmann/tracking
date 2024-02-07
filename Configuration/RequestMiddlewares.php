@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use DanielSiepmann\Tracking\Middleware\Pageview;
 use DanielSiepmann\Tracking\Middleware\Recordview;
 

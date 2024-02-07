@@ -6,15 +6,6 @@ parameters:
         - Classes
         - Tests
     checkMissingIterableValueType: false
-    reportUnmatchedIgnoredErrors: false
+    reportUnmatchedIgnoredErrors: true
     ignoreErrors:
-        # Ignore error for TYPO3 11 and TYPO3 12
-        - '#Cannot call method fetch\(\) on Doctrine\\DBAL\\Result\|int\.#'
-        - '#Cannot call method fetchAll\(\) on Doctrine\\DBAL\\Result\|int\.#'
-        - '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.#'
-        - '#Cannot call method fetchOne\(\) on Doctrine\\DBAL\\Result\|int\.#'
-        - "#^Parameter \\#[0-9] \\.\\.\\.\\$predicates of method TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder\\:\\:where\\(\\) expects array\\<int, mixed\\>\\|Doctrine\\\\DBAL\\\\Query\\\\Expression\\\\CompositeExpression, string given\\.$#"
         - '#^Variable \$_EXTKEY might not be defined\.$#'
-        - "#^Cannot access offset '.*' on mixed.$#"
-        - "#^Parameter .* expects .*, mixed given.$#"
-        - "#^Cannot call method .* on mixed.$#"

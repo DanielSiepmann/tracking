@@ -28,15 +28,9 @@ use TYPO3\CMS\Core\Database\Connection;
 
 class Recordview
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
-
     public function __construct(
-        Connection $connection
+        private readonly Connection $connection
     ) {
-        $this->connection = $connection;
     }
 
     public function add(Model $recordview): void

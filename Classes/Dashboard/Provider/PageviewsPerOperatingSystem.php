@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
+use Exception;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Dashboard\WidgetApi;
@@ -31,35 +32,14 @@ use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 class PageviewsPerOperatingSystem implements ChartDataProviderInterface
 {
     /**
-     * @var QueryBuilder
+     * @param int[] $languageLimitation
      */
-    private $queryBuilder;
-
-    /**
-     * @var int
-     */
-    private $days;
-
-    /**
-     * @var int
-     */
-    private $maxResults;
-
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
-
     public function __construct(
-        QueryBuilder $queryBuilder,
-        int $days = 31,
-        int $maxResults = 6,
-        array $languageLimitation = []
+        private readonly QueryBuilder $queryBuilder,
+        private readonly int $days = 31,
+        private readonly int $maxResults = 6,
+        private readonly array $languageLimitation = []
     ) {
-        $this->queryBuilder = $queryBuilder;
-        $this->days = $days;
-        $this->maxResults = $maxResults;
-        $this->languageLimitation = $languageLimitation;
     }
 
     public function getChartData(): array
@@ -112,13 +92,13 @@ class PageviewsPerOperatingSystem implements ChartDataProviderInterface
             ->orderBy('total', 'desc')
             ->addOrderBy('operating_system', 'asc')
             ->setMaxResults($this->maxResults)
-            ->execute()
-            ->fetchAll()
+            ->executeQuery()
+            ->fetchAllAssociative()
         ;
 
         foreach ($result as $row) {
-            if (is_array($row) === false) {
-                continue;
+            if (is_string($row['operating_system']) === false) {
+                throw new Exception('operating_system of row was not string: ' . var_export($row['operating_system'], true), 1707326866);
             }
 
             $labels[] = mb_strimwidth($row['operating_system'], 0, 50, '…');

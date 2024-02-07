@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
+use Exception;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Dashboard\Widgets\ListDataProviderInterface;
@@ -30,35 +31,14 @@ use TYPO3\CMS\Dashboard\Widgets\ListDataProviderInterface;
 class NewestPageviews implements ListDataProviderInterface
 {
     /**
-     * @var QueryBuilder
+     * @param int[] $languageLimitation
      */
-    private $queryBuilder;
-
-    /**
-     * @var int
-     */
-    private $maxResults;
-
-    /**
-     * @var array
-     */
-    private $pagesToExclude;
-
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
-
     public function __construct(
-        QueryBuilder $queryBuilder,
-        int $maxResults = 6,
-        array $pagesToExclude = [],
-        array $languageLimitation = []
+        private readonly QueryBuilder $queryBuilder,
+        private readonly int $maxResults = 6,
+        private readonly array $pagesToExclude = [],
+        private readonly array $languageLimitation = []
     ) {
-        $this->queryBuilder = $queryBuilder;
-        $this->maxResults = $maxResults;
-        $this->pagesToExclude = $pagesToExclude;
-        $this->languageLimitation = $languageLimitation;
     }
 
     public function getItems(): array
@@ -98,10 +78,13 @@ class NewestPageviews implements ListDataProviderInterface
             $this->queryBuilder->where(...$constraints);
         }
 
-        $items = $this->queryBuilder->execute()->fetchAll();
+        $items = $this->queryBuilder->executeQuery()->fetchAllAssociative();
         foreach ($items as $item) {
-            if (is_array($item) === false) {
-                continue;
+            if (is_string($item['url']) === false) {
+                throw new Exception('url of item was not string: ' . var_export($item['url'], true), 1707327319);
+            }
+            if (is_string($item['user_agent']) === false) {
+                throw new Exception('user_agent of item was not string: ' . var_export($item['user_agent'], true), 1707327344);
             }
 
             $preparedItems[] = sprintf(

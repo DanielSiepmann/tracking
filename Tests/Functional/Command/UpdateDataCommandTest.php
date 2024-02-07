@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Functional\Command;
 
 /*
@@ -21,30 +23,21 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Command;
  * 02110-1301, USA.
  */
 
-use Codappix\Typo3PhpDatasets\TestingFramework;
 use DanielSiepmann\Tracking\Command\UpdateDataCommand;
+use DanielSiepmann\Tracking\Tests\Functional\AbstractFunctionalTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Tester\CommandTester;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Command\UpdateDataCommand
- */
-class UpdateDataCommandTest extends FunctionalTestCase
+#[CoversClass(UpdateDataCommand::class)]
+final class UpdateDataCommandTest extends AbstractFunctionalTestCase
 {
-    use TestingFramework;
-
-    protected array $testExtensionsToLoad = [
-        'typo3conf/ext/tracking',
-    ];
-
     protected array $pathsToLinkInTestInstance = [
         'typo3conf/ext/tracking/Tests/Functional/Fixtures/sites' => 'typo3conf/sites',
     ];
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updatesAllEntriesWithMissingOperatingSystem(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../Fixtures/UpdateDataCommandTest/PageviewsWithMissingOperatingSystem.php');
@@ -61,9 +54,7 @@ class UpdateDataCommandTest extends FunctionalTestCase
         self::assertSame('Android', $records[1]['operating_system']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotChangeExistingOperatingSystem(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../Fixtures/UpdateDataCommandTest/PageviewsWithOperatingSystem.php');
@@ -80,9 +71,7 @@ class UpdateDataCommandTest extends FunctionalTestCase
         self::assertSame('Android', $records[1]['operating_system']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNothingIfNoRecordExists(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../Fixtures/Pages.php');

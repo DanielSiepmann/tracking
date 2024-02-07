@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
 
 /*
@@ -20,18 +22,15 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-
 use DanielSiepmann\Tracking\Domain\Model\RecordRule;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Domain\Model\RecordRule
- */
+#[CoversClass(RecordRule::class)]
 class RecordRuleTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeCreatedViaConstructor(): void
     {
         $subject = new RecordRule(
@@ -43,9 +42,7 @@ class RecordRuleTest extends UnitTestCase
         self::assertInstanceOf(RecordRule::class, $subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeCreatedFromArray(): void
     {
         $subject = RecordRule::fromArray([
@@ -58,9 +55,7 @@ class RecordRuleTest extends UnitTestCase
         self::assertInstanceOf(RecordRule::class, $subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multipleCanBeCratedFromArray(): void
     {
         $result = RecordRule::multipleFromArray([
@@ -81,9 +76,7 @@ class RecordRuleTest extends UnitTestCase
         self::assertInstanceOf(RecordRule::class, $result[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsMatchExpression(): void
     {
         $subject = new RecordRule(
@@ -95,9 +88,7 @@ class RecordRuleTest extends UnitTestCase
         self::assertSame('match expression', $subject->getMatchesExpression());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsUidExpression(): void
     {
         $subject = new RecordRule(
@@ -109,9 +100,7 @@ class RecordRuleTest extends UnitTestCase
         self::assertSame('match expression', $subject->getUidExpression());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsTableName(): void
     {
         $subject = new RecordRule(

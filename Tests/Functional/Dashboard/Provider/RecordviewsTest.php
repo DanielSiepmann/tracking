@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
 
 /*
@@ -21,39 +23,35 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
  * 02110-1301, USA.
  */
 
-use Codappix\Typo3PhpDatasets\TestingFramework;
 use DanielSiepmann\Tracking\Dashboard\Provider\Recordviews;
+use DanielSiepmann\Tracking\LanguageAspectFactory;
+use DanielSiepmann\Tracking\Tests\Functional\AbstractFunctionalTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Dashboard\Provider\Recordviews
- */
-class RecordviewsTest extends FunctionalTestCase
+#[CoversClass(Recordviews::class)]
+final class RecordviewsTest extends AbstractFunctionalTestCase
 {
-    use TestingFramework;
-
-    protected array $testExtensionsToLoad = [
-        'typo3conf/ext/tracking',
-    ];
-
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['LANG'] = $this->getContainer()->get(LanguageServiceFactory::class)->create('default');
+        $this->importPHPDataSet(__DIR__ . '/../../Fixtures/BackendUser.php');
+        $GLOBALS['BE_USER'] = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
     protected function tearDown(): void
     {
-        unset($GLOBALS['LANG']);
+        unset(
+            $GLOBALS['BE_USER'],
+            $GLOBALS['LANG']
+        );
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listsSixResultsForLast31DaysByDefault(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
@@ -68,8 +66,9 @@ class RecordviewsTest extends FunctionalTestCase
         }
 
         $subject = new Recordviews(
-            GeneralUtility::makeInstance(PageRepository::class),
-            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview')
+            $this->get(PageRepository::class),
+            $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new LanguageAspectFactory()
         );
 
         $result = $subject->getChartData();
@@ -84,9 +83,7 @@ class RecordviewsTest extends FunctionalTestCase
         self::assertCount(6, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedOrdering(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
@@ -117,8 +114,9 @@ class RecordviewsTest extends FunctionalTestCase
         ]);
 
         $subject = new Recordviews(
-            GeneralUtility::makeInstance(PageRepository::class),
+            $this->get(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new LanguageAspectFactory(),
             2
         );
 
@@ -131,9 +129,7 @@ class RecordviewsTest extends FunctionalTestCase
         self::assertCount(3, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedNumberOfDays(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
@@ -158,8 +154,9 @@ class RecordviewsTest extends FunctionalTestCase
         ]);
 
         $subject = new Recordviews(
-            GeneralUtility::makeInstance(PageRepository::class),
+            $this->get(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new LanguageAspectFactory(),
             2
         );
 
@@ -171,9 +168,7 @@ class RecordviewsTest extends FunctionalTestCase
         self::assertCount(2, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedMaxResults(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
@@ -188,8 +183,9 @@ class RecordviewsTest extends FunctionalTestCase
         }
 
         $subject = new Recordviews(
-            GeneralUtility::makeInstance(PageRepository::class),
+            $this->get(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new LanguageAspectFactory(),
             31,
             2
         );
@@ -202,9 +198,7 @@ class RecordviewsTest extends FunctionalTestCase
         self::assertCount(2, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectedExcludedPages(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
@@ -220,8 +214,9 @@ class RecordviewsTest extends FunctionalTestCase
         }
 
         $subject = new Recordviews(
-            GeneralUtility::makeInstance(PageRepository::class),
+            $this->get(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new LanguageAspectFactory(),
             31,
             6,
             [1, 2, 3, 4, 5]
@@ -238,9 +233,7 @@ class RecordviewsTest extends FunctionalTestCase
         self::assertCount(5, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectLimitesTables(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
@@ -261,8 +254,9 @@ class RecordviewsTest extends FunctionalTestCase
         ]);
 
         $subject = new Recordviews(
-            GeneralUtility::makeInstance(PageRepository::class),
+            $this->get(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new LanguageAspectFactory(),
             31,
             6,
             [],
@@ -279,9 +273,7 @@ class RecordviewsTest extends FunctionalTestCase
         self::assertCount(3, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectsLimitedTypes(): void
     {
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview');
@@ -300,8 +292,9 @@ class RecordviewsTest extends FunctionalTestCase
         }
 
         $subject = new Recordviews(
-            GeneralUtility::makeInstance(PageRepository::class),
+            $this->get(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new LanguageAspectFactory(),
             31,
             6,
             [],
@@ -318,9 +311,7 @@ class RecordviewsTest extends FunctionalTestCase
         self::assertCount(2, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizedRecordTitlesIfLimitedToSingleLanguage(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
@@ -348,8 +339,9 @@ class RecordviewsTest extends FunctionalTestCase
         ]);
 
         $subject = new Recordviews(
-            GeneralUtility::makeInstance(PageRepository::class),
+            $this->get(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new LanguageAspectFactory(),
             31,
             6,
             [],
@@ -366,9 +358,7 @@ class RecordviewsTest extends FunctionalTestCase
         self::assertCount(2, $result['datasets'][0]['data']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultLanguageTitleIsUsedIfMultipleLanguagesAreAllowed(): void
     {
         $this->importPHPDataSet(__DIR__ . '/../../Fixtures/SysCategories.php');
@@ -396,8 +386,9 @@ class RecordviewsTest extends FunctionalTestCase
         ]);
 
         $subject = new Recordviews(
-            GeneralUtility::makeInstance(PageRepository::class),
+            $this->get(PageRepository::class),
             $this->getConnectionPool()->getQueryBuilderForTable('tx_tracking_recordview'),
+            new LanguageAspectFactory(),
             31,
             6,
             [],

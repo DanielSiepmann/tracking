@@ -28,57 +28,15 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 class Pageview implements HasUserAgent
 {
-    /**
-     * @var int
-     */
-    private $uid = 0;
-
-    /**
-     * @var int
-     */
-    private $pageUid;
-
-    /**
-     * @var SiteLanguage
-     */
-    private $language;
-
-    /**
-     * @var DateTimeImmutable
-     */
-    private $crdate;
-
-    /**
-     * @var int
-     */
-    private $pageType;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var string
-     */
-    private $userAgent;
-
     public function __construct(
-        int $pageUid,
-        SiteLanguage $language,
-        DateTimeImmutable $crdate,
-        int $pageType,
-        string $url,
-        string $userAgent,
-        int $uid = 0
+        private readonly int $pageUid,
+        private readonly SiteLanguage $language,
+        private readonly DateTimeImmutable $crdate,
+        private readonly int $pageType,
+        private readonly string $url,
+        private readonly string $userAgent,
+        private readonly int $uid = 0
     ) {
-        $this->uid = $uid;
-        $this->pageUid = $pageUid;
-        $this->language = $language;
-        $this->crdate = $crdate;
-        $this->pageType = $pageType;
-        $this->url = $url;
-        $this->userAgent = $userAgent;
     }
 
     public function getUid(): int

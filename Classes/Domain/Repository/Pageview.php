@@ -31,22 +31,10 @@ use TYPO3\CMS\Core\Database\Connection;
 
 class Pageview
 {
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * @var Factory
-     */
-    private $factory;
-
     public function __construct(
-        Connection $connection,
-        Factory $factory
+        private readonly Connection $connection,
+        private readonly Factory $factory
     ) {
-        $this->connection = $connection;
-        $this->factory = $factory;
     }
 
     public function countAll(): int
@@ -54,27 +42,26 @@ class Pageview
         $result = $this->connection->createQueryBuilder()
             ->count('uid')
             ->from('tx_tracking_pageview')
-            ->execute()
+            ->executeQuery()
             ->fetchOne()
         ;
 
         if (is_numeric($result)) {
-            return (int)$result;
+            return (int) $result;
         }
 
         return 0;
     }
 
+    /**
+     * @return Generator<Model>
+     */
     public function findAll(): Generator
     {
         $queryBuilder = $this->connection->createQueryBuilder();
-        $pageViews = $queryBuilder->select('*')->from('tx_tracking_pageview')->execute();
+        $pageViews = $queryBuilder->select('*')->from('tx_tracking_pageview')->executeQuery();
 
-        while ($pageView = $pageViews->fetch()) {
-            if (is_array($pageView) === false) {
-                continue;
-            }
-
+        while ($pageView = $pageViews->fetchAssociative()) {
             yield $this->factory->fromDbRow($pageView);
         }
     }

@@ -1,8 +1,20 @@
-{ pkgs ? import <nixpkgs> { } }:
+{
+  pkgs ? import <nixpkgs> { }
+  ,phps ? import <phps>
+}:
 
 let
-  php = pkgs.php82;
-  inherit(pkgs.php82Packages) composer;
+  php = phps.packages.x86_64-linux.php83.buildEnv {
+    extensions = { enabled, all }: enabled ++ (with all; [
+      xdebug
+    ]);
+    extraConfig = ''
+      xdebug.mode = debug
+      memory_limit = 4G
+    '';
+  };
+
+  inherit(php.packages) composer;
 
   projectInstall = pkgs.writeShellApplication {
     name = "project-install";

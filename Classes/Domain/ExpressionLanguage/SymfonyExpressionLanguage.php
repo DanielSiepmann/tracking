@@ -61,7 +61,7 @@ class SymfonyExpressionLanguage implements Factory
                 }
                 try {
                     return ArrayUtility::getValueByPath($array, $path);
-                } catch (MissingArrayPathException $e) {
+                } catch (MissingArrayPathException) {
                     return '';
                 }
             }

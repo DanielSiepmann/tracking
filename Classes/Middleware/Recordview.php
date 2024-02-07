@@ -36,42 +36,17 @@ use TYPO3\CMS\Core\Context\Context;
 class Recordview implements MiddlewareInterface
 {
     /**
-     * @var Repository
-     */
-    private $repository;
-
-    /**
-     * @var Context
-     */
-    private $context;
-
-    /**
-     * @var Factory
-     */
-    private $factory;
-
-    /**
-     * @var ExpressionFactory
-     */
-    private $expressionFactory;
-
-    /**
      * @var array<RecordRule>
      */
-    private $rules = [];
+    private array $rules = [];
 
     public function __construct(
-        Repository $repository,
-        Context $context,
-        Factory $factory,
-        ExpressionFactory $expressionFactory,
+        private readonly Repository $repository,
+        private readonly Context $context,
+        private readonly Factory $factory,
+        private readonly ExpressionFactory $expressionFactory,
         array $rules
     ) {
-        $this->repository = $repository;
-        $this->context = $context;
-        $this->factory = $factory;
-        $this->expressionFactory = $expressionFactory;
-
         $this->rules = RecordRule::multipleFromArray($rules);
     }
 
@@ -93,7 +68,7 @@ class Recordview implements MiddlewareInterface
         Context $context,
         RecordRule $rule
     ): bool {
-        return (bool)$this->expressionFactory->create(
+        return (bool) $this->expressionFactory->create(
             $rule->getMatchesExpression(),
             [
                 'request' => $request,

@@ -25,29 +25,11 @@ namespace DanielSiepmann\Tracking\Domain\Model;
 
 class RecordRule
 {
-    /**
-     * @var string
-     */
-    private $matches;
-
-    /**
-     * @var string
-     */
-    private $recordUid;
-
-    /**
-     * @var string
-     */
-    private $tableName;
-
     public function __construct(
-        string $matches,
-        string $recordUid,
-        string $tableName
+        private readonly string $matches,
+        private readonly string $recordUid,
+        private readonly string $tableName
     ) {
-        $this->matches = $matches;
-        $this->recordUid = $recordUid;
-        $this->tableName = $tableName;
     }
 
     public static function fromArray(array $config): self

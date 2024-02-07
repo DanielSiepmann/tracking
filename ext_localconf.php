@@ -1,3 +1,7 @@
 <?php
 
-\DanielSiepmann\Tracking\Hooks\DataHandler::register();
+declare(strict_types=1);
+
+use DanielSiepmann\Tracking\Hooks\DataHandler;
+
+DataHandler::register();

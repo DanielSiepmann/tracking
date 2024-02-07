@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * Copyright (C) 2022 Daniel Siepmann <coding@daniel-siepmann.de>
+ * Copyright (C) 2024 Daniel Siepmann <coding@daniel-siepmann.de>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,9 +21,18 @@ declare(strict_types=1);
  * 02110-1301, USA.
  */
 
-namespace DanielSiepmann\Tracking\Domain\Model;
+namespace DanielSiepmann\Tracking;
 
-interface Expression
+use TYPO3\CMS\Core\Context\LanguageAspect;
+
+class LanguageAspectFactory
 {
-    public function evaluate(): mixed;
+    public function createFromLanguageUid(int $languageUid): LanguageAspect
+    {
+        return new LanguageAspect(
+            $languageUid,
+            null,
+            LanguageAspect::OVERLAYS_MIXED
+        );
+    }
 }
