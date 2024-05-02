@@ -114,10 +114,10 @@ jobs:
             typo3-version: '^12.4'
           - db-version: '8'
             php-version: '8.2'
-            typo3-version: '13.0'
+            typo3-version: '13.1'
           - db-version: '8'
             php-version: '8.3'
-            typo3-version: '13.0'
+            typo3-version: '13.1'
     steps:
       - uses: actions/checkout@v3
 
@@ -144,7 +144,7 @@ jobs:
           done
 
       - name: Install dependencies with expected TYPO3 version
-        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+        run: composer require --prefer-dist --no-progress "typo3/cms-core:${{ matrix.typo3-version }}"
 
       - name: PHPUnit Tests
         run: |-
@@ -167,9 +167,9 @@ jobs:
           - php-version: '8.3'
             typo3-version: '^12.4'
           - php-version: '8.2'
-            typo3-version: '13.0'
+            typo3-version: '13.1'
           - php-version: '8.3'
-            typo3-version: '13.0'
+            typo3-version: '13.1'
     steps:
       - uses: actions/checkout@v3
 
@@ -183,7 +183,7 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies with expected TYPO3 version
-        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+        run: composer require --prefer-dist --no-progress "typo3/cms-core:${{ matrix.typo3-version }}"
 
       - name: Code Quality (by PHPStan)
         run: ./vendor/bin/phpstan analyse

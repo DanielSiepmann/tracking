@@ -4,7 +4,7 @@
 Breaking
 --------
 
-* Support TYPO3 v13.0, drop v11.
+* Support TYPO3 v13.1, drop v11.
   We only support last two TYPO3 versions.
 
 * Drop `ext_emconf.php` this probably will remove support for none composer setups.
@@ -12,7 +12,7 @@ Breaking
 Features
 --------
 
-* Add Support for TYPO3 v13.0.
+* Add Support for TYPO3 v13.1.
 
 Fixes
 -----
