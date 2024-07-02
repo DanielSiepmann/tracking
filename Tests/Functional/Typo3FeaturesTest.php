@@ -56,7 +56,7 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
     #[Test]
     public function copyContainingRecords(): void
     {
-        $dataHandler = new DataHandler();
+        $dataHandler = $this->createDataHandler();
         $dataHandler->start([], [
             'pages' => [
                 1 => [
@@ -76,7 +76,7 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
     #[Test]
     public function copyCustomTablesViaDataHandler(): void
     {
-        $dataHandler = new DataHandler();
+        $dataHandler = $this->createDataHandler();
         $dataHandler->copyWhichTables = 'pages,tx_tracking_pageview,tx_tracking_recordview';
         $dataHandler->start([], [
             'pages' => [
@@ -91,5 +91,15 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
         $this->assertCSVDataSet(
             'EXT:tracking/Tests/Functional/ExpectedResults/Typo3FeaturesTest/CopyPasteContainingRecords.csv'
         );
+    }
+
+    private function createDataHandler(): DataHandler
+    {
+        // Prior TYPO3 v13.2
+        if ($this->has(DataHandler::class) === false) {
+            return new DataHandler();
+        }
+
+        return $this->get(DataHandler::class);
     }
 }

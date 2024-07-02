@@ -5,7 +5,7 @@ parameters:
     paths:
         - Classes
         - Tests
-    checkMissingIterableValueType: false
-    reportUnmatchedIgnoredErrors: true
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
+        - identifier: missingType.iterableValue
         - '#^Variable \$_EXTKEY might not be defined\.$#'

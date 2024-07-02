@@ -28,15 +28,15 @@
     "require": {
         "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
         "ext-mbstring": "*",
-        "doctrine/dbal": "^2.12 || ^3.3 || 4.0.0-RC2",
+        "doctrine/dbal": "^2.12 || ^3.3 || ^4.0",
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0",
         "symfony/console": "^5.2 || ^6.1 || ^7.0",
         "symfony/expression-language": "^5.2 || ^6.1 || ^7.0",
-        "typo3/cms-backend": "^12.4 || ^13.1",
-        "typo3/cms-core": "^12.4 || ^13.1",
-        "typo3/cms-dashboard": "^12.4 || ^13.1"
+        "typo3/cms-backend": "^12.4 || ^13.2",
+        "typo3/cms-core": "^12.4 || ^13.2",
+        "typo3/cms-dashboard": "^12.4 || ^13.2"
     },
     "require-dev": {
         "codappix/typo3-php-datasets": "^1.5",
@@ -45,8 +45,8 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10.1",
-        "saschaegerer/phpstan-typo3": "dev-add-typo3-13_1-support",
-        "typo3/testing-framework": "^8.0"
+        "saschaegerer/phpstan-typo3": "^1.10",
+        "typo3/testing-framework": "^8.0.9"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
