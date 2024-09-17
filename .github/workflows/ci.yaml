@@ -114,10 +114,10 @@ jobs:
             typo3-version: '^12.4'
           - db-version: '8'
             php-version: '8.2'
-            typo3-version: '^13.2'
+            typo3-version: '^13.3'
           - db-version: '8'
             php-version: '8.3'
-            typo3-version: '^13.2'
+            typo3-version: '^13.3'
     steps:
       - uses: actions/checkout@v4
 
@@ -167,9 +167,9 @@ jobs:
           - php-version: '8.3'
             typo3-version: '^12.4'
           - php-version: '8.2'
-            typo3-version: '^13.2'
+            typo3-version: '^13.3'
           - php-version: '8.3'
-            typo3-version: '^13.2'
+            typo3-version: '^13.3'
     steps:
       - uses: actions/checkout@v4
 
