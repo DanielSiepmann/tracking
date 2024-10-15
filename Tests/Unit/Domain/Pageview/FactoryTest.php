@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Pageview;
 
 /*
@@ -20,212 +22,206 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Pageview;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
+use DanielSiepmann\Tracking\Domain\Repository\Site;
 use DateTimeImmutable;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\Site as SiteEntity;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Domain\Pageview\Factory
- */
+#[CoversClass(Factory::class)]
 class FactoryTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsPageviewFromRequest(): void
     {
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
-        $routing->getPageType()->willReturn(0);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
+        $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('');
-        $request->getHeader('User-Agent')->willReturn([]);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('');
+        $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+        $subject = new Factory($this->createStub(Site::class));
 
-        $result = $subject->fromRequest($request->reveal());
+        $result = $subject->fromRequest($request);
         self::assertInstanceOf(Pageview::class, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedPageviewContainsUserAgent(): void
     {
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
-        $routing->getPageType()->willReturn(0);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
+        $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('');
-        $request->getHeader('User-Agent')->willReturn([
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('');
+        $request->method('getHeader')->willReturn([
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
         ]);
 
-        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+        $subject = new Factory($this->createStub(Site::class));
 
-        $result = $subject->fromRequest($request->reveal());
+        $result = $subject->fromRequest($request);
         self::assertSame(
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
             $result->getUserAgent()
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedPageviewContainsUri(): void
     {
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
-        $routing->getPageType()->willReturn(0);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
+        $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('https://example.com/path?query=params&some=more#anchor');
-        $request->getHeader('User-Agent')->willReturn([]);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('https://example.com/path?query=params&some=more#anchor');
+        $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+        $subject = new Factory($this->createStub(Site::class));
 
-        $result = $subject->fromRequest($request->reveal());
+        $result = $subject->fromRequest($request);
         self::assertSame(
             'https://example.com/path?query=params&some=more#anchor',
             $result->getUrl()
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedPageviewContainsPageType(): void
     {
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
-        $routing->getPageType()->willReturn(50);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
+        $routing->method('getPageType')->willReturn('50');
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('');
-        $request->getHeader('User-Agent')->willReturn([]);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('');
+        $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+        $subject = new Factory($this->createStub(Site::class));
 
-        $result = $subject->fromRequest($request->reveal());
+        $result = $subject->fromRequest($request);
         self::assertSame(
             50,
             $result->getPageType()
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedPageviewContainsDateTime(): void
     {
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
-        $routing->getPageType()->willReturn(0);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
+        $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('');
-        $request->getHeader('User-Agent')->willReturn([]);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('');
+        $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+        $subject = new Factory($this->createStub(Site::class));
 
-        $result = $subject->fromRequest($request->reveal());
+        $result = $subject->fromRequest($request);
         self::assertInstanceOf(DateTimeImmutable::class, $result->getCrdate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedPageviewContainsLanguage(): void
     {
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
-        $routing->getPageType()->willReturn(0);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
+        $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('');
-        $request->getHeader('User-Agent')->willReturn([]);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('');
+        $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+        $subject = new Factory($this->createStub(Site::class));
 
-        $result = $subject->fromRequest($request->reveal());
+        $result = $subject->fromRequest($request);
         self::assertInstanceOf(SiteLanguage::class, $result->getLanguage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnedPageviewContainsPageId(): void
     {
-        $routing = $this->prophesize(PageArguments::class);
-        $routing->getPageId()->willReturn(10);
-        $routing->getPageType()->willReturn(0);
+        $routing = $this->createStub(PageArguments::class);
+        $routing->method('getPageId')->willReturn(10);
+        $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
-        $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute('routing')->willReturn($routing->reveal());
-        $request->getAttribute('language')->willReturn($language->reveal());
-        $request->getUri()->willReturn('');
-        $request->getHeader('User-Agent')->willReturn([]);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getAttribute')->willReturnMap([
+            ['routing', null, $routing],
+            ['language', null, $language],
+        ]);
+        $request->method('getUri')->willReturn('');
+        $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->prophesize(SiteFinder::class)->reveal());
+        $subject = new Factory($this->createStub(Site::class));
 
-        $result = $subject->fromRequest($request->reveal());
+        $result = $subject->fromRequest($request);
         self::assertSame(
             10,
             $result->getPageUid()
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsPageviewFromDbRow(): void
     {
-        $siteLanguage = $this->prophesize(SiteLanguage::class);
-        $site = $this->prophesize(Site::class);
-        $site->getLanguageById(0)->willReturn($siteLanguage->reveal());
-        $siteFinder = $this->prophesize(SiteFinder::class);
-        $siteFinder->getSiteByPageId(2)->willReturn($site->reveal());
+        $siteLanguage = $this->createStub(SiteLanguage::class);
+        $site = $this->createStub(SiteEntity::class);
+        $site->method('getLanguageById')->willReturn($siteLanguage);
+        $siteRepository = $this->createStub(Site::class);
+        $siteRepository->method('findByPageUid')->willReturn($site);
 
-        $subject = new Factory($siteFinder->reveal());
+        $subject = new Factory($siteRepository);
 
         $result = $subject->fromDbRow([
             'uid' => 1,
@@ -240,7 +236,7 @@ class FactoryTest extends UnitTestCase
         self::assertInstanceOf(Pageview::class, $result);
         self::assertSame(1, $result->getUid());
         self::assertSame(2, $result->getPageUid());
-        self::assertSame($siteLanguage->reveal(), $result->getLanguage());
+        self::assertSame($siteLanguage, $result->getLanguage());
         self::assertSame('1533906435', $result->getCrdate()->format('U'));
         self::assertSame(0, $result->getPageType());
         self::assertSame('https://example.com/path', $result->getUrl());

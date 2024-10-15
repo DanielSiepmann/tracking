@@ -1,51 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to protected method getRecordOverlay\\(\\) of class TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler constructor invoked with 0 parameters, 14 required\\.$#"
 			count: 1
-			path: Classes/Dashboard/Provider/PageviewsPerPage.php
-
-		-
-			message: "#^Call to protected method getRecordOverlay\\(\\) of class TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository\\.$#"
-			count: 1
-			path: Classes/Dashboard/Provider/Recordviews.php
-
-		-
-			message: "#^Parameter \\#2 \\$callback of function array_filter expects callable\\(int\\|string\\)\\: mixed, Closure\\(string\\)\\: bool given\\.$#"
-			count: 1
-			path: Classes/Hooks/DataHandler.php
-
-		-
-			message: "#^Parameter \\#1 \\$command of class Symfony\\\\Component\\\\Console\\\\Tester\\\\CommandTester constructor expects Symfony\\\\Component\\\\Console\\\\Command\\\\Command, object given\\.$#"
-			count: 3
-			path: Tests/Functional/Command/UpdateDataCommandTest.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:getQueryBuilderForTable\\(\\)\\.$#"
-			count: 4
-			path: Tests/Functional/Dashboard/Provider/NewestPageviewsTest.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:getQueryBuilderForTable\\(\\)\\.$#"
-			count: 5
-			path: Tests/Functional/Dashboard/Provider/PageviewsPerDayTest.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:getQueryBuilderForTable\\(\\)\\.$#"
-			count: 5
-			path: Tests/Functional/Dashboard/Provider/PageviewsPerOperatingSystemTest.php
-
-		-
-			message: "#^Call to an undefined method object\\:\\:getQueryBuilderForTable\\(\\)\\.$#"
-			count: 7
-			path: Tests/Functional/Dashboard/Provider/PageviewsPerPageTest.php
-
-		-
-			message: "#^Parameter \\#2 \\$pageRepository of class DanielSiepmann\\\\Tracking\\\\Dashboard\\\\Provider\\\\PageviewsPerPage constructor expects TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository, object given\\.$#"
-			count: 7
-			path: Tests/Functional/Dashboard/Provider/PageviewsPerPageTest.php
-
-		-
-			message: "#^Parameter \\#1 \\$pageRepository of class DanielSiepmann\\\\Tracking\\\\Dashboard\\\\Provider\\\\Recordviews constructor expects TYPO3\\\\CMS\\\\Core\\\\Domain\\\\Repository\\\\PageRepository, object given\\.$#"
-			count: 9
-			path: Tests/Functional/Dashboard/Provider/RecordviewsTest.php
+			path: Tests/Functional/Typo3FeaturesTest.php

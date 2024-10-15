@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Functional;
 
 /*
@@ -20,26 +22,15 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-
-use Codappix\Typo3PhpDatasets\TestingFramework;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestDox;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use UnexpectedValueException;
 
-/**
- * @covers \DanielSiepmann\Tracking\Functional\CopyingPageWithRecordsWorks
- *
- * @testdox This extension works with TYPO3 feature:
- */
-class Typo3FeaturesTest extends FunctionalTestCase
+#[TestDox('This extension works with TYPO3 feature:')]
+final class Typo3FeaturesTest extends AbstractFunctionalTestCase
 {
-    use TestingFramework;
-
-    protected array $testExtensionsToLoad = [
-        'typo3conf/ext/tracking',
-    ];
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -47,7 +38,7 @@ class Typo3FeaturesTest extends FunctionalTestCase
         $this->importPHPDataSet(__DIR__ . '/Fixtures/BackendUser.php');
         $this->importPHPDataSet(__DIR__ . '/Fixtures/Typo3FeaturesTest/PageWithRecords.php');
         $this->setUpBackendUser(1);
-        $languageServiceFactory = $this->getContainer()->get(LanguageServiceFactory::class);
+        $languageServiceFactory = $this->get(LanguageServiceFactory::class);
         if (!$languageServiceFactory instanceof LanguageServiceFactory) {
             throw new UnexpectedValueException('Did not retrieve LanguageServiceFactory.', 1637847250);
         }
@@ -61,14 +52,11 @@ class Typo3FeaturesTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     *
-     * @testdox Copy pages. Tracking records will not be copied.
-     */
+    #[TestDox('Copy pages. Tracking records will not be copied.')]
+    #[Test]
     public function copyContainingRecords(): void
     {
-        $dataHandler = new DataHandler();
+        $dataHandler = $this->createDataHandler();
         $dataHandler->start([], [
             'pages' => [
                 1 => [
@@ -84,14 +72,11 @@ class Typo3FeaturesTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @testdox Copy individual tables, but always exclude tracking tables.
-     */
+    #[TestDox('Copy individual tables, but always exclude tracking tables.')]
+    #[Test]
     public function copyCustomTablesViaDataHandler(): void
     {
-        $dataHandler = new DataHandler();
+        $dataHandler = $this->createDataHandler();
         $dataHandler->copyWhichTables = 'pages,tx_tracking_pageview,tx_tracking_recordview';
         $dataHandler->start([], [
             'pages' => [
@@ -106,5 +91,15 @@ class Typo3FeaturesTest extends FunctionalTestCase
         $this->assertCSVDataSet(
             'EXT:tracking/Tests/Functional/ExpectedResults/Typo3FeaturesTest/CopyPasteContainingRecords.csv'
         );
+    }
+
+    private function createDataHandler(): DataHandler
+    {
+        // Prior TYPO3 v13.2
+        if ($this->has(DataHandler::class) === false) {
+            return new DataHandler();
+        }
+
+        return $this->get(DataHandler::class);
     }
 }

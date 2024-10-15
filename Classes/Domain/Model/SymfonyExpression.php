@@ -27,32 +27,14 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class SymfonyExpression implements Expression
 {
-    /**
-     * @var string
-     */
-    private $expression;
-
-    /**
-     * @var array
-     */
-    private $values;
-
-    /**
-     * @var ExpressionLanguage
-     */
-    private $symfonyExpression;
-
     public function __construct(
-        string $expression,
-        array $values,
-        ExpressionLanguage $symfonyExpression
+        private readonly string $expression,
+        private readonly array $values,
+        private readonly ExpressionLanguage $symfonyExpression
     ) {
-        $this->expression = $expression;
-        $this->values = $values;
-        $this->symfonyExpression = $symfonyExpression;
     }
 
-    public function evaluate()
+    public function evaluate(): mixed
     {
         return $this->symfonyExpression->evaluate(
             $this->expression,

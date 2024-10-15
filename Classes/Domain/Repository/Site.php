@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * Copyright (C) 2022 Daniel Siepmann <coding@daniel-siepmann.de>
+ * Copyright (C) 2024 Daniel Siepmann <daniel.siepmann@codappix.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,9 +21,20 @@ declare(strict_types=1);
  * 02110-1301, USA.
  */
 
-namespace DanielSiepmann\Tracking\Domain\Model;
+namespace DanielSiepmann\Tracking\Domain\Repository;
 
-interface Expression
+use TYPO3\CMS\Core\Site\Entity\Site as SiteEntity;
+use TYPO3\CMS\Core\Site\SiteFinder;
+
+class Site
 {
-    public function evaluate(): mixed;
+    public function __construct(
+        private readonly SiteFinder $siteFinder
+    ) {
+    }
+
+    public function findByPageUid(int $pageUid): SiteEntity
+    {
+        return $this->siteFinder->getSiteByPageId($pageUid);
+    }
 }

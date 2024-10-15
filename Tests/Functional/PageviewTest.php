@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Functional;
 
 /*
@@ -21,24 +23,17 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * 02110-1301, USA.
  */
 
-use Codappix\Typo3PhpDatasets\TestingFramework;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestDox;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @testdox Pageviews are
- *
- * @coversNothing
- */
-class PageviewTest extends FunctionalTestCase
+#[TestDox('Pageviews are')]
+#[CoversNothing]
+final class PageviewTest extends AbstractFunctionalTestCase
 {
-    use TestingFramework;
-
-    protected array $testExtensionsToLoad = [
-        'typo3conf/ext/tracking',
-    ];
-
     protected array $pathsToLinkInTestInstance = [
         'typo3conf/ext/tracking/Tests/Functional/Fixtures/sites' => 'typo3conf/sites',
     ];
@@ -53,31 +48,27 @@ class PageviewTest extends FunctionalTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trackedWhenAllowed(): void
     {
         $request = new InternalRequest();
         $request = $request->withPageId(1);
         $request = $request->withHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0');
-        $response = $this->executeFrontendRequest($request);
+        $response = $this->executeFrontendSubRequest($request);
 
         self::assertSame(200, $response->getStatusCode());
 
         $records = $this->getAllRecords('tx_tracking_pageview');
         self::assertCount(1, $records);
-        self::assertSame('1', (string)$records[0]['pid']);
-        self::assertSame('1', (string)$records[0]['uid']);
+        self::assertSame('1', (string) $records[0]['pid']);
+        self::assertSame('1', (string) $records[0]['uid']);
         self::assertSame('http://localhost/?id=1', $records[0]['url']);
         self::assertSame('Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0', $records[0]['user_agent']);
         self::assertSame('Macintosh', $records[0]['operating_system']);
-        self::assertSame('0', (string)$records[0]['type']);
+        self::assertSame('0', (string) $records[0]['type']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notTrackedWhenDisallowed(): void
     {
         $this->importPHPDataSet(__DIR__ . '/Fixtures/BackendUser.php');
@@ -87,7 +78,7 @@ class PageviewTest extends FunctionalTestCase
         $request = $request->withPageId(1);
         $context = new InternalRequestContext();
         $context = $context->withBackendUserId(1);
-        $response = $this->executeFrontendRequest($request, $context);
+        $response = $this->executeFrontendSubRequest($request, $context);
 
         self::assertSame(200, $response->getStatusCode());
 
@@ -95,17 +86,14 @@ class PageviewTest extends FunctionalTestCase
         self::assertCount(0, $records);
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider possibleDeniedUserAgents
-     */
+    #[DataProvider('possibleDeniedUserAgents')]
+    #[Test]
     public function preventsTrackingOfUserAgents(string $userAgent): void
     {
         $request = new InternalRequest();
         $request = $request->withPageId(1);
         $request = $request->withHeader('User-Agent', $userAgent);
-        $response = $this->executeFrontendRequest($request);
+        $response = $this->executeFrontendSubRequest($request);
 
         self::assertSame(200, $response->getStatusCode());
         self::assertCount(0, $this->getAllRecords('tx_tracking_pageview'));

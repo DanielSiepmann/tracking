@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
 
 /*
@@ -20,38 +22,32 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-
 use DanielSiepmann\Tracking\Domain\Model\Extractor;
 use DanielSiepmann\Tracking\Domain\Model\HasUserAgent;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestDox;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Domain\Model\Extractor
- */
+#[CoversClass(Extractor::class)]
 class ExtractorTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @test
-     *
-     * @dataProvider possibleUserStringWithOperatingSystems
-     *
-     * @testdox Operating system $expectedOperatingSystem is extracted from UserAgent string: $userAgent
-     */
+    #[DataProvider('possibleUserStringWithOperatingSystems')]
+    #[TestDox('Operating system $expectedOperatingSystem is extracted from UserAgent string: $userAgent')]
+    #[Test]
     public function returnsOperatingSystem(string $userAgent, string $expectedOperatingSystem): void
     {
-        $model = $this->prophesize(HasUserAgent::class);
-        $model->getUserAgent()->willReturn($userAgent);
+        $model = $this->createStub(HasUserAgent::class);
+        $model->method('getUserAgent')->willReturn($userAgent);
 
         self::assertSame(
             $expectedOperatingSystem,
-            Extractor::getOperatingSystem($model->reveal())
+            Extractor::getOperatingSystem($model)
         );
     }
 
-    public function possibleUserStringWithOperatingSystems(): array
+    public static function possibleUserStringWithOperatingSystems(): array
     {
         return [
             [

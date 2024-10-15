@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
 
 /*
@@ -20,30 +22,24 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Model;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
-
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use DateTimeImmutable;
-use Prophecy\PhpUnit\ProphecyTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Domain\Model\Pageview
- */
+#[CoversClass(Pageview::class)]
 class PageviewTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @test
-     */
+    #[Test]
     public function canBeCreated(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             0,
             '',
@@ -53,16 +49,14 @@ class PageviewTest extends UnitTestCase
         self::assertInstanceOf(Pageview::class, $subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsPageUid(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             500,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             0,
             '',
@@ -72,36 +66,32 @@ class PageviewTest extends UnitTestCase
         self::assertSame(500, $subject->getPageUid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsLanguage(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             0,
             '',
             ''
         );
 
-        self::assertSame($language->reveal(), $subject->getLanguage());
+        self::assertSame($language, $subject->getLanguage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsCrdate(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
         $crdate = new DateTimeImmutable();
 
         $subject = new Pageview(
             0,
-            $language->reveal(),
+            $language,
             $crdate,
             0,
             '',
@@ -111,16 +101,14 @@ class PageviewTest extends UnitTestCase
         self::assertSame($crdate, $subject->getCrdate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsPageType(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             999,
             '',
@@ -130,16 +118,14 @@ class PageviewTest extends UnitTestCase
         self::assertSame(999, $subject->getPageType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsUrl(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             0,
             'https://example.com/path.html',
@@ -149,16 +135,14 @@ class PageviewTest extends UnitTestCase
         self::assertSame('https://example.com/path.html', $subject->getUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsUserAgent(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             0,
             '',
@@ -171,16 +155,14 @@ class PageviewTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsZeroAsDefaultUid(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             0,
             '',
@@ -193,16 +175,14 @@ class PageviewTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSetAsUid(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             0,
             '',
@@ -216,16 +196,14 @@ class PageviewTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsOperatingSystem(): void
     {
-        $language = $this->prophesize(SiteLanguage::class);
+        $language = $this->createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
-            $language->reveal(),
+            $language,
             new DateTimeImmutable(),
             0,
             '',

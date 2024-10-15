@@ -14,7 +14,6 @@ services:
   dashboard.widget.danielsiepmann.tracking.pageViewsPerDay:
     class: 'TYPO3\CMS\Dashboard\Widgets\BarChartWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $dataProvider: '@DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerDay'
     tags:
       - name: 'dashboard.widget'
@@ -34,7 +33,6 @@ services:
   dashboard.widget.danielsiepmann.tracking.pageViewsPerPage:
     class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $dataProvider: '@DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerPage'
     tags:
       - name: 'dashboard.widget'
@@ -54,7 +52,6 @@ services:
   dashboard.widget.danielsiepmann.tracking.newestPageviews:
     class: 'TYPO3\CMS\Dashboard\Widgets\ListWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $dataProvider: '@DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews'
     tags:
       - name: 'dashboard.widget'
@@ -74,7 +71,6 @@ services:
   dashboard.widget.danielsiepmann.tracking.operatingSystems:
     class: 'TYPO3\CMS\Dashboard\Widgets\DoughnutChartWidget'
     arguments:
-      $view: '@dashboard.views.widget'
       $dataProvider: '@DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem'
     tags:
       - name: 'dashboard.widget'

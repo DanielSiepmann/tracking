@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
+use Exception;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -33,49 +34,17 @@ use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 class PageviewsPerPage implements ChartDataProviderInterface
 {
     /**
-     * @var QueryBuilder
+     * @param int[] $pagesToExclude
+     * @param int[] $languageLimitation
      */
-    private $queryBuilder;
-
-    /**
-     * @var PageRepository
-     */
-    private $pageRepository;
-
-    /**
-     * @var int
-     */
-    private $days;
-
-    /**
-     * @var int
-     */
-    private $maxResults;
-
-    /**
-     * @var array<int>
-     */
-    private $pagesToExclude;
-
-    /**
-     * @var array<int>
-     */
-    private $languageLimitation;
-
     public function __construct(
-        QueryBuilder $queryBuilder,
-        PageRepository $pageRepository,
-        int $days = 31,
-        int $maxResults = 6,
-        array $pagesToExclude = [],
-        array $languageLimitation = []
+        private readonly QueryBuilder $queryBuilder,
+        private readonly PageRepository $pageRepository,
+        private readonly int $days = 31,
+        private readonly int $maxResults = 6,
+        private readonly array $pagesToExclude = [],
+        private readonly array $languageLimitation = []
     ) {
-        $this->queryBuilder = $queryBuilder;
-        $this->pageRepository = $pageRepository;
-        $this->days = $days;
-        $this->maxResults = $maxResults;
-        $this->pagesToExclude = $pagesToExclude;
-        $this->languageLimitation = $languageLimitation;
     }
 
     public function getChartData(): array
@@ -136,16 +105,16 @@ class PageviewsPerPage implements ChartDataProviderInterface
             ->orderBy('total', 'desc')
             ->addOrderBy('latest', 'desc')
             ->setMaxResults($this->maxResults)
-            ->execute()
-            ->fetchAll()
+            ->executeQuery()
+            ->fetchAllAssociative()
         ;
 
         foreach ($result as $row) {
-            if (is_array($row) === false) {
-                continue;
+            if (is_numeric($row['pid']) === false) {
+                throw new Exception('PID of row was not numeric: ' . var_export($row['pid'], true), 1707326783);
             }
 
-            $labels[] = $this->getRecordTitle((int)$row['pid']);
+            $labels[] = $this->getRecordTitle((int) $row['pid']);
             $data[] = $row['total'];
         }
 
@@ -159,13 +128,16 @@ class PageviewsPerPage implements ChartDataProviderInterface
     {
         $record = BackendUtility::getRecord('pages', $uid);
         if (count($this->languageLimitation) === 1 && $record !== null) {
-            $record = $this->pageRepository->getRecordOverlay('pages', $record, $this->languageLimitation[0]);
+            $record = $this->pageRepository->getPageOverlay(
+                $record,
+                $this->languageLimitation[0]
+            );
         }
 
         if (is_array($record) === false) {
             return 'Unkown';
         }
 
-        return strip_tags(BackendUtility::getRecordTitle('pages', $record, true));
+        return strip_tags((string) BackendUtility::getRecordTitle('pages', $record, true));
     }
 }

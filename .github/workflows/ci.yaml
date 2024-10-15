@@ -10,12 +10,12 @@ jobs:
   check-composer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.3
           coverage: none
           tools: composer:v2
         env:
@@ -29,13 +29,12 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - 7.4
-          - 8.0
           - 8.1
           - 8.2
+          - 8.3
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -51,12 +50,12 @@ jobs:
     needs:
       - check-composer
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4"
+          php-version: "8.3"
           coverage: none
           tools: composer:v2
         env:
@@ -80,7 +79,7 @@ jobs:
   coding-guideline:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -105,25 +104,22 @@ jobs:
       matrix:
         include:
           - db-version: '8'
-            php-version: '7.4'
-            typo3-version: '^11.5'
-          - db-version: '8'
-            php-version: '8.0'
-            typo3-version: '^11.5'
-          - db-version: '8'
-            php-version: '8.1'
-            typo3-version: '^11.5'
-          - db-version: '8'
-            php-version: '8.2'
-            typo3-version: '^11.5'
-          - db-version: '8'
             php-version: '8.1'
             typo3-version: '^12.4'
           - db-version: '8'
             php-version: '8.2'
             typo3-version: '^12.4'
+          - db-version: '8'
+            php-version: '8.3'
+            typo3-version: '^12.4'
+          - db-version: '8'
+            php-version: '8.2'
+            typo3-version: '^13.3'
+          - db-version: '8'
+            php-version: '8.3'
+            typo3-version: '^13.3'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -148,7 +144,7 @@ jobs:
           done
 
       - name: Install dependencies with expected TYPO3 version
-        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+        run: composer require --prefer-dist --no-progress "typo3/cms-core:${{ matrix.typo3-version }}"
 
       - name: PHPUnit Tests
         run: |-
@@ -164,20 +160,18 @@ jobs:
     strategy:
       matrix:
         include:
-          - php-version: '7.4'
-            typo3-version: '^11.5'
-          - php-version: '8.0'
-            typo3-version: '^11.5'
-          - php-version: '8.1'
-            typo3-version: '^11.5'
-          - php-version: '8.2'
-            typo3-version: '^11.5'
           - php-version: '8.1'
             typo3-version: '^12.4'
           - php-version: '8.2'
             typo3-version: '^12.4'
+          - php-version: '8.3'
+            typo3-version: '^12.4'
+          - php-version: '8.2'
+            typo3-version: '^13.3'
+          - php-version: '8.3'
+            typo3-version: '^13.3'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -189,7 +183,7 @@ jobs:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies with expected TYPO3 version
-        run: composer require --prefer-dist --no-progress "typo3/cms-backend:${{ matrix.typo3-version }}" "typo3/cms-core:${{ matrix.typo3-version }}" "typo3/cms-dashboard:${{ matrix.typo3-version }}"
+        run: composer require --prefer-dist --no-progress "typo3/cms-core:${{ matrix.typo3-version }}"
 
       - name: Code Quality (by PHPStan)
         run: ./vendor/bin/phpstan analyse

@@ -24,23 +24,18 @@ declare(strict_types=1);
 namespace DanielSiepmann\Tracking\Domain\Pageview;
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
+use DanielSiepmann\Tracking\Domain\Repository\Site;
 use DateTimeImmutable;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use UnexpectedValueException;
 
 class Factory
 {
-    /**
-     * @var SiteFinder
-     */
-    private $siteFinder;
-
-    public function __construct(SiteFinder $siteFinder)
-    {
-        $this->siteFinder = $siteFinder;
+    public function __construct(
+        private readonly Site $siteRepository
+    ) {
     }
 
     public function fromRequest(ServerRequestInterface $request): Pageview
@@ -49,8 +44,8 @@ class Factory
             $this->getRouting($request)->getPageId(),
             $this->getLanguage($request),
             new DateTimeImmutable(),
-            (int)$this->getRouting($request)->getPageType(),
-            (string)$request->getUri(),
+            (int) $this->getRouting($request)->getPageType(),
+            (string) $request->getUri(),
             $request->getHeader('User-Agent')[0] ?? ''
         );
     }
@@ -58,13 +53,13 @@ class Factory
     public function fromDbRow(array $dbRow): Pageview
     {
         return new Pageview(
-            (int)$dbRow['pid'],
-            $this->siteFinder->getSiteByPageId((int)$dbRow['pid'])->getLanguageById((int)$dbRow['sys_language_uid']),
+            (int) $dbRow['pid'],
+            $this->siteRepository->findByPageUid((int) $dbRow['pid'])->getLanguageById((int) $dbRow['sys_language_uid']),
             new DateTimeImmutable('@' . $dbRow['crdate']),
-            (int)$dbRow['type'],
+            (int) $dbRow['type'],
             $dbRow['url'],
             $dbRow['user_agent'],
-            (int)$dbRow['uid']
+            (int) $dbRow['uid']
         );
     }
 

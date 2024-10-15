@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
 
 /*
@@ -22,22 +24,16 @@ namespace DanielSiepmann\Tracking\Tests\Functional\Dashboard\Provider;
  */
 
 use DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews;
+use DanielSiepmann\Tracking\Tests\Functional\AbstractFunctionalTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * @covers \DanielSiepmann\Tracking\Dashboard\Provider\NewestPageviews
- */
-class NewestPageviewsTest extends FunctionalTestCase
+#[CoversClass(NewestPageviews::class)]
+final class NewestPageviewsTest extends AbstractFunctionalTestCase
 {
-    protected array $testExtensionsToLoad = [
-        'typo3conf/ext/tracking',
-    ];
-
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsRecentSixPageviews(): void
     {
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
@@ -64,9 +60,7 @@ class NewestPageviewsTest extends FunctionalTestCase
         ], $subject->getItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectsMaxResults(): void
     {
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
@@ -90,9 +84,7 @@ class NewestPageviewsTest extends FunctionalTestCase
         ], $subject->getItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectsPagesToExclude(): void
     {
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
@@ -121,9 +113,7 @@ class NewestPageviewsTest extends FunctionalTestCase
         ], $subject->getItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function respectsLimitToLanguages(): void
     {
         $connection = $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview');
