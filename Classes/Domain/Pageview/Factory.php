@@ -24,17 +24,17 @@ declare(strict_types=1);
 namespace DanielSiepmann\Tracking\Domain\Pageview;
 
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
+use DanielSiepmann\Tracking\Domain\Repository\Site;
 use DateTimeImmutable;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use UnexpectedValueException;
 
 class Factory
 {
     public function __construct(
-        private readonly SiteFinder $siteFinder
+        private readonly Site $siteRepository
     ) {
     }
 
@@ -54,7 +54,7 @@ class Factory
     {
         return new Pageview(
             (int) $dbRow['pid'],
-            $this->siteFinder->getSiteByPageId((int) $dbRow['pid'])->getLanguageById((int) $dbRow['sys_language_uid']),
+            $this->siteRepository->findByPageUid((int) $dbRow['pid'])->getLanguageById((int) $dbRow['sys_language_uid']),
             new DateTimeImmutable('@' . $dbRow['crdate']),
             (int) $dbRow['type'],
             $dbRow['url'],

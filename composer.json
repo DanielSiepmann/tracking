@@ -34,9 +34,9 @@
         "psr/http-server-middleware": "^1.0",
         "symfony/console": "^5.2 || ^6.1 || ^7.0",
         "symfony/expression-language": "^5.2 || ^6.1 || ^7.0",
-        "typo3/cms-backend": "^12.4 || ^13.3",
-        "typo3/cms-core": "^12.4 || ^13.3",
-        "typo3/cms-dashboard": "^12.4 || ^13.3"
+        "typo3/cms-backend": "^12.4 || ^13.4",
+        "typo3/cms-core": "^12.4 || ^13.4",
+        "typo3/cms-dashboard": "^12.4 || ^13.4"
     },
     "require-dev": {
         "codappix/typo3-php-datasets": "^1.5",

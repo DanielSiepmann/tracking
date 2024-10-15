@@ -24,14 +24,14 @@ namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Pageview;
  */
 use DanielSiepmann\Tracking\Domain\Model\Pageview;
 use DanielSiepmann\Tracking\Domain\Pageview\Factory;
+use DanielSiepmann\Tracking\Domain\Repository\Site;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\Site as SiteEntity;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 #[CoversClass(Factory::class)]
@@ -54,7 +54,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(SiteFinder::class));
+        $subject = new Factory($this->createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertInstanceOf(Pageview::class, $result);
@@ -79,7 +79,7 @@ class FactoryTest extends UnitTestCase
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
         ]);
 
-        $subject = new Factory($this->createStub(SiteFinder::class));
+        $subject = new Factory($this->createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertSame(
@@ -105,7 +105,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('https://example.com/path?query=params&some=more#anchor');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(SiteFinder::class));
+        $subject = new Factory($this->createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertSame(
@@ -131,7 +131,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(SiteFinder::class));
+        $subject = new Factory($this->createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertSame(
@@ -157,7 +157,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(SiteFinder::class));
+        $subject = new Factory($this->createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertInstanceOf(DateTimeImmutable::class, $result->getCrdate());
@@ -180,7 +180,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(SiteFinder::class));
+        $subject = new Factory($this->createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertInstanceOf(SiteLanguage::class, $result->getLanguage());
@@ -203,7 +203,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(SiteFinder::class));
+        $subject = new Factory($this->createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertSame(
@@ -216,12 +216,12 @@ class FactoryTest extends UnitTestCase
     public function returnsPageviewFromDbRow(): void
     {
         $siteLanguage = $this->createStub(SiteLanguage::class);
-        $site = $this->createStub(Site::class);
+        $site = $this->createStub(SiteEntity::class);
         $site->method('getLanguageById')->willReturn($siteLanguage);
-        $siteFinder = $this->createStub(SiteFinder::class);
-        $siteFinder->method('getSiteByPageId')->willReturn($site);
+        $siteRepository = $this->createStub(Site::class);
+        $siteRepository->method('findByPageUid')->willReturn($site);
 
-        $subject = new Factory($siteFinder);
+        $subject = new Factory($siteRepository);
 
         $result = $subject->fromDbRow([
             'uid' => 1,
