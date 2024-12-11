@@ -1,0 +1,27 @@
+3.1.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+* Add support for PHP 8.4.
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
