@@ -4,7 +4,7 @@
 }:
 
 let
-  php = phps.packages.x86_64-linux.php83.buildEnv {
+  php = phps.packages.x86_64-linux.php84.buildEnv {
     extensions = { enabled, all }: enabled ++ (with all; [
       xdebug
     ]);

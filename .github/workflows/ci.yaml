@@ -15,7 +15,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           coverage: none
           tools: composer:v2
         env:
@@ -32,6 +32,7 @@ jobs:
           - 8.1
           - 8.2
           - 8.3
+          - 8.4
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -55,7 +56,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.3"
+          php-version: "8.4"
           coverage: none
           tools: composer:v2
         env:
@@ -84,7 +85,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2"
+          php-version: "8.3"
           coverage: none
           tools: composer:v2
         env:
@@ -113,11 +114,17 @@ jobs:
             php-version: '8.3'
             typo3-version: '^12.4'
           - db-version: '8'
+            php-version: '8.4'
+            typo3-version: '^12.4'
+          - db-version: '8'
             php-version: '8.2'
-            typo3-version: '^13.3'
+            typo3-version: '^13.4'
           - db-version: '8'
             php-version: '8.3'
-            typo3-version: '^13.3'
+            typo3-version: '^13.4'
+          - db-version: '8'
+            php-version: '8.4'
+            typo3-version: '^13.4'
     steps:
       - uses: actions/checkout@v4
 
@@ -166,10 +173,14 @@ jobs:
             typo3-version: '^12.4'
           - php-version: '8.3'
             typo3-version: '^12.4'
+          - php-version: '8.4'
+            typo3-version: '^12.4'
           - php-version: '8.2'
-            typo3-version: '^13.3'
+            typo3-version: '^13.4'
           - php-version: '8.3'
-            typo3-version: '^13.3'
+            typo3-version: '^13.4'
+          - php-version: '8.4'
+            typo3-version: '^13.4'
     steps:
       - uses: actions/checkout@v4
 
