@@ -1,0 +1,35 @@
+3.1.1
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+* Exclude tables from reference index.
+
+  The tables can grow very fast depending on the number of visiting.
+  Also some installations keep the records for a long time.
+  That would make it nearly impossible to properly update the reference index.
+  Therefore the extension now excludes their tables by default.
+
+  One can prevent this, by removing the event listener e.g. via custom `Services.*`
+  files.
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
