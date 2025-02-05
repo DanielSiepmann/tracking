@@ -41,13 +41,13 @@ class PageviewTest extends UnitTestCase
         $connection = $this->createMock(Connection::class);
         $factory = $this->createMock(Factory::class);
 
-        $dateTime = $this->createStub(DateTimeImmutable::class);
+        $dateTime = self::createStub(DateTimeImmutable::class);
         $dateTime->method('format')->willReturn('1582660189');
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
         $language->method('getLanguageId')->willReturn(2);
 
-        $model = $this->createStub(Model::class);
+        $model = self::createStub(Model::class);
         $model->method('getPageUid')->willReturn(10);
         $model->method('getCrdate')->willReturn($dateTime);
         $model->method('getPageType')->willReturn(999);
@@ -85,7 +85,7 @@ class PageviewTest extends UnitTestCase
         $connection = $this->createMock(Connection::class);
         $factory = $this->createMock(Factory::class);
 
-        $model = $this->createStub(Model::class);
+        $model = self::createStub(Model::class);
         $model->method('getUid')->willReturn(0);
 
         $subject = new Pageview($connection, $factory);
@@ -99,13 +99,13 @@ class PageviewTest extends UnitTestCase
         $connection = $this->createMock(Connection::class);
         $factory = $this->createMock(Factory::class);
 
-        $dateTime = $this->createStub(DateTimeImmutable::class);
+        $dateTime = self::createStub(DateTimeImmutable::class);
         $dateTime->method('format')->willReturn('1582660189');
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
         $language->method('getLanguageId')->willReturn(2);
 
-        $model = $this->createStub(Model::class);
+        $model = self::createStub(Model::class);
         $model->method('getUid')->willReturn(1);
         $model->method('getPageUid')->willReturn(10);
         $model->method('getCrdate')->willReturn($dateTime);

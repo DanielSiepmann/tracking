@@ -35,7 +35,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function canBeCreated(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
@@ -52,7 +52,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function returnsPageUid(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             500,
@@ -69,7 +69,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function returnsLanguage(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
@@ -86,7 +86,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function returnsCrdate(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
         $crdate = new DateTimeImmutable();
 
         $subject = new Pageview(
@@ -104,7 +104,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function returnsPageType(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
@@ -121,7 +121,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function returnsUrl(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
@@ -138,7 +138,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function returnsUserAgent(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
@@ -158,7 +158,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function returnsZeroAsDefaultUid(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
@@ -178,7 +178,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function returnsSetAsUid(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,
@@ -199,7 +199,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function returnsOperatingSystem(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Pageview(
             0,

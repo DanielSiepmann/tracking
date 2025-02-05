@@ -40,13 +40,13 @@ class FactoryTest extends UnitTestCase
     #[Test]
     public function returnsPageviewFromRequest(): void
     {
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
         $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -54,7 +54,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(Site::class));
+        $subject = new Factory(self::createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertInstanceOf(Pageview::class, $result);
@@ -63,13 +63,13 @@ class FactoryTest extends UnitTestCase
     #[Test]
     public function returnedPageviewContainsUserAgent(): void
     {
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
         $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -79,7 +79,7 @@ class FactoryTest extends UnitTestCase
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
         ]);
 
-        $subject = new Factory($this->createStub(Site::class));
+        $subject = new Factory(self::createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertSame(
@@ -91,13 +91,13 @@ class FactoryTest extends UnitTestCase
     #[Test]
     public function returnedPageviewContainsUri(): void
     {
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
         $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -105,7 +105,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('https://example.com/path?query=params&some=more#anchor');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(Site::class));
+        $subject = new Factory(self::createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertSame(
@@ -117,13 +117,13 @@ class FactoryTest extends UnitTestCase
     #[Test]
     public function returnedPageviewContainsPageType(): void
     {
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
         $routing->method('getPageType')->willReturn('50');
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -131,7 +131,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(Site::class));
+        $subject = new Factory(self::createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertSame(
@@ -143,13 +143,13 @@ class FactoryTest extends UnitTestCase
     #[Test]
     public function returnedPageviewContainsDateTime(): void
     {
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
         $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -157,7 +157,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(Site::class));
+        $subject = new Factory(self::createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertInstanceOf(DateTimeImmutable::class, $result->getCrdate());
@@ -166,13 +166,13 @@ class FactoryTest extends UnitTestCase
     #[Test]
     public function returnedPageviewContainsLanguage(): void
     {
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
         $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -180,7 +180,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(Site::class));
+        $subject = new Factory(self::createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertInstanceOf(SiteLanguage::class, $result->getLanguage());
@@ -189,13 +189,13 @@ class FactoryTest extends UnitTestCase
     #[Test]
     public function returnedPageviewContainsPageId(): void
     {
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
         $routing->method('getPageType')->willReturn('0');
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -203,7 +203,7 @@ class FactoryTest extends UnitTestCase
         $request->method('getUri')->willReturn('');
         $request->method('getHeader')->willReturn([]);
 
-        $subject = new Factory($this->createStub(Site::class));
+        $subject = new Factory(self::createStub(Site::class));
 
         $result = $subject->fromRequest($request);
         self::assertSame(
@@ -215,10 +215,10 @@ class FactoryTest extends UnitTestCase
     #[Test]
     public function returnsPageviewFromDbRow(): void
     {
-        $siteLanguage = $this->createStub(SiteLanguage::class);
-        $site = $this->createStub(SiteEntity::class);
+        $siteLanguage = self::createStub(SiteLanguage::class);
+        $site = self::createStub(SiteEntity::class);
         $site->method('getLanguageById')->willReturn($siteLanguage);
-        $siteRepository = $this->createStub(Site::class);
+        $siteRepository = self::createStub(Site::class);
         $siteRepository->method('findByPageUid')->willReturn($site);
 
         $subject = new Factory($siteRepository);

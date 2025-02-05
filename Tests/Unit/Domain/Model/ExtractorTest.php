@@ -38,7 +38,7 @@ class ExtractorTest extends UnitTestCase
     #[Test]
     public function returnsOperatingSystem(string $userAgent, string $expectedOperatingSystem): void
     {
-        $model = $this->createStub(HasUserAgent::class);
+        $model = self::createStub(HasUserAgent::class);
         $model->method('getUserAgent')->willReturn($userAgent);
 
         self::assertSame(
