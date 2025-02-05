@@ -40,16 +40,16 @@ final class FactoryTest extends AbstractFunctionalTestCase
     #[Test]
     public function returnsRecordviewFromRequest(): void
     {
-        $rule = $this->createStub(RecordRule::class);
+        $rule = self::createStub(RecordRule::class);
         $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
         $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -69,16 +69,16 @@ final class FactoryTest extends AbstractFunctionalTestCase
     #[Test]
     public function returnedRecordviewContainsUserAgent(): void
     {
-        $rule = $this->createStub(RecordRule::class);
+        $rule = self::createStub(RecordRule::class);
         $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
         $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -98,16 +98,16 @@ final class FactoryTest extends AbstractFunctionalTestCase
     #[Test]
     public function returnedRecordviewContainsUri(): void
     {
-        $rule = $this->createStub(RecordRule::class);
+        $rule = self::createStub(RecordRule::class);
         $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
         $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -127,16 +127,16 @@ final class FactoryTest extends AbstractFunctionalTestCase
     #[Test]
     public function returnedRecordviewContainsDateTime(): void
     {
-        $rule = $this->createStub(RecordRule::class);
+        $rule = self::createStub(RecordRule::class);
         $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
         $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -156,16 +156,16 @@ final class FactoryTest extends AbstractFunctionalTestCase
     #[Test]
     public function returnedRecordviewContainsLanguage(): void
     {
-        $rule = $this->createStub(RecordRule::class);
+        $rule = self::createStub(RecordRule::class);
         $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
         $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -185,16 +185,16 @@ final class FactoryTest extends AbstractFunctionalTestCase
     #[Test]
     public function returnedRecordviewContainsPageId(): void
     {
-        $rule = $this->createStub(RecordRule::class);
+        $rule = self::createStub(RecordRule::class);
         $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
         $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -214,16 +214,16 @@ final class FactoryTest extends AbstractFunctionalTestCase
     #[Test]
     public function returnedRecordviewContainsRecordUid(): void
     {
-        $rule = $this->createStub(RecordRule::class);
+        $rule = self::createStub(RecordRule::class);
         $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
         $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],
@@ -243,16 +243,16 @@ final class FactoryTest extends AbstractFunctionalTestCase
     #[Test]
     public function returnedRecordviewContainsTableName(): void
     {
-        $rule = $this->createStub(RecordRule::class);
+        $rule = self::createStub(RecordRule::class);
         $rule->method('getUidExpression')->willReturn('request.getQueryParams()["category"]');
         $rule->method('getTableName')->willReturn('sys_category');
 
-        $routing = $this->createStub(PageArguments::class);
+        $routing = self::createStub(PageArguments::class);
         $routing->method('getPageId')->willReturn(10);
 
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
-        $request = $this->createStub(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
         $request->method('getAttribute')->willReturnMap([
             ['routing', null, $routing],
             ['language', null, $language],

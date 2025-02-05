@@ -35,7 +35,7 @@ class RecordviewTest extends UnitTestCase
     #[Test]
     public function canBeCreated(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
@@ -53,7 +53,7 @@ class RecordviewTest extends UnitTestCase
     #[Test]
     public function returnsPageUid(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             500,
@@ -71,7 +71,7 @@ class RecordviewTest extends UnitTestCase
     #[Test]
     public function returnsLanguage(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
@@ -89,7 +89,7 @@ class RecordviewTest extends UnitTestCase
     #[Test]
     public function returnsCrdate(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
         $crdate = new DateTimeImmutable();
 
         $subject = new Recordview(
@@ -108,7 +108,7 @@ class RecordviewTest extends UnitTestCase
     #[Test]
     public function returnsUrl(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
@@ -126,7 +126,7 @@ class RecordviewTest extends UnitTestCase
     #[Test]
     public function returnsUserAgent(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
@@ -147,7 +147,7 @@ class RecordviewTest extends UnitTestCase
     #[Test]
     public function returnsRecordUid(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
@@ -168,7 +168,7 @@ class RecordviewTest extends UnitTestCase
     #[Test]
     public function returnsTableName(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
@@ -189,7 +189,7 @@ class RecordviewTest extends UnitTestCase
     #[Test]
     public function returnsOperatingSystem(): void
     {
-        $language = $this->createStub(SiteLanguage::class);
+        $language = self::createStub(SiteLanguage::class);
 
         $subject = new Recordview(
             0,
