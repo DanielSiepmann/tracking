@@ -71,6 +71,11 @@ services:
     arguments:
       $rules: []
 
+  DanielSiepmann\Tracking\EventListener\ExcludeFromReferenceIndex:
+    tags:
+      - name: 'event.listener'
+        event: 'TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent'
+
   DanielSiepmann\Tracking\Command\UpdateDataCommand:
     tags:
       - name: 'console.command'
