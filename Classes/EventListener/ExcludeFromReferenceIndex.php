@@ -25,7 +25,7 @@ namespace DanielSiepmann\Tracking\EventListener;
 
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 
-final readonly class ExcludeFromReferenceIndex
+final class ExcludeFromReferenceIndex
 {
     public function __invoke(
         IsTableExcludedFromReferenceIndexEvent $event
