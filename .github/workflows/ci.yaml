@@ -198,3 +198,40 @@ jobs:
 
       - name: Code Quality (by PHPStan)
         run: ./vendor/bin/phpstan analyse
+
+  composer-dependencies:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - php-version: '8.1'
+            typo3-version: '^12.4'
+          - php-version: '8.2'
+            typo3-version: '^12.4'
+          - php-version: '8.3'
+            typo3-version: '^12.4'
+          - php-version: '8.4'
+            typo3-version: '^12.4'
+          - php-version: '8.2'
+            typo3-version: '^13.4'
+          - php-version: '8.3'
+            typo3-version: '^13.4'
+          - php-version: '8.4'
+            typo3-version: '^13.4'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: none
+          tools: composer:v2
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install dependencies with expected TYPO3 version
+        run: composer require --prefer-dist --no-progress "typo3/cms-core:${{ matrix.typo3-version }}"
+
+      - name: Composer Dependencies
+        run: ./vendor/bin/composer-dependency-analyser
