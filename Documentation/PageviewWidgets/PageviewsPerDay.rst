@@ -43,7 +43,6 @@ Default widget configuration.
            iconIdentifier: 'content-widget-chart-bar'
            title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsBar.title'
            description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsBar.description'
-           additionalCssClasses: 'dashboard-item--chart'
            height: 'medium'
            width: 'small'
 

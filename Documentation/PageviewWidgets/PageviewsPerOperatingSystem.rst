@@ -43,7 +43,6 @@ Default widget configuration.
            iconIdentifier: 'content-widget-chart-pie'
            title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.operatingSystemsDoughnut.title'
            description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.operatingSystemsDoughnut.description'
-           additionalCssClasses: 'dashboard-item--chart'
            height: 'medium'
            width: 'small'
 
