@@ -1,0 +1,31 @@
+3.1.2
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+* Fix TYPO3 13.4.14 breaking change leading to `Invalid service "*": method "TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration::__construct()" has no argument named "$additionalCssClasses". Check your service definition.`
+
+  Manual changes might be necessary.
+  Remove the no longer existing `$additionalCssClasses` from your own service configuration in case you have any.
+  See related core Git commit introducing the change: https://git.typo3.org/typo3/typo3/-/commit/b05a0d5d01c
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing

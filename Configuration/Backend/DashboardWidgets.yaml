@@ -22,7 +22,6 @@ services:
         iconIdentifier: 'content-widget-chart-bar'
         title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsBar.title'
         description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsBar.description'
-        additionalCssClasses: 'dashboard-item--chart'
         height: 'medium'
         width: 'small'
 
@@ -41,7 +40,6 @@ services:
         iconIdentifier: 'content-widget-chart-bar'
         title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsPerPageDoughnut.title'
         description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.pageViewsPerPageDoughnut.description'
-        additionalCssClasses: 'dashboard-item--chart'
         height: 'medium'
         width: 'small'
 
@@ -79,6 +77,5 @@ services:
         iconIdentifier: 'content-widget-chart-pie'
         title: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.operatingSystemsDoughnut.title'
         description: 'LLL:EXT:tracking/Resources/Private/Language/locallang.xlf:dashboard.widgets.operatingSystemsDoughnut.description'
-        additionalCssClasses: 'dashboard-item--chart'
         height: 'medium'
         width: 'small'
