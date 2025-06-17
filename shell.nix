@@ -1,10 +1,9 @@
 {
   pkgs ? import <nixpkgs> { }
-  ,phps ? import <phps>
 }:
 
 let
-  php = phps.packages.x86_64-linux.php84.buildEnv {
+  php = pkgs.php84.buildEnv {
     extensions = { enabled, all }: enabled ++ (with all; [
       xdebug
     ]);
