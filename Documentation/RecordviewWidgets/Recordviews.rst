@@ -51,7 +51,6 @@ Example widget configuration.
            iconIdentifier: 'content-widget-chart-pie'
            title: 'News'
            description: 'Shows which news are called most'
-           additionalCssClasses: 'dashboard-item--chart'
            height: 'medium'
            width: 'small'
 
