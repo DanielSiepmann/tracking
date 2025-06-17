@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace DanielSiepmann\Tracking\Dashboard\Provider;
 
 use DanielSiepmann\Tracking\Extension;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -127,7 +127,7 @@ class PageviewsPerDay implements ChartDataProviderInterface
             ->orderBy('label', 'ASC')
         ;
         if (
-            (class_exists(SqlitePlatform::class) && $this->queryBuilder->getConnection()->getDatabasePlatform() instanceof SqlitePlatform)
+            (class_exists(SQLitePlatform::class) && $this->queryBuilder->getConnection()->getDatabasePlatform() instanceof SQLitePlatform)
             || (method_exists($this->queryBuilder->getConnection()->getDatabasePlatform(), 'getName') && $this->queryBuilder->getConnection()->getDatabasePlatform()->getName() === 'sqlite')
         ) {
             $this->queryBuilder->addSelectLiteral('date(crdate, "unixepoch") as "label"');
