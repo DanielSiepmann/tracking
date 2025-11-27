@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DanielSiepmann\Tracking\Tests\Unit\Domain\Recordview;
+namespace DanielSiepmann\Tracking\Tests\Functional\Domain\Recordview;
 
 /*
  * Copyright (C) 2020 Daniel Siepmann <coding@daniel-siepmann.de>
@@ -31,6 +31,8 @@ use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
@@ -54,7 +56,7 @@ final class FactoryTest extends AbstractFunctionalTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('');
+        $request->method('getUri')->willReturn(self::createStub(UriInterface::class));
         $request->method('getHeader')->willReturn([]);
         $request->method('getQueryParams')->willReturn([
             'category' => 10,
@@ -83,7 +85,7 @@ final class FactoryTest extends AbstractFunctionalTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('');
+        $request->method('getUri')->willReturn(self::createStub(UriInterface::class));
         $request->method('getHeader')->willReturn(['Some User Agent']);
         $request->method('getQueryParams')->willReturn([
             'category' => 10,
@@ -112,7 +114,7 @@ final class FactoryTest extends AbstractFunctionalTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getUri')->willReturn(new Uri('https://example.com'));
         $request->method('getHeader')->willReturn(['']);
         $request->method('getQueryParams')->willReturn([
             'category' => 10,
@@ -141,7 +143,7 @@ final class FactoryTest extends AbstractFunctionalTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getUri')->willReturn(new Uri('https://example.com'));
         $request->method('getHeader')->willReturn(['']);
         $request->method('getQueryParams')->willReturn([
             'category' => 10,
@@ -170,7 +172,7 @@ final class FactoryTest extends AbstractFunctionalTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getUri')->willReturn(new Uri('https://example.com'));
         $request->method('getHeader')->willReturn(['']);
         $request->method('getQueryParams')->willReturn([
             'category' => 10,
@@ -199,7 +201,7 @@ final class FactoryTest extends AbstractFunctionalTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getUri')->willReturn(new Uri('https://example.com'));
         $request->method('getHeader')->willReturn(['']);
         $request->method('getQueryParams')->willReturn([
             'category' => 10,
@@ -228,7 +230,7 @@ final class FactoryTest extends AbstractFunctionalTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getUri')->willReturn(new Uri('https://example.com'));
         $request->method('getHeader')->willReturn(['']);
         $request->method('getQueryParams')->willReturn([
             'category' => 20,
@@ -257,7 +259,7 @@ final class FactoryTest extends AbstractFunctionalTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('https://example.com');
+        $request->method('getUri')->willReturn(new Uri('https://example.com'));
         $request->method('getHeader')->willReturn(['']);
         $request->method('getQueryParams')->willReturn([
             'category' => 20,

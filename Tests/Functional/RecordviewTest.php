@@ -26,6 +26,8 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 
 #[TestDox('Recordviews are')]
@@ -68,14 +70,14 @@ final class RecordviewTest extends AbstractFunctionalTestCase
 
         $records = $this->getAllRecords('tx_tracking_recordview');
         self::assertCount(1, $records);
-        self::assertSame('1', (string) $records[0]['pid']);
-        self::assertSame('1', (string) $records[0]['uid']);
-        self::assertSame('http://localhost/?id=1&topic_id=1', $records[0]['url']);
-        self::assertSame('Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0', $records[0]['user_agent']);
-        self::assertSame('Macintosh', $records[0]['operating_system']);
-        self::assertSame('sys_category_1', $records[0]['record']);
-        self::assertSame('1', (string) $records[0]['record_uid']);
-        self::assertSame('sys_category', $records[0]['record_table_name']);
+        self::assertSame('1', StringUtility::cast(ArrayUtility::getValueByPath($records, '0/pid')));
+        self::assertSame('1', StringUtility::cast(ArrayUtility::getValueByPath($records, '0/uid')));
+        self::assertSame('http://localhost/?id=1&topic_id=1', ArrayUtility::getValueByPath($records, '0/url'));
+        self::assertSame('Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0', ArrayUtility::getValueByPath($records, '0/user_agent'));
+        self::assertSame('Macintosh', ArrayUtility::getValueByPath($records, '0/operating_system'));
+        self::assertSame('sys_category_1', ArrayUtility::getValueByPath($records, '0/record'));
+        self::assertSame('1', StringUtility::cast(ArrayUtility::getValueByPath($records, '0/record_uid')));
+        self::assertSame('sys_category', ArrayUtility::getValueByPath($records, '0/record_table_name'));
     }
 
     #[Test]

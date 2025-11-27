@@ -31,6 +31,12 @@ class DataHandler
 {
     public function processCmdmap_beforeStart(Typo3DataHandler $dataHandler): void
     {
+        // @phpstan-ignore function.alreadyNarrowedType (It is available in v13, but not v14)
+        if (property_exists($dataHandler, 'copyWhichTables')) {
+            $this->preventCopyOfTrackingTablesV13($dataHandler);
+            return;
+        }
+
         $this->preventCopyOfTrackingTables($dataHandler);
     }
 
@@ -47,12 +53,16 @@ class DataHandler
         ]);
     }
 
-    private function preventCopyOfTrackingTables(Typo3DataHandler $dataHandler): void
+    private function preventCopyOfTrackingTablesV13(Typo3DataHandler $dataHandler): void
     {
         $copyWhichTables = array_keys($GLOBALS['TCA']);
 
+        // @phpstan-ignore property.notFound (this code is only executed on v13 where it exists)
         if ($dataHandler->copyWhichTables !== '*') {
-            $copyWhichTables = GeneralUtility::trimExplode(',', $dataHandler->copyWhichTables, true);
+            // @phpstan-ignore property.notFound (this code is only executed on v13 where it exists)
+            $copyWhichTables = $dataHandler->copyWhichTables;
+            // @phpstan-ignore argument.type (this is a string in v13, and not executed in v14)
+            $copyWhichTables = GeneralUtility::trimExplode(',', $copyWhichTables, true);
         }
 
         $copyWhichTables = array_filter(
@@ -60,6 +70,13 @@ class DataHandler
             static fn (int|string $tableName): bool => \str_starts_with((string) $tableName, 'tx_tracking_') === false
         );
 
+        // @phpstan-ignore property.notFound (this code is only executed on v13 where it exists)
         $dataHandler->copyWhichTables = implode(',', $copyWhichTables);
+    }
+
+    private function preventCopyOfTrackingTables(Typo3DataHandler $dataHandler): void
+    {
+        // TODO: Find a way to prevent copy of tracking tables on page copy.
+        // See upstream issue: https://forge.typo3.org/issues/108353
     }
 }

@@ -1,4 +1,4 @@
-V12
+V13
 ===
 
-Remove `new DataHandler()` calls.
+* Remove `->copyWhichTables` checks and usages.

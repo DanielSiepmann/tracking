@@ -29,6 +29,8 @@ use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site as SiteEntity;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -51,7 +53,7 @@ class FactoryTest extends UnitTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('');
+        $request->method('getUri')->willReturn(self::createStub(UriInterface::class));
         $request->method('getHeader')->willReturn([]);
 
         $subject = new Factory(self::createStub(Site::class));
@@ -74,7 +76,7 @@ class FactoryTest extends UnitTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('');
+        $request->method('getUri')->willReturn(self::createStub(UriInterface::class));
         $request->method('getHeader')->willReturn([
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
         ]);
@@ -102,7 +104,7 @@ class FactoryTest extends UnitTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('https://example.com/path?query=params&some=more#anchor');
+        $request->method('getUri')->willReturn(new Uri('https://example.com/path?query=params&some=more#anchor'));
         $request->method('getHeader')->willReturn([]);
 
         $subject = new Factory(self::createStub(Site::class));
@@ -128,7 +130,7 @@ class FactoryTest extends UnitTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('');
+        $request->method('getUri')->willReturn(self::createStub(UriInterface::class));
         $request->method('getHeader')->willReturn([]);
 
         $subject = new Factory(self::createStub(Site::class));
@@ -154,7 +156,7 @@ class FactoryTest extends UnitTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('');
+        $request->method('getUri')->willReturn(self::createStub(UriInterface::class));
         $request->method('getHeader')->willReturn([]);
 
         $subject = new Factory(self::createStub(Site::class));
@@ -177,7 +179,7 @@ class FactoryTest extends UnitTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('');
+        $request->method('getUri')->willReturn(self::createStub(UriInterface::class));
         $request->method('getHeader')->willReturn([]);
 
         $subject = new Factory(self::createStub(Site::class));
@@ -200,7 +202,7 @@ class FactoryTest extends UnitTestCase
             ['routing', null, $routing],
             ['language', null, $language],
         ]);
-        $request->method('getUri')->willReturn('');
+        $request->method('getUri')->willReturn(self::createStub(UriInterface::class));
         $request->method('getHeader')->willReturn([]);
 
         $subject = new Factory(self::createStub(Site::class));

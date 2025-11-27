@@ -1,0 +1,30 @@
+3.0.0
+=====
+
+Breaking
+--------
+
+* Drop support for TYPO3 v12.
+  I only support last two TYPO3 versions.
+
+Features
+--------
+
+* Add Support for TYPO3 v14.
+
+* Add Support for PHP 8.5.
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
