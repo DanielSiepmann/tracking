@@ -92,6 +92,9 @@ class PageviewsPerDay implements ChartDataProviderInterface
         ];
     }
 
+    /**
+     * @return array{count: numeric, label: string}[]
+     */
     private function getPageviewsInPeriod(int $start, int $end): array
     {
         $constraints = [

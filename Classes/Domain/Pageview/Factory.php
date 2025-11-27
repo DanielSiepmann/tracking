@@ -29,6 +29,8 @@ use DateTimeImmutable;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use UnexpectedValueException;
 
 class Factory
@@ -52,14 +54,17 @@ class Factory
 
     public function fromDbRow(array $dbRow): Pageview
     {
+        $pid = MathUtility::forceIntegerInRange($dbRow['pid'], 1);
         return new Pageview(
-            (int) $dbRow['pid'],
-            $this->siteRepository->findByPageUid((int) $dbRow['pid'])->getLanguageById((int) $dbRow['sys_language_uid']),
-            new DateTimeImmutable('@' . $dbRow['crdate']),
-            (int) $dbRow['type'],
-            $dbRow['url'],
-            $dbRow['user_agent'],
-            (int) $dbRow['uid']
+            $pid,
+            $this->siteRepository
+                ->findByPageUid($pid)
+                ->getLanguageById(MathUtility::forceIntegerInRange($dbRow['sys_language_uid'], 0)),
+            new DateTimeImmutable('@' . StringUtility::cast($dbRow['crdate'])),
+            MathUtility::forceIntegerInRange($dbRow['type'], 0),
+            StringUtility::cast($dbRow['url']) ?? '',
+            StringUtility::cast($dbRow['user_agent']) ?? '',
+            MathUtility::forceIntegerInRange($dbRow['uid'], 1)
         );
     }
 

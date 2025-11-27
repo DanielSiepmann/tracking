@@ -28,6 +28,7 @@ use DanielSiepmann\Tracking\Tests\Functional\AbstractFunctionalTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[CoversClass(PageviewsPerOperatingSystem::class)]
@@ -58,7 +59,7 @@ final class PageviewsPerOperatingSystemTest extends AbstractFunctionalTestCase
             'System 4',
             'System 5',
         ], $result['labels']);
-        self::assertCount(6, $result['datasets'][0]['data']);
+        self::assertCount(6, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -97,7 +98,7 @@ final class PageviewsPerOperatingSystemTest extends AbstractFunctionalTestCase
             'System 1',
             'System 3',
         ], $result['labels']);
-        self::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -131,7 +132,7 @@ final class PageviewsPerOperatingSystemTest extends AbstractFunctionalTestCase
             'System 2',
             'System 3',
         ], $result['labels']);
-        self::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -160,7 +161,7 @@ final class PageviewsPerOperatingSystemTest extends AbstractFunctionalTestCase
             'System 2',
             'System 3',
         ], $result['labels']);
-        self::assertCount(4, $result['datasets'][0]['data']);
+        self::assertCount(4, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -192,6 +193,6 @@ final class PageviewsPerOperatingSystemTest extends AbstractFunctionalTestCase
             'System 7',
             'System 9',
         ], $result['labels']);
-        self::assertCount(5, $result['datasets'][0]['data']);
+        self::assertCount(5, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 }

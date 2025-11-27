@@ -28,6 +28,7 @@ use DanielSiepmann\Tracking\Tests\Functional\AbstractFunctionalTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Console\Tester\CommandTester;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[CoversClass(UpdateDataCommand::class)]
@@ -50,8 +51,8 @@ final class UpdateDataCommandTest extends AbstractFunctionalTestCase
 
         $records = $this->getAllRecords('tx_tracking_pageview');
         self::assertCount(2, $records);
-        self::assertSame('Linux', $records[0]['operating_system']);
-        self::assertSame('Android', $records[1]['operating_system']);
+        self::assertSame('Linux', ArrayUtility::getValueByPath($records, '0/operating_system'));
+        self::assertSame('Android', ArrayUtility::getValueByPath($records, '1/operating_system'));
     }
 
     #[Test]
@@ -67,8 +68,8 @@ final class UpdateDataCommandTest extends AbstractFunctionalTestCase
 
         $records = $this->getAllRecords('tx_tracking_pageview');
         self::assertCount(2, $records);
-        self::assertSame('Linux', $records[0]['operating_system']);
-        self::assertSame('Android', $records[1]['operating_system']);
+        self::assertSame('Linux', ArrayUtility::getValueByPath($records, '0/operating_system'));
+        self::assertSame('Android', ArrayUtility::getValueByPath($records, '1/operating_system'));
     }
 
     #[Test]

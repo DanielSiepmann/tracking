@@ -27,6 +27,8 @@ use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestContext;
 
@@ -60,12 +62,12 @@ final class PageviewTest extends AbstractFunctionalTestCase
 
         $records = $this->getAllRecords('tx_tracking_pageview');
         self::assertCount(1, $records);
-        self::assertSame('1', (string) $records[0]['pid']);
-        self::assertSame('1', (string) $records[0]['uid']);
-        self::assertSame('http://localhost/?id=1', $records[0]['url']);
-        self::assertSame('Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0', $records[0]['user_agent']);
-        self::assertSame('Macintosh', $records[0]['operating_system']);
-        self::assertSame('0', (string) $records[0]['type']);
+        self::assertSame('1', StringUtility::cast(ArrayUtility::getValueByPath($records, '0/pid')));
+        self::assertSame('1', StringUtility::cast(ArrayUtility::getValueByPath($records, '0/uid')));
+        self::assertSame('http://localhost/?id=1', ArrayUtility::getValueByPath($records, '0/url'));
+        self::assertSame('Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0', ArrayUtility::getValueByPath($records, '0/user_agent'));
+        self::assertSame('Macintosh', ArrayUtility::getValueByPath($records, '0/operating_system'));
+        self::assertSame('0', StringUtility::cast(ArrayUtility::getValueByPath($records, '0/type')));
     }
 
     #[Test]

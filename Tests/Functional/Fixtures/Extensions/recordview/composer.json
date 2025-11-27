@@ -1,0 +1,13 @@
+{
+    "name": "danielsiepmann/tracking-recordview",
+    "description": "Fixture extension for EXT:tracking",
+    "type": "typo3-cms-extension",
+    "require": {
+        "danielsiepmann/tracking": "*"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "recordview"
+        }
+    }
+}

@@ -40,6 +40,9 @@ class Recordview implements MiddlewareInterface
      */
     private array $rules = [];
 
+    /**
+     * @param array[] $rules
+     */
     public function __construct(
         private readonly Repository $repository,
         private readonly Context $context,
