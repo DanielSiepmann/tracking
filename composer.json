@@ -40,7 +40,6 @@
     },
     "require-dev": {
         "codappix/typo3-php-datasets": "^1.5",
-        "cweagans/composer-patches": "^1.7",
         "friendsofphp/php-cs-fixer": "^3.14",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.10",
@@ -68,7 +67,6 @@
         "allow-plugins": {
             "typo3/class-alias-loader": true,
             "typo3/cms-composer-installers": true,
-            "cweagans/composer-patches": true,
             "phpstan/extension-installer": true
         }
     }
