@@ -1,107 +1,55 @@
-name: CI
+name: 'CI'
 
-on:
+'on':
   push:
     branches:
-      - main
+      - 'main'
   pull_request:
 
 jobs:
-  check-composer:
-    runs-on: ubuntu-latest
+  base-qa:
+    runs-on: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@v4
+      - uses: 'actions/checkout@v4'
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
+      - name: 'Install PHP'
+        uses: 'shivammathur/setup-php@v2'
         with:
-          php-version: 8.5
-          coverage: none
-          tools: composer:v2
+          php-version: '8.5'
+          coverage: 'none'
+          tools: 'composer:v2'
         env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPOSER_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
-      - name: Validate composer.json
-        run: composer validate
+      - name: 'Validate composer.json'
+        run: 'composer validate'
 
-  php-linting:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-version:
-          - 8.1
-          - 8.2
-          - 8.3
-          - 8.4
-          - 8.5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: 'Install xmllint'
+        run: 'sudo apt update && sudo apt install libxml2-utils'
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: none
+      - name: 'Create .Build dir for xsd download'
+        run: 'mkdir .Build/'
 
-      - name: PHP lint
-        run: "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l"
+      - name: 'Fetch schema for xliff'
+        run: 'wget https://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd --output-document=.Build/xliff-core-1.2-strict.xsd'
 
-  xml-linting:
-    runs-on: ubuntu-latest
+      - name: 'Lint TYPO3 language files'
+        run: |
+            xmllint --schema .Build/xliff-core-1.2-strict.xsd --noout $(find Resources -name '*.xlf')
+
+      - name: 'Install dependencies'
+        run: 'composer install --prefer-dist --no-progress'
+
+      - name: 'PHPUnit configuration file'
+        run: 'xmllint --schema vendor/phpunit/phpunit/phpunit.xsd --noout phpunit.xml.dist'
+
+      - name: 'Coding Guideline'
+        run: './vendor/bin/php-cs-fixer fix --dry-run --diff'
+
+  advanced-qa:
+    runs-on: 'ubuntu-latest'
     needs:
-      - check-composer
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.5"
-          coverage: none
-          tools: composer:v2
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install xmllint
-        run: sudo apt update && sudo apt install libxml2-utils
-
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: PHPUnit configuration file
-        run: xmllint --schema vendor/phpunit/phpunit/phpunit.xsd --noout phpunit.xml.dist
-
-      - name: Fetch schema for xliff
-        run: wget https://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd --output-document=.Build/xliff-core-1.2-strict.xsd
-
-      - name: TYPO3 language files
-        run: xmllint --schema .Build/xliff-core-1.2-strict.xsd --noout $(find Resources -name '*.xlf')
-
-  coding-guideline:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.5"
-          coverage: none
-          tools: composer:v2
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Coding Guideline
-        run: PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --dry-run --diff
-
-  tests-mysql:
-    runs-on: ubuntu-latest
-    needs:
-      - xml-linting
+      - 'base-qa'
     strategy:
       matrix:
         include:
@@ -130,34 +78,41 @@ jobs:
             php-version: '8.5'
             typo3-version: '^13.4'
     steps:
-      - uses: actions/checkout@v4
+      - uses: 'actions/checkout@v4'
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
+      - name: 'Install PHP'
+        uses: 'shivammathur/setup-php@v2'
         with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: none
-          tools: composer:v2
+          php-version: '${{ matrix.php-version }}'
+          coverage: 'none'
+          tools: 'composer:v2'
         env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPOSER_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
+      - name: 'PHP lint'
+        run: |
+            find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+
+      - name: 'Install dependencies with expected TYPO3 version'
+        run: 'composer require --prefer-dist --no-progress "typo3/cms-core:${{ matrix.typo3-version }}"'
+
+      - name: 'Code Quality (by PHPStan)'
+        run: './vendor/bin/phpstan analyse'
+
+      - name: 'Setup MySQL'
+        uses: 'mirromutth/mysql-action@v1.1'
         with:
           mysql version: '${{ matrix.db-version }}'
           mysql database: 'typo3'
           mysql root password: 'root'
 
-      - name: Wait for MySQL
+      - name: 'Wait for MySQL'
         run: |
           while ! mysqladmin ping --host=127.0.0.1 --password=root --silent; do
           sleep 1
           done
 
-      - name: Install dependencies with expected TYPO3 version
-        run: composer require --prefer-dist --no-progress "typo3/cms-core:${{ matrix.typo3-version }}"
-
-      - name: PHPUnit Tests
+      - name: 'PHPUnit Tests'
         run: |-
           export typo3DatabaseDriver="pdo_mysql"
           export typo3DatabaseName="typo3"
@@ -165,42 +120,3 @@ jobs:
           export typo3DatabaseUsername="root"
           export typo3DatabasePassword="root"
           ./vendor/bin/phpunit --testdox
-
-  code-quality:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - php-version: '8.1'
-            typo3-version: '^12.4'
-          - php-version: '8.2'
-            typo3-version: '^12.4'
-          - php-version: '8.3'
-            typo3-version: '^12.4'
-          - php-version: '8.4'
-            typo3-version: '^12.4'
-          - php-version: '8.2'
-            typo3-version: '^13.4'
-          - php-version: '8.3'
-            typo3-version: '^13.4'
-          - php-version: '8.4'
-            typo3-version: '^13.4'
-          - php-version: '8.5'
-            typo3-version: '^13.4'
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: none
-          tools: composer:v2
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install dependencies with expected TYPO3 version
-        run: composer require --prefer-dist --no-progress "typo3/cms-core:${{ matrix.typo3-version }}"
-
-      - name: Code Quality (by PHPStan)
-        run: ./vendor/bin/phpstan analyse
