@@ -99,12 +99,12 @@ final class PageviewTest extends AbstractFunctionalTestCase
         self::assertCount(0, $this->getAllRecords('tx_tracking_pageview'));
     }
 
-    public static function possibleDeniedUserAgents(): array
+    public static function possibleDeniedUserAgents(): iterable
     {
-        return [
-            'Uptime-Kuma' => [
-                'userAgent' => 'Uptime-Kuma/1.21.2',
-            ],
+
+        yield 'Uptime-Kuma' => [
+            'userAgent' => 'Uptime-Kuma/1.21.2',
         ];
+
     }
 }
