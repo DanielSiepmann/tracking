@@ -47,49 +47,49 @@ class ExtractorTest extends UnitTestCase
         );
     }
 
-    public static function possibleUserStringWithOperatingSystems(): array
+    public static function possibleUserStringWithOperatingSystems(): iterable
     {
-        return [
-            [
-                'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36',
-                'expectedOperatingSystem' => 'Linux',
-            ],
-            [
-                'userAgent' => 'Dalvik/2.1.0 (Linux; U; Android 9; ONEPLUS A3003 Build/PKQ1.181203.001)',
-                'expectedOperatingSystem' => 'Android',
-            ],
-            [
-                'userAgent' => 'Apache-HttpClient/4.5.2 (Java/1.8.0_151)',
-                'expectedOperatingSystem' => '',
-            ],
-            [
-                'userAgent' => 'AwarioSmartBot/1.0 (+https://awario.com/bots.html; bots@awario.com)',
-                'expectedOperatingSystem' => '',
-            ],
-            [
-                'userAgent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)',
-                'expectedOperatingSystem' => 'Windows',
-            ],
-            [
-                'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:73.0) Gecko/20100101 Firefox/73.0',
-                'expectedOperatingSystem' => 'Macintosh',
-            ],
-            [
-                'userAgent' => 'Mozilla/5.0 (X11; CrOS x86_64 12607.82.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.123 Safari/537.36',
-                'expectedOperatingSystem' => 'Google Chrome OS',
-            ],
-            [
-                'userAgent' => 'Mozilla/5.0 (X11; U; OpenBSD i386; en-US; rv:1.8.1.4) Gecko/20070704 Firefox/52.0',
-                'expectedOperatingSystem' => 'OpenBSD',
-            ],
-            [
-                'userAgent' => 'Mozilla/5.0 (iPad; CPU OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/80.0.3987.95 Mobile/15E148 Safari/604.1',
-                'expectedOperatingSystem' => 'iOS',
-            ],
-            [
-                'userAgent' => 'Mozilla/5.0 (iPhone; CPU OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/22.0  Mobile/15E148 Safari/605.1.15',
-                'expectedOperatingSystem' => 'iOS',
-            ],
+
+        yield [
+            'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36',
+            'expectedOperatingSystem' => 'Linux',
         ];
+        yield [
+            'userAgent' => 'Dalvik/2.1.0 (Linux; U; Android 9; ONEPLUS A3003 Build/PKQ1.181203.001)',
+            'expectedOperatingSystem' => 'Android',
+        ];
+        yield [
+            'userAgent' => 'Apache-HttpClient/4.5.2 (Java/1.8.0_151)',
+            'expectedOperatingSystem' => '',
+        ];
+        yield [
+            'userAgent' => 'AwarioSmartBot/1.0 (+https://awario.com/bots.html; bots@awario.com)',
+            'expectedOperatingSystem' => '',
+        ];
+        yield [
+            'userAgent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)',
+            'expectedOperatingSystem' => 'Windows',
+        ];
+        yield [
+            'userAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:73.0) Gecko/20100101 Firefox/73.0',
+            'expectedOperatingSystem' => 'Macintosh',
+        ];
+        yield [
+            'userAgent' => 'Mozilla/5.0 (X11; CrOS x86_64 12607.82.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.123 Safari/537.36',
+            'expectedOperatingSystem' => 'Google Chrome OS',
+        ];
+        yield [
+            'userAgent' => 'Mozilla/5.0 (X11; U; OpenBSD i386; en-US; rv:1.8.1.4) Gecko/20070704 Firefox/52.0',
+            'expectedOperatingSystem' => 'OpenBSD',
+        ];
+        yield [
+            'userAgent' => 'Mozilla/5.0 (iPad; CPU OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/80.0.3987.95 Mobile/15E148 Safari/604.1',
+            'expectedOperatingSystem' => 'iOS',
+        ];
+        yield [
+            'userAgent' => 'Mozilla/5.0 (iPhone; CPU OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/22.0  Mobile/15E148 Safari/605.1.15',
+            'expectedOperatingSystem' => 'iOS',
+        ];
+
     }
 }
