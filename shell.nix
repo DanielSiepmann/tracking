@@ -90,6 +90,7 @@ in pkgs.mkShell {
     projectTest
     php
     composer
+    pkgs.yamllint
   ];
 
   shellHook = ''

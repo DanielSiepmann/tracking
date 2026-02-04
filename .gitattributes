@@ -9,3 +9,4 @@ phpstan-baseline.neon export-ignore
 phpstan.neon export-ignore
 phpunit.xml.dist export-ignore
 .php-cs-fixer.dist.php export-ignore
+.yamllint.yaml export-ignore

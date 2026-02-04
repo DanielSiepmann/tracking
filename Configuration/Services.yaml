@@ -1,5 +1,5 @@
 imports:
-  - { resource: Backend/DashboardWidgets.yaml }
+  - { resource: 'Backend/DashboardWidgets.yaml' }
 
 services:
   _defaults:
@@ -69,7 +69,7 @@ services:
   DanielSiepmann\Tracking\Middleware\Recordview:
     public: true
     arguments:
-      $rules: []
+      $rules: [ ]
 
   DanielSiepmann\Tracking\EventListener\ExcludeFromReferenceIndex:
     tags:

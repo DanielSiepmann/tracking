@@ -1,0 +1,43 @@
+extends: 'default'
+
+yaml-files:
+  - '*.yaml'
+
+ignore:
+  - 'vendor/'
+  - '.Build/'
+
+rules:
+  braces:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 1
+    max-spaces-inside-empty: 1
+    level: 'error'
+  brackets:
+    min-spaces-inside: 1
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 1
+    max-spaces-inside-empty: 1
+    level: 'error'
+  document-start:
+    present: false
+    level: 'error'
+  line-length: 'disable'
+  empty-values: 'disable'
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    level: 'error'
+  empty-lines:
+    max: 1
+    level: 'error'
+  quoted-strings:
+    quote-type: 'any'
+    level: 'error'
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
+    level: 'error'
+  truthy:
+    level: 'error'
