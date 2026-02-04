@@ -12,6 +12,12 @@ jobs:
     steps:
       - uses: 'actions/checkout@v4'
 
+      - name: 'Install yamllint'
+        run: 'sudo apt update && sudo apt install yamllint'
+
+      - name: 'Lint yaml files'
+        run: 'yamllint .'
+
       - name: 'Install PHP'
         uses: 'shivammathur/setup-php@v2'
         with:
