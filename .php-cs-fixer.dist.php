@@ -149,6 +149,7 @@ function transform(string $className): string
 
 return (new Config())
     ->setRiskyAllowed(true)
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setFinder(
         (new Finder())
             ->ignoreVCSIgnored(true)
