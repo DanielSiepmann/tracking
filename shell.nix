@@ -3,7 +3,7 @@
 }:
 
 let
-  php = pkgs.php84.buildEnv {
+  php = pkgs.php85.buildEnv {
     extensions = { enabled, all }: enabled ++ (with all; [
       xdebug
     ]);

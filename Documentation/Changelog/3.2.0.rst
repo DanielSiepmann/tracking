@@ -1,0 +1,27 @@
+3.2.0
+=====
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+* Add PHP 8.5 support.
+
+Fixes
+-----
+
+Nothing
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing
