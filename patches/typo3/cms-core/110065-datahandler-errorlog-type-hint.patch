@@ -1,0 +1,17 @@
+Upstream Issue: https://forge.typo3.org/issues/110065
+Upstream Patch: https://review.typo3.org/c/Packages/TYPO3.CMS/+/94522
+
+diff --git a/typo3/sysext/core/Classes/DataHandling/DataHandler.php b/typo3/sysext/core/Classes/DataHandling/DataHandler.php
+index 94eb8d08a53..0c6d6bfc5ff 100644
+--- a/Classes/DataHandling/DataHandler.php
++++ b/Classes/DataHandling/DataHandler.php
+@@ -217,6 +217,8 @@ class DataHandler
+      * Errors are collected in this variable.
+      *
+      * @internal should only be used from within TYPO3 Core
++     *
++     * @var string[]
+      */
+     public array $errorLog = [];
+ 
+

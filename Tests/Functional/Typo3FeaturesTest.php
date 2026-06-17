@@ -73,13 +73,6 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
     {
         $dataHandler = $this->get(DataHandler::class);
 
-        // @phpstan-ignore function.alreadyNarrowedType (It is available in v13, but not v14)
-        if (property_exists($dataHandler, 'copyWhichTables') === false) {
-            self::markTestSkipped('Only available in TYPO3 v13.');
-        }
-
-        // @phpstan-ignore property.notFound (this code is only executed on v13 where it exists)
-        $dataHandler->copyWhichTables = 'pages,tx_tracking_pageview,tx_tracking_recordview';
         $dataHandler->start([], [
             'pages' => [
                 1 => [

@@ -82,7 +82,7 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function throwsExceptionIfModelToUodateHasNoUid(): void
     {
-        $connection = $this->createMock(Connection::class);
+        $connection = self::createStub(Connection::class);
         $factory = self::createStub(Factory::class);
 
         $model = self::createStub(Model::class);

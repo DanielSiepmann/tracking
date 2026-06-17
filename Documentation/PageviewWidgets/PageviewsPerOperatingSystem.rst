@@ -1,5 +1,5 @@
 .. php:namespace:: DanielSiepmann\Tracking\Dashboard\Provider
-.. program:: DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerOperatingSystem
+.. class:: PageviewsPerOperatingSystem
 
 .. _pageviewsperoperatingsystem:
 
@@ -18,7 +18,9 @@ Example
 
 Default widget configuration.
 
-:file:`Configuration/Services.yaml`::
+:file:`Configuration/Services.yaml`:
+
+.. code-block:: yaml
 
    services:
      _defaults:
@@ -49,25 +51,30 @@ Default widget configuration.
 Options
 =======
 
-.. option:: $days
+..  confval:: $days
+    :name: pageviewsPerOperatingSystem-days
+    :required: false
+    :type: Integer
+    :default: 31
 
-   Integer defining the number of days to respect.
+    Defines the number of days to respect.
 
-   Defaults to 31.
+..  confval:: $maxResults
+    :name: pageviewsPerOperatingSystem-maxResults
+    :required: false
+    :type: Integer
+    :default: 6
 
-.. option:: $maxResults
+    Defines how many pages should be shown.
+    Defaults to 6 because EXT:dashboard only provides 6 colors.
 
-   Integer defining how many pages should be shown.
-   Defaults to 6 because EXT:dashboard only provides 6 colors.
+..  confval:: $languageLimitation
+    :name: pageviewsPerOperatingSystem-languageLimitation
+    :required: false
+    :type: array of ``sys_language_uid``'s to include
+    :default: empty array, all languages are shown
 
-   Defaults to 6.
-
-.. option:: $languageLimitation
-
-   Array of ``sys_language_uid``'s to include.
-   Defaults to empty array, all languages are shown.
-
-   Allows to limit results to specific lanuages.
-   All entries tracked when visiting page with this language are shown.
-   If multiple languages are shown, default system language labels are used.
-   If only a single lanugage is allowed, record labels are translated to that language.
+    Allows to limit results to specific lanuages.
+    All entries tracked when visiting page with this language are shown.
+    If multiple languages are shown, default system language labels are used.
+    If only a single lanugage is allowed, record labels are translated to that language.

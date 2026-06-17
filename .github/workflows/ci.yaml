@@ -64,35 +64,19 @@ jobs:
         include:
           - db-version: '8'
             php-version: '8.2'
-            typo3-version: '^13.4'
-            experimental: false
-          - db-version: '8'
-            php-version: '8.3'
-            typo3-version: '^13.4'
-            experimental: false
-          - db-version: '8'
-            php-version: '8.4'
-            typo3-version: '^13.4'
-            experimental: false
-          - db-version: '8'
-            php-version: '8.5'
-            typo3-version: '^13.4'
-            experimental: false
-          - db-version: '8'
-            php-version: '8.2'
-            typo3-version: '^14.1'
+            typo3-version: '^14.3'
             experimental: true
           - db-version: '8'
             php-version: '8.3'
-            typo3-version: '^14.1'
+            typo3-version: '^14.3'
             experimental: true
           - db-version: '8'
             php-version: '8.4'
-            typo3-version: '^14.1'
+            typo3-version: '^14.3'
             experimental: true
           - db-version: '8'
             php-version: '8.5'
-            typo3-version: '^14.1'
+            typo3-version: '^14.3'
             experimental: true
     steps:
       - uses: 'actions/checkout@v4'

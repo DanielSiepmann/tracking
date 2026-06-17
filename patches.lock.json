@@ -1,0 +1,37 @@
+{
+    "_hash": "b93c32dd7368418ec6be336008aad1b69bcb14da266251eece24c438425ee626",
+    "patches": {
+        "typo3/cms-core": [
+            {
+                "package": "typo3/cms-core",
+                "description": "108353 Prevent copy of Tables",
+                "url": "patches/typo3/cms-core/108353-prevent-copy-of-tables.patch",
+                "sha256": "a9b87ec2276f8c06f8633d441a4c2c5a694ca4ba44cb8d88943ed12ced40b20a",
+                "depth": 1,
+                "extra": {
+                    "provenance": "patches-file:patches/patches.json"
+                }
+            },
+            {
+                "package": "typo3/cms-core",
+                "description": "110063 Fixture Dependency",
+                "url": "patches/typo3/cms-core/110063-fixture-dependency.patch",
+                "sha256": "5f33cec647278346a75c9356a6abfed0c790df997f91895c22263b70d525210c",
+                "depth": 1,
+                "extra": {
+                    "provenance": "patches-file:patches/patches.json"
+                }
+            },
+            {
+                "package": "typo3/cms-core",
+                "description": "110065 DataHandler->errorLog type hint",
+                "url": "patches/typo3/cms-core/110065-datahandler-errorlog-type-hint.patch",
+                "sha256": "a7a5d53754000ba7f1e9d344c35a638f61537a6dd1889016e8c40ede7a9302d4",
+                "depth": 1,
+                "extra": {
+                    "provenance": "patches-file:patches/patches.json"
+                }
+            }
+        ]
+    }
+}

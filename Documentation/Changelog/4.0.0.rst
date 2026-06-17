@@ -1,16 +1,50 @@
-3.0.0
+4.0.0
 =====
+
+Sponsoring
+----------
+
+Thanks to `werkraum_media <https://werkraum-media.de/>`__ for sponsoring the 4.0.0 release to finally provide a v14 LTS compatible version.
 
 Breaking
 --------
 
-* Drop support for TYPO3 v12.
-  I only support last two TYPO3 versions.
+* Drop support for TYPO3 v12 and v13.
+  I only support last TYPO3 version due to too much complexity to support 13 and 14.
+
+  This extension used an internal API of TYPO3 ``DataHandler``.
+  This is now done via a composer patch.
+
+  You need to apply the patch in your projects, in case you do not want to copy
+  tracking tables when copying pages.
+
+  You can do so by using the composer plugin
+  https://packagist.org/packages/cweagans/composer-patches.
+  Version 2.x is recommend. You can add the patch via your patches definition like
+  this, when following composer defaults:
+
+  .. code-block:: json
+
+     {
+         "patches": {
+             "typo3/cms-core": {
+                 "108353 Prevent copy of Tables": "vendor/danielsiepmann/tracking/patches/typo3/cms-core/108353-prevent-copy-of-tables.patch"
+             }
+         }
+     }
+
+  The patch might need adjustments depending on concrete patch level of your TYPO3
+  installation.
 
 Features
 --------
 
 * Add Support for TYPO3 v14.
+
+  New Dashboard settings are not supported.
+  The existing options are way too technical for editors.
+  Also some settings don't have a proper type available yet, e.g. a list of TYPO3 pages can not be reflected.
+  Therefore configuration of dashboard widgets stays as is, at least for now.
 
 * Add Support for PHP 8.5.
 

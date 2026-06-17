@@ -34,12 +34,13 @@
         "psr/http-server-middleware": "^1.0",
         "symfony/console": "^7.2",
         "symfony/expression-language": "^7.2",
-        "typo3/cms-backend": "^13.4 || ~14.1.0",
-        "typo3/cms-core": "^13.4 || ~14.1.0",
-        "typo3/cms-dashboard": "^13.4 || ~14.1.0"
+        "typo3/cms-backend": "^14.3",
+        "typo3/cms-core": "^14.3",
+        "typo3/cms-dashboard": "^14.3"
     },
     "require-dev": {
         "codappix/typo3-php-datasets": "^2.1",
+        "cweagans/composer-patches": "^2.0",
         "friendsofphp/php-cs-fixer": "3.93.1",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
@@ -58,15 +59,19 @@
         "typo3/cms": {
             "extension-key": "tracking",
             "web-dir": ".Build/web"
+        },
+        "composer-patches": {
+            "patches-file": "patches/patches.json"
         }
     },
     "config": {
         "sort-packages": true,
         "lock": false,
         "allow-plugins": {
+            "cweagans/composer-patches": true,
+            "phpstan/extension-installer": true,
             "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true,
-            "phpstan/extension-installer": true
+            "typo3/cms-composer-installers": true
         }
     }
 }

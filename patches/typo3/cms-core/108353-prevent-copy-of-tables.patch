@@ -1,0 +1,29 @@
+Quick and dirty patch to not copy tracking tables when copying pages..
+
+Upstream issue: https://forge.typo3.org/issues/108353
+
+diff --git a/typo3/sysext/core/Classes/DataHandling/DataHandler.php b/typo3/sysext/core/Classes/DataHandling/DataHandler.php
+index 3fe08eeaa6c..3a31ec0d0b7 100644
+--- a/Classes/DataHandling/DataHandler.php
++++ b/Classes/DataHandling/DataHandler.php
+@@ -3363,6 +3363,9 @@ class DataHandler
+      */
+     public function copyRecord(string $table, int $uid, int $destPid, bool $first = false, array $overrideValues = [], bool $ignoreLocalization = false): ?int
+     {
++        if (str_starts_with($table, 'tx_tracking_')) {
++            return null;
++        }
+         $uid = ($origUid = $uid);
+         // Only copy if the table has a Schema, a uid is given and the record wasn't copied before:
+         if (!$this->tcaSchemaFactory->has($table) || $uid === 0) {
+@@ -3715,6 +3718,9 @@ class DataHandler
+      */
+     public function copyRecord_raw(string $table, $uid, $pid, array $overrideArray = [], array $workspaceOptions = []): ?int
+     {
++        if (str_starts_with($table, 'tx_tracking_')) {
++            return null;
++        }
+         $uid = (int)$uid;
+         // Stop any actions if the record is marked to be deleted:
+         // (this can occur if IRRE elements are versionized and child elements are removed)
+
