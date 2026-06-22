@@ -1,6 +1,49 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\DataHandler constructor invoked with 0 parameters, 14 required\\.$#"
+			message: '#^Method DanielSiepmann\\Tracking\\Dashboard\\Provider\\PageviewsPerDay\:\:getPageviewsInPeriod\(\) should return array\<array\{count\: float\|int\|numeric\-string, label\: string\}\> but returns list\<array\<string, mixed\>\>\.$#'
+			identifier: return.type
 			count: 1
-			path: Tests/Functional/Typo3FeaturesTest.php
+			path: Classes/Dashboard/Provider/PageviewsPerDay.php
+
+		-
+			message: '#^Property DanielSiepmann\\Tracking\\Dashboard\\Provider\\PageviewsPerDay\:\:\$languageService \(TYPO3\\CMS\\Core\\Localization\\LanguageService\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: Classes/Dashboard/Provider/PageviewsPerDay.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_keys expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Hooks/DataHandler.php
+
+		-
+			message: '#^Parameter \#1 \$original of static method TYPO3\\CMS\\Core\\Utility\\ArrayUtility\:\:mergeRecursiveWithOverrule\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Hooks/DataHandler.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of static method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: Tests/Functional/Dashboard/Provider/PageviewsPerDayTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of static method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: Tests/Functional/Dashboard/Provider/PageviewsPerOperatingSystemTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of static method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 7
+			path: Tests/Functional/Dashboard/Provider/PageviewsPerPageTest.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of static method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 9
+			path: Tests/Functional/Dashboard/Provider/RecordviewsTest.php

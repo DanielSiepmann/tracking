@@ -1,5 +1,5 @@
 .. php:namespace:: DanielSiepmann\Tracking\Dashboard\Provider
-.. program:: DanielSiepmann\Tracking\Dashboard\Provider\PageviewsPerPage
+.. class:: PageviewsPerPage
 
 .. _pageviewsperpage:
 
@@ -18,7 +18,9 @@ Example
 
 Default widget configuration.
 
-:file:`Configuration/Services.yaml`::
+:file:`Configuration/Services.yaml`:
+
+.. code-block:: yaml
 
    services:
      _defaults:
@@ -49,34 +51,40 @@ Default widget configuration.
 Options
 =======
 
-.. option:: $days
+..  confval:: $days
+    :name: pageviewsPerPage-days
+    :required: false
+    :type: Integer
+    :default: 31
 
-   Integer defining the number of days to respect.
+    Defines the number of days to respect.
 
-   Defaults to 31.
+..  confval:: $maxResults
+    :name: pageviewsPerPage-maxResults
+    :required: false
+    :type: Integer
+    :default: 6
 
-.. option:: $maxResults
+    Defines how many pages should be shown.
+    Defaults to 6 because EXT:dashboard only provides 6 colors.
 
-   Integer defining how many pages should be shown.
-   Defaults to 6 because EXT:dashboard only provides 6 colors.
+..  confval:: $pagesToExclude
+    :name: pageviewsPerPage-pagesToExclude
+    :required: false
+    :type: array of page UIDs
+    :default: empty array, all pages are shown.
 
-   Defaults to 6.
+    This becomes handy if certain pages are called in order to show specific records.
+    In those cases the pages will be called very often but don't provide much benefit and can be excluded.
+    Use this in combination with :ref:`recordview` to show the records instead.
 
-.. option:: $pagesToExclude
+..  confval:: $languageLimitation
+    :name: pageviewsPerPage-languageLimitation
+    :required: false
+    :type: array of ``sys_language_uid``'s to include
+    :default: empty array, all languages are shown
 
-   Array of page uids that should not be collected.
-   Defaults to empty array, all pages are shown.
-
-   This becomes handy if certain pages are called in order to show specific records.
-   In those cases the pages will be called very often but don't provide much benefit and can be excluded.
-   Use this in combination with :ref:`recordview` to show the records instead.
-
-.. option:: $languageLimitation
-
-   Array of ``sys_language_uid``'s to include.
-   Defaults to empty array, all languages are shown.
-
-   Allows to limit results to specific lanuages.
-   All entries tracked when visiting page with this language are shown.
-   If multiple languages are shown, default system language labels are used.
-   If only a single lanugage is allowed, record labels are translated to that language.
+    Allows to limit results to specific lanuages.
+    All entries tracked when visiting page with this language are shown.
+    If multiple languages are shown, default system language labels are used.
+    If only a single lanugage is allowed, record labels are translated to that language.

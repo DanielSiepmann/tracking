@@ -30,6 +30,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 #[CoversClass(Recordviews::class)]
 final class RecordviewsTest extends AbstractFunctionalTestCase
@@ -80,7 +81,7 @@ final class RecordviewsTest extends AbstractFunctionalTestCase
             'Category 6',
             'Category 5',
         ], $result['labels']);
-        self::assertCount(6, $result['datasets'][0]['data']);
+        self::assertCount(6, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -126,7 +127,7 @@ final class RecordviewsTest extends AbstractFunctionalTestCase
             'Category 3',
             'Category 1',
         ], $result['labels']);
-        self::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -165,7 +166,7 @@ final class RecordviewsTest extends AbstractFunctionalTestCase
             'Category 3',
             'Category 2',
         ], $result['labels']);
-        self::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -195,7 +196,7 @@ final class RecordviewsTest extends AbstractFunctionalTestCase
             'Category 10',
             'Category 9',
         ], $result['labels']);
-        self::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -230,7 +231,7 @@ final class RecordviewsTest extends AbstractFunctionalTestCase
             'Category 7',
             'Category 6',
         ], $result['labels']);
-        self::assertCount(5, $result['datasets'][0]['data']);
+        self::assertCount(5, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -270,7 +271,7 @@ final class RecordviewsTest extends AbstractFunctionalTestCase
             'Category 2',
             'Category 1',
         ], $result['labels']);
-        self::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -308,7 +309,7 @@ final class RecordviewsTest extends AbstractFunctionalTestCase
             'Content element 2',
             'Content element 1',
         ], $result['labels']);
-        self::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -355,7 +356,7 @@ final class RecordviewsTest extends AbstractFunctionalTestCase
             'Category 2',
             'Kategorie 1',
         ], $result['labels']);
-        self::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -402,6 +403,6 @@ final class RecordviewsTest extends AbstractFunctionalTestCase
             'Category 1',
             'Category 2',
         ], $result['labels']);
-        self::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 }

@@ -26,7 +26,6 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use UnexpectedValueException;
 
 #[TestDox('This extension works with TYPO3 feature:')]
 final class Typo3FeaturesTest extends AbstractFunctionalTestCase
@@ -38,11 +37,7 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
         $this->importPHPDataSet(__DIR__ . '/Fixtures/BackendUser.php');
         $this->importPHPDataSet(__DIR__ . '/Fixtures/Typo3FeaturesTest/PageWithRecords.php');
         $this->setUpBackendUser(1);
-        $languageServiceFactory = $this->get(LanguageServiceFactory::class);
-        if (!$languageServiceFactory instanceof LanguageServiceFactory) {
-            throw new UnexpectedValueException('Did not retrieve LanguageServiceFactory.', 1637847250);
-        }
-        $GLOBALS['LANG'] = $languageServiceFactory->create('default');
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->create('default');
     }
 
     protected function tearDown(): void
@@ -56,7 +51,7 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
     #[Test]
     public function copyContainingRecords(): void
     {
-        $dataHandler = $this->createDataHandler();
+        $dataHandler = $this->get(DataHandler::class);
         $dataHandler->start([], [
             'pages' => [
                 1 => [
@@ -68,7 +63,7 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
 
         self::assertCount(0, $dataHandler->errorLog, 'Failed with errors: ' . implode(PHP_EOL, $dataHandler->errorLog));
         $this->assertCSVDataSet(
-            'EXT:tracking/Tests/Functional/ExpectedResults/Typo3FeaturesTest/CopyPasteContainingRecords.csv'
+            __DIR__ . '/ExpectedResults/Typo3FeaturesTest/CopyPasteContainingRecords.csv'
         );
     }
 
@@ -76,8 +71,8 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
     #[Test]
     public function copyCustomTablesViaDataHandler(): void
     {
-        $dataHandler = $this->createDataHandler();
-        $dataHandler->copyWhichTables = 'pages,tx_tracking_pageview,tx_tracking_recordview';
+        $dataHandler = $this->get(DataHandler::class);
+
         $dataHandler->start([], [
             'pages' => [
                 1 => [
@@ -89,17 +84,7 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
 
         self::assertCount(0, $dataHandler->errorLog, 'Failed with errors: ' . implode(PHP_EOL, $dataHandler->errorLog));
         $this->assertCSVDataSet(
-            'EXT:tracking/Tests/Functional/ExpectedResults/Typo3FeaturesTest/CopyPasteContainingRecords.csv'
+            __DIR__ . '/ExpectedResults/Typo3FeaturesTest/CopyPasteContainingRecords.csv'
         );
-    }
-
-    private function createDataHandler(): DataHandler
-    {
-        // Prior TYPO3 v13.2
-        if ($this->has(DataHandler::class) === false) {
-            return new DataHandler();
-        }
-
-        return $this->get(DataHandler::class);
     }
 }

@@ -29,6 +29,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[CoversClass(PageviewsPerDay::class)]
@@ -63,7 +64,7 @@ final class PageviewsPerDayTest extends AbstractFunctionalTestCase
 
         $result = $subject->getChartData();
         self::assertCount(32, $result['labels']);
-        self::assertCount(32, $result['datasets'][0]['data']);
+        self::assertCount(32, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -90,7 +91,7 @@ final class PageviewsPerDayTest extends AbstractFunctionalTestCase
             1,
             1,
             0,
-        ], $result['datasets'][0]['data']);
+        ], ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -118,7 +119,7 @@ final class PageviewsPerDayTest extends AbstractFunctionalTestCase
             0,
             1,
             0,
-        ], $result['datasets'][0]['data']);
+        ], ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -140,7 +141,7 @@ final class PageviewsPerDayTest extends AbstractFunctionalTestCase
             date('d.m.Y', strtotime('-1 day')),
             date('d.m.Y'),
         ], $result['labels']);
-        self::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -176,6 +177,6 @@ final class PageviewsPerDayTest extends AbstractFunctionalTestCase
             9 => 0,
             10 => 1,
             11 => 0,
-        ], $result['datasets'][0]['data']);
+        ], ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 }

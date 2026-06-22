@@ -30,6 +30,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 #[CoversClass(PageviewsPerPage::class)]
 final class PageviewsPerPageTest extends AbstractFunctionalTestCase
@@ -77,7 +78,7 @@ final class PageviewsPerPageTest extends AbstractFunctionalTestCase
             'Page 6',
             'Page 5',
         ], $result['labels']);
-        self::assertCount(6, $result['datasets'][0]['data']);
+        self::assertCount(6, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -113,7 +114,7 @@ final class PageviewsPerPageTest extends AbstractFunctionalTestCase
             'Page 3',
             'Page 1',
         ], $result['labels']);
-        self::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -145,7 +146,7 @@ final class PageviewsPerPageTest extends AbstractFunctionalTestCase
             'Page 3',
             'Page 2',
         ], $result['labels']);
-        self::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -174,7 +175,7 @@ final class PageviewsPerPageTest extends AbstractFunctionalTestCase
             'Page 8',
             'Page 7',
         ], $result['labels']);
-        self::assertCount(4, $result['datasets'][0]['data']);
+        self::assertCount(4, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -204,7 +205,7 @@ final class PageviewsPerPageTest extends AbstractFunctionalTestCase
             'Page 8',
             'Page 7',
         ], $result['labels']);
-        self::assertCount(4, $result['datasets'][0]['data']);
+        self::assertCount(4, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -249,7 +250,7 @@ final class PageviewsPerPageTest extends AbstractFunctionalTestCase
             'Page 2',
             'Seite 1',
         ], $result['labels']);
-        self::assertCount(2, $result['datasets'][0]['data']);
+        self::assertCount(2, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 
     #[Test]
@@ -295,6 +296,6 @@ final class PageviewsPerPageTest extends AbstractFunctionalTestCase
             'Page 1',
             'Page 3',
         ], $result['labels']);
-        self::assertCount(3, $result['datasets'][0]['data']);
+        self::assertCount(3, ArrayUtility::getValueByPath($result, 'datasets/0/data'));
     }
 }

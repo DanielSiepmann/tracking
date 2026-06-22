@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace DanielSiepmann\Tracking\Domain\Model;
 
+use InvalidArgumentException;
+
 class RecordRule
 {
     public function __construct(
@@ -34,6 +36,14 @@ class RecordRule
 
     public static function fromArray(array $config): self
     {
+        if (
+            is_string($config['matches']) === false
+            || is_string($config['recordUid']) === false
+            || is_string($config['tableName']) === false
+        ) {
+            throw new InvalidArgumentException('Expected all three keys to be strings.', 1772793074);
+        }
+
         return new self(
             $config['matches'],
             $config['recordUid'],
@@ -41,6 +51,11 @@ class RecordRule
         );
     }
 
+    /**
+     * @param array[] $configs
+     *
+     * @return array<RecordRule>
+     */
     public static function multipleFromArray(array $configs): array
     {
         $rules = [];

@@ -39,7 +39,7 @@ class PageviewTest extends UnitTestCase
     public function modelCanBeAdded(): void
     {
         $connection = $this->createMock(Connection::class);
-        $factory = $this->createMock(Factory::class);
+        $factory = self::createStub(Factory::class);
 
         $dateTime = self::createStub(DateTimeImmutable::class);
         $dateTime->method('format')->willReturn('1582660189');
@@ -82,8 +82,8 @@ class PageviewTest extends UnitTestCase
     #[Test]
     public function throwsExceptionIfModelToUodateHasNoUid(): void
     {
-        $connection = $this->createMock(Connection::class);
-        $factory = $this->createMock(Factory::class);
+        $connection = self::createStub(Connection::class);
+        $factory = self::createStub(Factory::class);
 
         $model = self::createStub(Model::class);
         $model->method('getUid')->willReturn(0);
@@ -97,7 +97,7 @@ class PageviewTest extends UnitTestCase
     public function modelCanBeUpdated(): void
     {
         $connection = $this->createMock(Connection::class);
-        $factory = $this->createMock(Factory::class);
+        $factory = self::createStub(Factory::class);
 
         $dateTime = self::createStub(DateTimeImmutable::class);
         $dateTime->method('format')->willReturn('1582660189');

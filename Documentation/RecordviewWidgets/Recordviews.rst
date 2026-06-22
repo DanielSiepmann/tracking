@@ -1,5 +1,5 @@
 .. php:namespace:: DanielSiepmann\Tracking\Dashboard\Provider
-.. program:: DanielSiepmann\Tracking\Dashboard\Provider\Recordviews
+.. class:: Recordviews
 
 .. _recordviews:
 
@@ -25,7 +25,9 @@ Example
 
 Example widget configuration.
 
-:file:`Configuration/Services.yaml`::
+:file:`Configuration/Services.yaml`:
+
+.. code-block:: yaml
 
    services:
      _defaults:
@@ -65,53 +67,63 @@ Only the provider is documented, as the widget is part of EXT:dashboard.
 Options
 =======
 
-.. option:: $days
+..  confval:: $days
+    :name: recordviews-days
+    :required: false
+    :type: Integer
+    :default: 31
 
-   Integer defining the number of days to respect.
+    Defines the number of days to respect.
 
-   Defaults to 31.
+..  confval:: $maxResults
+    :name: recordviews-maxResults
+    :required: false
+    :type: Integer
+    :default: 6
 
-.. option:: $maxResults
+    Defines how many pages should be shown.
+    Defaults to 6 because EXT:dashboard only provides 6 colors.
 
-   Integer defining how many pages should be shown.
-   Defaults to 6 because EXT:dashboard only provides 6 colors.
+..  confval:: $pagesToExclude
+    :name: recordviews-pagesToExclude
+    :required: false
+    :type: array of page UIDs
+    :default: empty array, all pages are shown.
 
-   Defaults to 6.
-
-.. option:: $pagesToExclude
-
-   Array of page uids that should not be collected.
-   Defaults to empty array, all pages are shown.
+    Defines page UIDs that should not be collected.
 
    This can be used if records are delivered through different pages.
    This way news records can be filtered e.g. by limiting to press or internal news plugin pages.
 
-.. option:: $recordTableLimitation
+..  confval:: $recordTableLimitation
+    :name: recordviews-recordTableLimitation
+    :required: false
+    :type: array of database table names
+    :default: empty array, records from all tables are shown.
 
-   Array of database table names.
-   Defaults to empty array, records from all tables are shown.
+    Allows to limit the resulting records to specific tables.
+    E.g. only show records of ``sys_category`` or ``tt_address``.
 
-   Allows to limit the resulting records to specific tables.
-   E.g. only show records of ``sys_category`` or ``tt_address``.
+..  confval:: $recordTypeLimitation
+    :name: recordviews-recordTypeLimitation
+    :required: false
+    :type: array of record types
+    :default: empty array, records of all types are shown
 
-.. option:: $recordTypeLimitation
+    TYPO3 allows to define a types field per database table.
+    E.g. ``doktype`` for ``pages`` table, or ``CType`` for ``tt_content``.
+    That way different sub types of the same record can be stored.
 
-   Array of record types.
-   Defaults to empty array, records of all types are shown.
+    Using this option offers a way to limit records e.g. to specific types of news or
+    address records.
 
-   TYPO3 allows to define a types field per database table.
-   E.g. ``doktype`` for ``pages`` table, or ``CType`` for ``tt_content``.
-   That way different sub types of the same record can be stored.
+..  confval:: $languageLimitation
+    :name: recordviews-languageLimitation
+    :required: false
+    :type: array of ``sys_language_uid``'s to include
+    :default: empty array, all languages are shown
 
-   Using this option offers a way to limit records e.g. to specific types of news or
-   address records.
-
-.. option:: $languageLimitation
-
-   Array of ``sys_language_uid``'s to include.
-   Defaults to empty array, all languages are shown.
-
-   Allows to limit results to specific lanuages.
-   All entries tracked when visiting page with this language are shown.
-   If multiple languages are shown, default system language labels are used.
-   If only a single lanugage is allowed, record labels are translated to that language.
+    Allows to limit results to specific lanuages.
+    All entries tracked when visiting page with this language are shown.
+    If multiple languages are shown, default system language labels are used.
+    If only a single lanugage is allowed, record labels are translated to that language.

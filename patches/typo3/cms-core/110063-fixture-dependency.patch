@@ -1,0 +1,21 @@
+Quick and dirty patch to keep expected TYPO3 extension order within tests.
+
+Upstream issue: https://forge.typo3.org/issues/110063
+
+diff --git a/typo3/sysext/core/Classes/Package/Package.php b/typo3/sysext/core/Classes/Package/Package.php
+index ab794345dab..ddfeb69eb20 100644
+--- a/Classes/Package/Package.php
++++ b/Classes/Package/Package.php
+@@ -223,6 +223,11 @@ class Package implements PackageInterface
+         if ($isBuildingPackageArtifact) {
+             return $isKnownComposerDependency;
+         }
++
++        if ($this->packageKey === 'recordview' && $packageName === 'danielsiepmann/tracking') {
++            return false;
++        }
++
+         // The "php" package name is kept, so that the extension manager in classic mode can check PHP version constraints
+         // It will be ignored in extension dependency ordering in PackageManager though
+         return ($packageName !== 'php' && $isKnownComposerDependency)
+

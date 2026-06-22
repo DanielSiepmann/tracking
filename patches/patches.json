@@ -1,0 +1,9 @@
+{
+    "patches": {
+        "typo3/cms-core": {
+            "108353 Prevent copy of Tables": "patches/typo3/cms-core/108353-prevent-copy-of-tables.patch",
+            "110063 Fixture Dependency": "patches/typo3/cms-core/110063-fixture-dependency.patch",
+            "110065 DataHandler->errorLog type hint": "patches/typo3/cms-core/110065-datahandler-errorlog-type-hint.patch"
+        }
+    }
+}

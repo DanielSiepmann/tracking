@@ -30,6 +30,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Dashboard\WidgetApi;
 use TYPO3\CMS\Dashboard\Widgets\ChartDataProviderInterface;
 
@@ -96,7 +98,12 @@ class Recordviews implements ChartDataProviderInterface
                 continue;
             }
 
-            $labels[] = mb_strimwidth((string) $record['title'], 0, 25, '…');
+            $labels[] = mb_strimwidth(
+                StringUtility::cast($record['title']) ?? '',
+                0,
+                25,
+                '…'
+            );
             $data[] = $recordview['total'];
         }
 
@@ -172,7 +179,11 @@ class Recordviews implements ChartDataProviderInterface
         int $uid,
         string $table
     ): ?array {
-        $recordTypeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? '';
+        $recordTypeField = '';
+        $recordTypeFieldPath = 'TCA/' . $table . '/ctrl/type';
+        if (ArrayUtility::isValidPath($GLOBALS, $recordTypeFieldPath)) {
+            $recordTypeField = StringUtility::cast(ArrayUtility::getValueByPath($GLOBALS, $recordTypeFieldPath)) ?? '';
+        }
 
         $record = BackendUtility::getRecord($table, $uid);
         if (count($this->languageLimitation) === 1 && $record !== null) {
