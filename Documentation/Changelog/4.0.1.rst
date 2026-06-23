@@ -1,0 +1,35 @@
+4.0.1
+=====
+
+Sponsoring
+----------
+
+Thanks to `werkraum_media <https://werkraum-media.de/>`__ for sponsoring the 4.0.1 release.
+
+Breaking
+--------
+
+Nothing
+
+Features
+--------
+
+Nothing
+
+Fixes
+-----
+
+* Fix broken doktype support for tracking records.
+
+  V14 changed how custom records need to be allowed for TYPO3 page doktype.
+  This was broken in v4.0.0 and got fixed with this version.
+
+Tasks
+-----
+
+Nothing
+
+Deprecation
+-----------
+
+Nothing

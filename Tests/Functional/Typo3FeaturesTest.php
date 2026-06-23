@@ -22,9 +22,11 @@ namespace DanielSiepmann\Tracking\Tests\Functional;
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  * 02110-1301, USA.
  */
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestDox;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 
 #[TestDox('This extension works with TYPO3 feature:')]
@@ -45,6 +47,58 @@ final class Typo3FeaturesTest extends AbstractFunctionalTestCase
         unset($GLOBALS['LANG']);
 
         parent::tearDown();
+    }
+
+    #[DataProvider('possibleTypo3Doktypes')]
+    #[TestDox('Can switch a page with tracking records to doktype $_dataName')]
+    #[Test]
+    public function allowRecordsonDoktypes(int $doktype): void
+    {
+        $this->getConnectionPool()->getConnectionForTable('tx_tracking_pageview')->insert('tx_tracking_pageview', [
+            'pid' => '1',
+            'url' => 'http://localhost/',
+        ]);
+        $this->getConnectionPool()->getConnectionForTable('tx_tracking_recordview')->insert('tx_tracking_recordview', [
+            'pid' => '1',
+            'url' => 'http://localhost/',
+        ]);
+
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start([
+            'pages' => [
+                1 => [
+                    'doktype' => $doktype,
+                ],
+            ],
+        ], []);
+        $dataHandler->process_datamap();
+
+        self::assertCount(0, $dataHandler->errorLog, 'Failed with errors: ' . implode(PHP_EOL, $dataHandler->errorLog));
+    }
+
+    public static function possibleTypo3Doktypes(): iterable
+    {
+        yield 'Default/Standard' => [
+            'doktype' => PageRepository::DOKTYPE_DEFAULT,
+        ];
+        yield 'Link' => [
+            'doktype' => PageRepository::DOKTYPE_LINK,
+        ];
+        yield 'Shortcut' => [
+            'doktype' => PageRepository::DOKTYPE_SHORTCUT,
+        ];
+        yield 'BE User Section' => [
+            'doktype' => PageRepository::DOKTYPE_BE_USER_SECTION,
+        ];
+        yield 'Mountpoint' => [
+            'doktype' => PageRepository::DOKTYPE_MOUNTPOINT,
+        ];
+        yield 'Spacer' => [
+            'doktype' => PageRepository::DOKTYPE_SPACER,
+        ];
+        yield 'Storage Folder' => [
+            'doktype' => PageRepository::DOKTYPE_SYSFOLDER,
+        ];
     }
 
     #[TestDox('Copy pages. Tracking records will not be copied.')]
